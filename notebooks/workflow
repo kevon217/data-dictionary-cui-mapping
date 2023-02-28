@@ -1,0 +1,23 @@
+
+
+brics_umls_cui_mapping
+
+    umls_api_search
+        (1) load in curation settings
+        (2) run __main__.py
+        (3) MANUAL CURATION
+        (4) run create_dictionary_import_file.py
+
+    metamap_search
+        (1) load in curation settings
+        (2) run __main__.py
+        (3) MANUAL CURATION
+        (4) run create_dictionary_import_file.py
+
+    vector_embedding_semantic_search
+        (1) load in curation settings
+        (2) run __main__.py
+        (3) MANUAL CURATION
+        (4) run create_dictionary_import_file.py
+
+# FIND A WAY TO RUN ALL OF THESE THEN COMBINE INTO ONE MASTER CURATION FILE
