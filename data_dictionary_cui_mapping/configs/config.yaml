@@ -1,0 +1,4 @@
+defaults:
+  - _self_
+  - apis: config_metamap_api
+  - custom: de

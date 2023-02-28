@@ -1,0 +1,20 @@
+
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Not ready yet
+/reports/
+/logs/
+/data/
+/notebooks/
+
+/.idea/
+
+.env
+/dist/
+__pycache__/
