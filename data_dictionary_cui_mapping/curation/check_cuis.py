@@ -10,12 +10,7 @@ import pandas as pd
 import numpy as np
 from curation.utils import curation_functions as cur
 from data_dictionary_cui_mapping.utils import helper as helper
-import importlib
 from data_dictionary_cui_mapping.curation.utils import dictionary_functions as dictfn
-
-importlib.reload(dictfn)
-
-cfg = helper.load_config.fn(helper.choose_input_file.fn("Load config file from Step 2"))
 
 
 # @hydra.main(version_base=None, config_path="../configs", config_name="config")
@@ -112,4 +107,7 @@ def main(cfg):
 
 
 if __name__ == "__main__":
+    cfg = helper.load_config.fn(
+        helper.choose_input_file.fn("Load config file from Step 2")
+    )
     df_check = main(cfg)
