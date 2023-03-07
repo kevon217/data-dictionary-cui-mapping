@@ -1,6 +1,6 @@
 """
 
-Main script for creating curation file for data dictionary --> UMLS CUI mappings via UMLS API.
+Main script for creating curation file for examples dictionary --> UMLS CUI mappings via UMLS API.
 
 """
 

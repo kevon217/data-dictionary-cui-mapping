@@ -10,7 +10,7 @@ def get_service_ticket(serverurl, ticket_granting_ticket, serviceurl):
 
         POST /cas/v1/tickets/{TGT id} HTTP/1.0
 
-    data:
+    examples:
            service={form encoded parameter for the service url}
 
     Sucessful Response:
@@ -52,7 +52,7 @@ def get_ticket_granting_ticket(tgtserverurl, apikey):
 
       POST /cas/v1/api-key HTTP/1.0
 
-     data:
+     examples:
         apikey
 
     Successful Response:

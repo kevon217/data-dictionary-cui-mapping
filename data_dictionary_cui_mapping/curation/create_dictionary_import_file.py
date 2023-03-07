@@ -1,6 +1,6 @@
 """
 
-Main script for creating dictionary import file from curated data dictionary --> UMLS CUI mappings excel file.
+Main script for creating dictionary import file from curated examples dictionary --> UMLS CUI mappings excel file.
 
 """
 
@@ -79,6 +79,8 @@ def main(cfg):
     print(f"Saved {fp_step2}")
     helper.save_config(dir_step2, cfg)
 
+    return df_final
+
 
 if __name__ == "__main__":
-    main(cfg)
+    df_final = main(cfg)

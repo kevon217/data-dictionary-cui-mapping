@@ -28,9 +28,9 @@ curation_settings:
     - searchType
   result_columns:
     - recCount
-    - data element concept names
-    - data element concept identifiers
-    - data element terminology sources
+    - examples element concept names
+    - examples element concept identifiers
+    - examples element terminology sources
 
   file_settings:
     directory_prefix : DE
@@ -46,16 +46,16 @@ curation_settings:
 create_dictionary_import_settings:
   curation_file_path:
   umls_columns:
-    - data element concept names
-    - data element concept identifiers
-    - data element terminology sources
+    - examples element concept names
+    - examples element concept identifiers
+    - examples element terminology sources
   join_on: ['variable name', 'title_exploded' ]
   cui_sep : '|'
   multi_cui_sep : '/'
   override:
     sep: '|'
     columns:
-      - data element terminology sources
+      - examples element terminology sources
     value: 'UMLS'
   dict_file_path:
   dict_file_type : csv

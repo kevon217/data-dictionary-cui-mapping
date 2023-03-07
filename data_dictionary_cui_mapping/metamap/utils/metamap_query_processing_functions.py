@@ -89,7 +89,7 @@ def mm_output_to_json(response: requests.models.Response) -> dict:
         "NOT DONE LOOP", ""
     )  # remove string "NOT DONE LOOP" if present
     mm_json = json.loads(jsondata)
-    print("data:{}".format(mm_json))
+    print("examples:{}".format(mm_json))
     return mm_json
 
 

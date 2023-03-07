@@ -1,6 +1,6 @@
 """
 
-This file contains custom functions used in scripts designed to merge curated UMLS CUIs back with the original data dictionary file.
+This file contains custom functions used in scripts designed to merge curated UMLS CUIs back with the original examples dictionary file.
 
 """
 
@@ -179,7 +179,7 @@ def concat_mult_cuis(df, cols_join_on, umls_columns):
     return df
 
 
-@task(name="Merging curated cuis with original data dictionary")
+@task(name="Merging curated cuis with original examples dictionary")
 def merge_with_dictionary(
     df_left,
     df_right,
@@ -187,7 +187,7 @@ def merge_with_dictionary(
     cols_join_on,
     suffixes: tuple,
 ):  # TODO maybe add validate check
-    """Merge curation file with data dictionary"""
+    """Merge curation file with examples dictionary"""
 
     df = pd.merge(
         df_left,
@@ -216,7 +216,7 @@ def concat_cols_umls(df, umls_columns: list):
     return df_merged
 
 
-@task(name="Reordering data dictionary columns")
+@task(name="Reordering examples dictionary columns")
 def reorder_cols(df, order: list):
     """Reorder columns"""
 
@@ -226,7 +226,7 @@ def reorder_cols(df, order: list):
 
 @task(name="Manual override of column values")
 def override_cols(df, override: dict):
-    """Custom function to accommodate current bug in BRICS data dictionary import process that wants multi-CUI concepts to have a single source terminology
+    """Custom function to accommodate current bug in BRICS examples dictionary import process that wants multi-CUI concepts to have a single source terminology
     e.g., C123456/C234567 -> UMLS instead of UMLS/UMLS"""
 
     sep = override.sep

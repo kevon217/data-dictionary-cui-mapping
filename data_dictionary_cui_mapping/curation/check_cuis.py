@@ -108,6 +108,8 @@ def main(cfg):
     df_check.to_csv(fp_check, index=False)
     print("Saved file to " + fp_check)
 
+    return df_check
+
 
 if __name__ == "__main__":
     df_check = main(cfg)

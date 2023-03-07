@@ -88,25 +88,16 @@ create_dictionary_import_settings:
           "Label(s)",
           "submitting organization name", "submitting contact name", "submitting contact information",
           "steward organization name", "steward contact name", "steward contact information"]
-#  check_columns:
-#    - data element concept names
-#    - data element concept identifiers
-#    - data element terminology sources
-#    - permissible value concept names
-#    - permissible value concept identifiers
-#    - permissible value terminology sources
-check_cuis:
-  - de:
-      - reference_columns:
-        - variable name
-      - check_columns:
+  check_cuis:
+    de:
+      reference_column: variable name
+      check_columns:
         - data element concept names
         - data element concept identifiers
         - data element terminology sources
-  - pvd:
-      - reference_columns:
-        - permissible value descriptions
-      - check_columns:
+    pvd:
+      reference_column: permissible value descriptions
+      check_columns:
         - permissible value concept names
         - permissible value concept identifiers
         - permissible value terminology sources

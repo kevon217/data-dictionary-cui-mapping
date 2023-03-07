@@ -1,6 +1,6 @@
 """
 
-This file contains custom functions used in scripts designed to search, map and format UMLS CUIs for BRICS data elements (DEs) and
+This file contains custom functions used in scripts designed to search, map and format UMLS CUIs for BRICS examples elements (DEs) and
 permissible values/permissible value descriptions (PVs/PVDs).
 
 """
@@ -76,7 +76,7 @@ def remove_stopwords_cols(df, columns, rmv_stopwords):
 
 
 def remove_vars_cheatsheet(df, use_cheatsheet):  # TODO: not ready
-    """Remove variables from data dictionary that are already curated in the MetaMap_Settings_Cheatsheet.csv file"""
+    """Remove variables from examples dictionary that are already curated in the MetaMap_Settings_Cheatsheet.csv file"""
     if use_cheatsheet:
         fp_cheatsheet = helper.choose_input_file(
             title="Select MetaMap_Settings_Cheatsheet.csv file"
@@ -109,7 +109,7 @@ def explode_dictionary(df, cols_pv, sep):
 
 
 def preprocess_data_dictionary(df_dd: pd.DataFrame, cfg: dict):
-    """Main preprocessing pipeline for data dictionary"""
+    """Main preprocessing pipeline for examples dictionary"""
 
     cols_exploded = []
     for colname in cfg.custom.query_settings.query_term_columns:

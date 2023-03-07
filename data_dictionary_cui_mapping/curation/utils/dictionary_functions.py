@@ -1,23 +1,11 @@
 """
 
-Functions to check the data dictionary and its CUI mappings and report discrepancies.
+Functions to check the examples dictionary and its CUI mappings and report discrepancies.
 
 """
 import pandas as pd
 import numpy as np
-from functools import partial
 import itertools
-
-
-# def count_sep(cell, sep):
-#     """Counts total number of separated values for a cell by separator specified"""
-#
-#     if np.isnan(cell) or len(cell) == 0:
-#         return np.nan, np.nan
-#     else:
-#         sep_split = cell.split(sep)
-#         n_sep = int(len(sep_split))
-#         return n_sep, sep_split
 
 
 def get_check_columns(check_cuis: dict):
@@ -43,26 +31,9 @@ def count_sep(cell, sep):
         return n_sep
 
 
-# def count_cui_sep(df_check, col, cui_sep):
-#     """Counts number of CUIs per variable"""
-#
-#     n_cuis, cuis = zip(*[(x[0], x[1]) for x in list(map(partial(count_sep, sep= cui_sep),df_check[col]))])
-#     return n_cuis, cuis
-
-
-def sep_dict(cell, sep):
-    idx_dict = {idx: ele for idx, ele in enumerate(cell.split(sep))}
-    return idx_dict
-
-
 def sep_list(cell, sep):
     cui_list = cell.split(sep)
     return cui_list
-
-
-#
-# cui_list = df.applymap(lambda x: sep_list(x,sep) if not pd.isna(x) else x)
-# cui_dict = cui_dict['permissible value concept names']
 
 
 def idx_cui_map(cell, dict_map):
@@ -70,49 +41,6 @@ def idx_cui_map(cell, dict_map):
         pass
     else:
         cell = cell.replace(dict_map[cell])
-
-
-#
-# for idx, row in df_idx_missing.iterrows():
-#     print(row)
-#     m = cui_dict[idx]
-#     for cell in row:
-#         if cell is np.nan:
-#             pass
-#         else:
-#             for val in cell:
-#                 test = m[val]
-
-
-# write a function that takes in a series with lists in each index and replaces values in the list with dictionary mapping
-def replace_dict(cell, dict_map):
-    if cell is np.nan:
-        pass
-    else:
-        cell = cell.replace(dict_map[cell])
-
-
-# write function that replaces values in list with dictionary mapping
-def replace_dict(cell, dict_map):
-    if cell is np.nan:
-        pass
-    else:
-        cell = cell.replace(dict_map[cell])
-
-
-def count_PV_CUIs_missing(cell):
-    "Counts number of missing (blank or empty) CUI codes and records their index"
-    if pd.isna(cell):
-        return np.nan, np.nan
-    else:
-        vals = cell.split("|")  # CUIs separated by "|"
-        vals = list(
-            map(lambda x: x.strip(), vals)
-        )  # removes surrounding whitespace in case empty value has accidental space
-        ls_is_missing = list(map(lambda x: x == 0, (map(len, vals))))
-        idx_missing = [idx for idx, e in enumerate(ls_is_missing) if e is True]
-        n_missing = sum(ls_is_missing)
-        return n_missing, idx_missing
 
 
 def count_sep_missing(cell, sep):
@@ -152,18 +80,6 @@ def count_cui_sep_missing(df_check, col, cui_sep):
         *[(x[0], x[1]) for x in list(map(count_sep_missing, df_check[col], cui_sep))]
     )
     return n_missing, idx_missing
-
-
-def count_CUIs_NA(cell):
-    'Counts number of CUIs marked as "Not Available"'
-    if pd.isna(cell):
-        return (np.nan, np.nan)
-    else:
-        vals = cell.split("|")  # multiple CUIs for a PVD separated by "/"
-        ls_is_NA = list(map(lambda x: x == "Not Available", vals))
-        idx_NA = [idx for idx, e in enumerate(ls_is_NA) if e is True]
-        n_NA = sum(ls_is_NA)
-        return n_NA, idx_NA
 
 
 def count_multi_cuis(cell, sep1, sep2):

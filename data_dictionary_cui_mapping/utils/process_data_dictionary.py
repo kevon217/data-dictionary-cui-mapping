@@ -5,7 +5,7 @@ from . import helper as helper
 from . import text_processing as tp
 
 
-@flow(flow_run_name="Loading data dictionary file")
+@flow(flow_run_name="Loading examples dictionary file")
 def load_data_dictionary(cfg):
     """Load Data Dictionary file from filepath or choose with ui if not specified"""
 
@@ -37,9 +37,9 @@ def explode_dictionary(df, query_term_columns, column_sep):
     return df
 
 
-@flow(flow_run_name="Processing data dictionary")
+@flow(flow_run_name="Processing examples dictionary")
 def process_data_dictionary(df_dd, cfg):
-    """Main preprocessing pipeline for data dictionary"""
+    """Main preprocessing pipeline for examples dictionary"""
 
     cols_exploded = []
     for colname in cfg.custom.data_dictionary_settings.query_term_columns:

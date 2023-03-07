@@ -1,6 +1,6 @@
 """
 
-This file contains custom functions used in scripts designed to search, map and format UMLS CUIs for BRICS data elements (DEs) and
+This file contains custom functions used in scripts designed to search, map and format UMLS CUIs for BRICS examples elements (DEs) and
 permissible values/permissible value descriptions (PVs/PVDs).
 
 """
@@ -93,7 +93,7 @@ def remove_stopwords_cols(df, columns, preprocessing_settings):
 
 
 def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet implemented
-    """Remove variables from data dictionary that are already curated in a Cheatsheet csv file"""
+    """Remove variables from examples dictionary that are already curated in a Cheatsheet csv file"""
 
     if preprocessing_settings.use_cheatsheet:
         if preprocessing_settings.cheatsheet_filepath:

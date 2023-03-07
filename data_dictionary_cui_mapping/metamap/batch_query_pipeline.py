@@ -1,6 +1,6 @@
 """
 
-Main script for creating curation file for data dictionary --> UMLS CUI mappings via MetaMap API.
+Main script for creating curation file for examples dictionary --> UMLS CUI mappings via MetaMap API.
 
 """
 
@@ -74,5 +74,4 @@ def main(cfg):
 
 
 if __name__ == "__main__":
-    main(cfg)
-    print("Ending flow run...")
+    df_final = main(cfg)
