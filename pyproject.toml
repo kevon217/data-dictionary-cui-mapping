@@ -1,6 +1,10 @@
 [tool.poetry]
 name = "data-dictionary-cui-mapping"
+<<<<<<< HEAD
 version = "1.0.1"
+=======
+version = "1.0.0"
+>>>>>>> 9c337705ba0a7fcd38c93154ce109d00b00ca8a0
 description = ""
 authors = ["Kevin Armengol <kevin.armengol@gmail.com>"]
 license = "MIT"
