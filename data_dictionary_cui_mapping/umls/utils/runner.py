@@ -114,7 +114,7 @@ def umls_runner(df_results, df_curation, cfg):
                             break
                     else:  # if approximate search still results in nothing, try next query_term if available
                         print(
-                            f"({cnt_searchTerm}) {searchTerm}: No alternative searchType match. Moving on to next query term option."
+                            f"({cnt_searchTerm}) {searchTerm}: No alternative searchType match. Moving on to next query term option if available."
                         )
                         temp_ls = uqproc.no_results_output(
                             vn, search_ID, searchTerm, searchTermCol, searchType

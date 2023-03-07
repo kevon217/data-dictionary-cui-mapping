@@ -15,7 +15,7 @@ from data_dictionary_cui_mapping.metamap.utils import (
     metamap_query_processing_functions as mm_qproc,
 )
 from data_dictionary_cui_mapping.metamap.utils.api_connection import check_credentials
-from data_dictionary_cui_mapping.utils import curation_functions as cur
+from curation.utils import curation_functions as cur
 
 cfg = helper.compose_config.fn(
     config_path="../configs",
@@ -59,6 +59,7 @@ def main(cfg):
         df_results = mm_qproc.rename_mm_columns(df_results, cfg)
     else:
         print(response.text)
+        exit()
 
     # CREATE CURATION FILE
     df_final = cur.create_curation_file(
@@ -74,3 +75,4 @@ def main(cfg):
 
 if __name__ == "__main__":
     main(cfg)
+    print("Ending flow run...")

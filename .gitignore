@@ -11,8 +11,8 @@
 /reports/
 /logs/
 /data/
-/notebooks/
-
+/notebooks/.ipynb_checkpoints
+/notebooks
 /.idea/
 
 .env

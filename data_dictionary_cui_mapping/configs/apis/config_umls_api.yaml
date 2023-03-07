@@ -1,5 +1,5 @@
 user_info:
-  email : 'armengolkm@nih.gov'
+  email :
   apiKey: &apiKey
 
 umls_api_settings:

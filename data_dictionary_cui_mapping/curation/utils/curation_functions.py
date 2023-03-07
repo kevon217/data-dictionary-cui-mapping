@@ -14,15 +14,6 @@ from prefect import flow, task
 from data_dictionary_cui_mapping.utils import helper as helper
 
 
-@task(name="Subsetting dataframe with curation related columns")
-def curation_cols_filter(df, df_dd, cols_curation: list):
-    """Create subset of dataframe with columns necessary for curation"""
-
-    rmv_cols = list(set(df_dd.columns).difference(cols_curation))
-    df = df.drop(rmv_cols, axis=1).copy()  # create curation file
-    return df
-
-
 @task(name="Adding search_ID column")
 def add_search_ID_col(df):
     """Add search ID column"""
@@ -31,6 +22,15 @@ def add_search_ID_col(df):
     df.insert(
         1, col_search_ID, range(1, 1 + len(df))
     )  # insert column search_ID as number 1 through length of df_curation
+    return df
+
+
+@task(name="Subsetting dataframe with curation related columns")
+def curation_cols_filter(df, df_dd, cols_curation: list):
+    """Create subset of dataframe with columns necessary for curation"""
+
+    rmv_cols = list(set(df_dd.columns).difference(cols_curation))
+    df = df.drop(rmv_cols, axis=1).copy()  # create curation file
     return df
 
 
@@ -233,10 +233,11 @@ def override_cols(df, override: dict):
     cols = override.columns
     value = override.value
     for col in cols:
-        temp1 = df[col].str.split(sep)
-        temp2 = list(map(lambda x: [value for val in x if len(val) > 0], temp1))
+        temp1 = list(df[col].str.split(sep))
+        temp2 = list(map(lambda x: [value for val in x if len(x) > 1], temp1))
         temp3 = list(map(lambda x: sep.join(x), temp2))
-        df[col] = temp3
+        # set col in df to temp3 without setting value on a copy of a slice from DataFrame
+        df.loc[:, col] = temp3
     return df
 
 
@@ -279,8 +280,11 @@ def set_col_widths(ws, df):
 def set_hidden_cols(ws, df, hidden_cols: list):
     """Set hidden columns in excel"""
 
-    cols_hide_idx = [df.columns.get_loc(c) for c in hidden_cols if c in df]
-    for col_idx in cols_hide_idx:
-        col_letter_hide = get_column_letter(col_idx + 1)
-        # these columns are hidden as they aren't useful for review
-        ws.column_dimensions[col_letter_hide].hidden = True
+    if hidden_cols:
+        cols_hide_idx = [df.columns.get_loc(c) for c in hidden_cols if c in df]
+        for col_idx in cols_hide_idx:
+            col_letter_hide = get_column_letter(col_idx + 1)
+            # these columns are hidden as they aren't useful for review
+            ws.column_dimensions[col_letter_hide].hidden = True
+    else:
+        pass

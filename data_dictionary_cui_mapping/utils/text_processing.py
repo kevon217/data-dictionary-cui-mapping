@@ -70,7 +70,7 @@ def remove_stopwords_cols(df, columns, preprocessing_settings):
             fp_stopwords = preprocessing_settings.stopwords_filepath
         else:
             print("Opening dialog box to choose stopwords file")
-            fp_stopwords = helper.choose_input_file("Select Stopwords csv file")
+            fp_stopwords = helper.choose_input_file.fn("Select Stopwords csv file")
         df_stopwords = pd.read_csv(fp_stopwords)
         ls_stopwords = list(
             df_stopwords["Word"].str.lower().str.strip()
@@ -101,7 +101,9 @@ def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet impleme
             fp_cheatsheet = preprocessing_settings.cheatsheet_filepath
         else:
             print("Opening dialog box to choose cheatsheet file")
-            fp_cheatsheet = helper.choose_input_file(title="Select Cheatsheet csv file")
+            fp_cheatsheet = helper.choose_input_file.fn(
+                title="Select Cheatsheet csv file"
+            )
         df_cheatsheet = pd.read_csv(fp_cheatsheet)
         curated_vars = df_cheatsheet[
             "variable name"

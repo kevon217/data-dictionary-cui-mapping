@@ -10,7 +10,7 @@ from tkinter import filedialog
 
 from hydra import compose, initialize
 from omegaconf import OmegaConf
-from prefect import flow, task
+from prefect import task
 
 # LOAD CONFIGS
 

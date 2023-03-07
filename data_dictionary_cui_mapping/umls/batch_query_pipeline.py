@@ -9,7 +9,7 @@ import os
 import pandas as pd
 from prefect import flow
 
-import data_dictionary_cui_mapping.utils.curation_functions as cur
+import curation.utils.curation_functions as cur
 import data_dictionary_cui_mapping.utils.helper as helper
 import data_dictionary_cui_mapping.utils.process_data_dictionary as proc_dd
 from data_dictionary_cui_mapping.umls.utils.api_connection import (
@@ -18,7 +18,7 @@ from data_dictionary_cui_mapping.umls.utils.api_connection import (
 )
 from data_dictionary_cui_mapping.umls.utils.runner import umls_runner
 
-cfg = helper.compose_config.fn(overrides=["custom=de", "apis=config_umls_api"])
+cfg = helper.compose_config.fn(overrides=["custom=pvd", "apis=config_umls_api"])
 
 
 # @hydra.main(version_base=None, config_path="../configs", config_name="config")
@@ -64,4 +64,4 @@ def main(cfg):
 
 
 if __name__ == "__main__":
-    main(cfg)
+    df_final = main(cfg)

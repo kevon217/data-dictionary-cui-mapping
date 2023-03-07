@@ -33,10 +33,8 @@ def invalid_query_term_output(
         searchID,
         searchTerm,
         searchTermCol,
-        "NONE",
         "No search (value is nan or empty)",
-        "",
-        "",
+        "No search (value is nan or empty)" "",
         "",
         "",
     ]
@@ -55,7 +53,6 @@ def no_results_output(
         searchTermCol,
         searchType,
         "NONE",
-        "",
         "",
         "",
         "",
@@ -105,7 +102,6 @@ def process_query_results(jsonData: dict, query_params: dict, cfg) -> pd.DataFra
                 results.loc[i, result_columns[1]] = item["name"]
                 results.loc[i, result_columns[2]] = item["ui"]
                 results.loc[i, result_columns[3]] = item["rootSource"]
-                results.loc[i, "uri"] = item["uri"]
         else:
             query_params["pageNumber"] = pg
             jsonData = query_umls_api(query_params)
@@ -116,5 +112,4 @@ def process_query_results(jsonData: dict, query_params: dict, cfg) -> pd.DataFra
                 results.loc[i_offset, result_columns[1]] = item["name"]
                 results.loc[i_offset, result_columns[2]] = item["ui"]
                 results.loc[i_offset, result_columns[3]] = item["rootSource"]
-                results.loc[i_offset, "uri"] = item["uri"]
     return results

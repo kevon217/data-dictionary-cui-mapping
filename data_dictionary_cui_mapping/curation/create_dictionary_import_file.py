@@ -8,7 +8,7 @@ import os
 
 from prefect import flow
 
-from data_dictionary_cui_mapping.utils import curation_functions as cur
+from curation.utils import curation_functions as cur
 from data_dictionary_cui_mapping.utils import helper as helper
 
 cfg = helper.load_config.fn(helper.choose_input_file.fn("Load config file from Step 1"))
@@ -18,13 +18,13 @@ cfg = helper.load_config.fn(helper.choose_input_file.fn("Load config file from S
 @flow(flow_run_name="Creating dictionary import file")
 def main(cfg):
     # LOAD "*_Step-1_curation_keepCol.xlsx" file
-    if not cfg.custom.create_dictionary_import_settings.filepath:
+    if not cfg.custom.create_dictionary_import_settings.curation_file_path:
         fp_curation = cur.get_curation_excel_file(
             "Select *_Step-1_curation_keepCol.xlsx file with curated CUIs"
         )
-        cfg.custom.create_dictionary_import_settings.filepath = fp_curation
+        cfg.custom.create_dictionary_import_settings.curation_file_path = fp_curation
     else:
-        fp_curation = cfg.custom.create_dictionary_import_settings.filepath
+        fp_curation = cfg.custom.create_dictionary_import_settings.curation_file_path
 
     (
         df_UMLS_curation,
@@ -74,8 +74,10 @@ def main(cfg):
 
     # SAVE FINALIZED IMPORT TEMPLATE
     fp_step2 = f"{dir_step2}/{cfg.custom.curation_settings.file_settings.file_prefix}_Step-2_dictionary-import-file.csv"
+    cfg.custom.create_dictionary_import_settings.dict_file_path = fp_step2
     df_final.to_csv(fp_step2, index=False)  # output df_final dataframe to csv
     print(f"Saved {fp_step2}")
+    helper.save_config(dir_step2, cfg)
 
 
 if __name__ == "__main__":

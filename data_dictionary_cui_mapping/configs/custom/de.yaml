@@ -3,7 +3,7 @@ data_dictionary_settings:
   variable_column : variable name
   query_term_columns:
     - title
-  column_sep : ;
+  column_sep : '|'
   search_all_query_terms : false
 
 preprocessing_settings:
@@ -17,8 +17,9 @@ curation_settings:
     - variable name
     - title
     - definition
+    - permissible values
+    - permissible value descriptions
     - preferred question text
-    - domain.general (for all diseases)
   query_columns:
     - variable name
     - search_ID
@@ -30,7 +31,6 @@ curation_settings:
     - data element concept names
     - data element concept identifiers
     - data element terminology sources
-    - uri
 
   file_settings:
     directory_prefix : DE
@@ -41,23 +41,24 @@ curation_settings:
         sheet2 : 'Data_Dictionary'
         sheet3 : 'Data_Dictionary_exploded'
       hide_cols_curation:
-        - domain.general (for all diseases)
-        - uri
+
 
 create_dictionary_import_settings:
-  filepath:
-  filetype : csv
+  curation_file_path:
   umls_columns:
     - data element concept names
     - data element concept identifiers
     - data element terminology sources
   join_on: ['variable name', 'title_exploded' ]
-  cui_sep : |
+  cui_sep : '|'
+  multi_cui_sep : '/'
   override:
     sep: '|'
     columns:
       - data element terminology sources
     value: 'UMLS'
+  dict_file_path:
+  dict_file_type : csv
   dictionary_columns:
       ["variable name", "title", "element type", "definition", "short description", "datatype",
           "maximum character quantity", "input restriction", "minimum value", "maximum value",
@@ -87,3 +88,16 @@ create_dictionary_import_settings:
           "Label(s)",
           "submitting organization name", "submitting contact name", "submitting contact information",
           "steward organization name", "steward contact name", "steward contact information"]
+  check_cuis:
+    de:
+      reference_column: variable name
+      check_columns:
+        - data element concept names
+        - data element concept identifiers
+        - data element terminology sources
+    pvd:
+      reference_column: permissible value descriptions
+      check_columns:
+        - permissible value concept names
+        - permissible value concept identifiers
+        - permissible value terminology sources

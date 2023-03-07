@@ -6,7 +6,7 @@ permissible values/permissible value descriptions (PVs/PVDs).
 """
 
 import pandas as pd
-from data_dictionary_cui_mapping.utils import ui_functions as ui
+from data_dictionary_cui_mapping.utils import helper as helper
 
 # TEXT PROCESSING FUNCTIONS
 
@@ -49,7 +49,7 @@ def remove_stopwords_cols(df, columns, rmv_stopwords):
 
     cols_query_terms = []
     if rmv_stopwords:
-        fp_stopwords = ui.choose_input_file(
+        fp_stopwords = helper.choose_input_file(
             "Select MetaMap_Settings_StopWords.csv file"
         )
         df_stopwords = pd.read_csv(fp_stopwords)
@@ -78,7 +78,7 @@ def remove_stopwords_cols(df, columns, rmv_stopwords):
 def remove_vars_cheatsheet(df, use_cheatsheet):  # TODO: not ready
     """Remove variables from data dictionary that are already curated in the MetaMap_Settings_Cheatsheet.csv file"""
     if use_cheatsheet:
-        fp_cheatsheet = ui.choose_input_file(
+        fp_cheatsheet = helper.choose_input_file(
             title="Select MetaMap_Settings_Cheatsheet.csv file"
         )
         df_cheatsheet = pd.read_csv(fp_cheatsheet)
