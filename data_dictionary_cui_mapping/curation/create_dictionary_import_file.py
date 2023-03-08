@@ -8,7 +8,7 @@ import os
 
 from prefect import flow
 
-from curation.utils import curation_functions as cur
+from data_dictionary_cui_mapping.curation.utils import curation_functions as cur
 from data_dictionary_cui_mapping.utils import helper as helper
 
 

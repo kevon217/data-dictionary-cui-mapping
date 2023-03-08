@@ -15,7 +15,7 @@ from data_dictionary_cui_mapping.metamap.utils import (
     metamap_query_processing_functions as mm_qproc,
 )
 from data_dictionary_cui_mapping.metamap.utils.api_connection import check_credentials
-from curation.utils import curation_functions as cur
+from data_dictionary_cui_mapping.curation.utils import curation_functions as cur
 
 cfg = helper.compose_config.fn(
     config_path="../configs",

@@ -8,7 +8,6 @@ from omegaconf import OmegaConf
 from prefect import flow
 import pandas as pd
 import numpy as np
-from curation.utils import curation_functions as cur
 from data_dictionary_cui_mapping.utils import helper as helper
 from data_dictionary_cui_mapping.curation.utils import dictionary_functions as dictfn
 

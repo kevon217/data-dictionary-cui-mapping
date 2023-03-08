@@ -9,7 +9,7 @@ import os
 import pandas as pd
 from prefect import flow
 
-import curation.utils.curation_functions as cur
+import data_dictionary_cui_mapping.curation.utils.curation_functions as cur
 import data_dictionary_cui_mapping.utils.helper as helper
 import data_dictionary_cui_mapping.utils.process_data_dictionary as proc_dd
 from data_dictionary_cui_mapping.umls.utils.api_connection import (
