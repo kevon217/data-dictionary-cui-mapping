@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "data-dictionary-cui-mapping"
-version = "1.1.0"
+version = "1.1.1"
 description = "This package allows you to load in a data dictionary and map cuis to defined fields using either the UMLS API or MetaMap API from NLM, or a Semantic Search pipeline using Pinecone vector database."
 authors = ["Kevin Armengol <kevin.armengol@gmail.com>"]
 license = "MIT"
