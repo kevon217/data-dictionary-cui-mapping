@@ -4633,7 +4633,7 @@ files = [
 name = "SPLADE"
 version = "2.1"
 description = ""
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 files = []
@@ -5647,4 +5647,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1"
-content-hash = "874d5abe2373468b3d284f706656e4df5eb7b095c8820de887cce47c156d6e3a"
+content-hash = "bca875d749689a0ac8bc93ecaefc9e483196e605fad838131e469937ba8be6f8"

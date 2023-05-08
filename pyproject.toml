@@ -24,7 +24,6 @@ pathlib = "^1.0.1"
 pinecone-client = "^2.2.1"
 pandas-log = "^0.1.7"
 sentence-transformers = "^2.2.2"
-splade = {git = "https://github.com/naver/splade.git"}
 cchardet = "^2.1.7"
 
 
@@ -40,6 +39,7 @@ jupyter = "^1.0.0"
 wheel = "^0.38.4"
 deptry = "^0.8.0"
 bs4 = "^0.0.1"
+splade = {git = "https://github.com/naver/splade.git"}
 
 [build-system]
 requires = ["poetry-core"]
