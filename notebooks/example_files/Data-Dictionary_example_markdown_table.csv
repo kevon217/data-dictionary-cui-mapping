@@ -1,0 +1,4 @@
+variable name,title,definition,permissible value descriptions
+AgeYrs,Age in years,"Value for participant's subject age, calculated as elapsed time since the birth of the participant/subject in years.",
+CaseContrlInd,Case control indicator,Indicator of whether subject is in the case or control arm of the study.,Case|Control|Unknown
+LangPrimryTxt,Language primary ISO code,Code (ISO 639-2 alpha-3 code) for the language the participant/subject speaks most often.,"Chinese languages|English|French|German|Other, specify|Sign Languages|Spanish"

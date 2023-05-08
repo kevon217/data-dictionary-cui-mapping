@@ -1,5 +1,4 @@
 import os.path
-
 import requests
 
 from .casauth import get_ticket

@@ -5,11 +5,12 @@ This file contains custom functions used in scripts designed to merge curated UM
 """
 
 from functools import reduce
-
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from openpyxl.utils import get_column_letter
 from prefect import flow, task
+from prefect.task_runners import SequentialTaskRunner
 
 from data_dictionary_cui_mapping.utils import helper as helper
 
@@ -25,6 +26,14 @@ def add_search_ID_col(df):
     return df
 
 
+@task(name="Adding search pipeline name column")
+def add_search_pipeline_col(df, pipeline_name):
+    df.insert(
+        1, "pipeline_name", pipeline_name
+    )  # insert column pipeline_name e.g., metamp, umls, semantic_search
+    return df
+
+
 @task(name="Subsetting dataframe with curation related columns")
 def curation_cols_filter(df, df_dd, cols_curation: list):
     """Create subset of dataframe with columns necessary for curation"""
@@ -35,7 +44,7 @@ def curation_cols_filter(df, df_dd, cols_curation: list):
 
 
 @flow(flow_run_name="Formatting dataframe for curation")
-def format_curation_dataframe(df_dd, df_dd_preprocessed, cfg):
+def format_curation_dataframe(df_dd, df_dd_preprocessed, pipeline_name, cfg):
     """Create dataframe for curation"""
 
     df_curation = (
@@ -48,19 +57,15 @@ def format_curation_dataframe(df_dd, df_dd_preprocessed, cfg):
         .pipe(  # use cheatsheet # TODO: need to implement this in the future
             add_search_ID_col
         )
-    )  # remove punctuation
+        .pipe(add_search_pipeline_col, pipeline_name)
+    )
     # query_terms_cols = [col for col in df_curation.columns if re.search(r'query_term_\d+', col)]  # find columns in df_curation that match query_term_ then any number
     return df_curation  # , query_terms_cols
 
 
-@flow(flow_run_name="Creating curation file")
+@task(name="Creating curation file")
 def create_curation_file(
-    dir_step1: str,
-    df_dd,
-    df_dd_preprocessed,
-    df_curation,
-    df_results,
-    cfg,
+    dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg
 ):
     """Create curation file"""
 
@@ -75,37 +80,39 @@ def create_curation_file(
     )
     df_final.drop(df_final.filter(regex="_y$").columns, axis=1, inplace=True)
     df_final["keep"] = np.nan
-
+    if cfg.custom.curation_settings.file_settings.excel.order_cols_curation:
+        df_final = reorder_cols(
+            df_final,
+            cfg.custom.curation_settings.file_settings.excel.order_cols_curation,
+        )
     fp_prefix = cfg.custom.curation_settings.file_settings.file_prefix
-    fp_step1 = f"{dir_step1}/{fp_prefix}_Step-1_curation_keepCol.xlsx"
-    writer = pd.ExcelWriter(fp_step1, engine="openpyxl")
+    fp_step1 = dir_step1 / f"{fp_prefix}_Step-1_curation_keepCol.xlsx"
+    with pd.ExcelWriter(fp_step1, engine="openpyxl") as writer:
+        df_final.to_excel(
+            writer,
+            sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet1,
+            index=False,
+        )
+        df_dd.to_excel(
+            writer,
+            sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet2,
+            index=False,
+        )
+        df_dd_preprocessed.to_excel(
+            writer,
+            sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet3,
+            index=False,
+        )
 
-    df_final.to_excel(
-        writer,
-        sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet1,
-        index=False,
-    )
-    df_dd.to_excel(
-        writer,
-        sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet2,
-        index=False,
-    )
-    df_dd_preprocessed.to_excel(
-        writer,
-        sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet3,
-        index=False,
-    )
-
-    ws1 = writer.sheets[
-        cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet1
-    ]
-    set_col_widths(ws1, df_final)
-    set_hidden_cols(
-        ws1,
-        df_final,
-        cfg.custom.curation_settings.file_settings.excel.hide_cols_curation,
-    )
-    writer.close()
+        ws1 = writer.sheets[
+            cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet1
+        ]
+        set_col_widths(ws1, df_final)
+        set_hidden_cols(
+            ws1,
+            df_final,
+            cfg.custom.curation_settings.file_settings.excel.hide_cols_curation,
+        )
 
     return df_final
 
@@ -113,7 +120,7 @@ def create_curation_file(
 def get_curation_excel_file(prompt: str):
     """Get curation Excel file path"""
 
-    fp_curation = helper.choose_input_file(prompt)
+    fp_curation = helper.choose_file(prompt)
     return fp_curation
 
 
@@ -133,13 +140,13 @@ def load_curation_excel_file(fp_curation: str, cfg):
         header=0,
         keep_default_na=False,
     )
-    df_Data_Dictionary_exploded = pd.read_excel(
+    df_Data_Dictionary_extracted = pd.read_excel(
         fp_curation,
         sheet_name=cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet3,
         header=0,
         keep_default_na=False,
     )
-    return df_UMLS_curation, df_Data_Dictionary, df_Data_Dictionary_exploded
+    return df_UMLS_curation, df_Data_Dictionary, df_Data_Dictionary_extracted
 
 
 @task(name="Filtering rows by keep column")
@@ -216,7 +223,7 @@ def concat_cols_umls(df, umls_columns: list):
     return df_merged
 
 
-@task(name="Reordering examples dictionary columns")
+# @task(name="Reordering examples dictionary columns")
 def reorder_cols(df, order: list):
     """Reorder columns"""
 
@@ -234,7 +241,7 @@ def override_cols(df, override: dict):
     value = override.value
     for col in cols:
         temp1 = list(df[col].str.split(sep))
-        temp2 = list(map(lambda x: [value for val in x if len(x) > 1], temp1))
+        temp2 = list(map(lambda x: [value for val in x if len(val) > 0], temp1))
         temp3 = list(map(lambda x: sep.join(x), temp2))
         # set col in df to temp3 without setting value on a copy of a slice from DataFrame
         df.loc[:, col] = temp3
@@ -244,6 +251,7 @@ def override_cols(df, override: dict):
 # EXCEL FORMATTING
 
 
+# @task(name="Getting excel columns max width")
 def get_col_max_widths(df):
     """Used to set excel column width to maximum character length in column"""
 
@@ -258,6 +266,7 @@ def get_col_max_widths(df):
     ]
 
 
+# @task(name="Getting excel columns header widths")
 def get_header_widths(df):
     """Used to set excel column width to character length of column header"""
 
@@ -267,7 +276,7 @@ def get_header_widths(df):
     return idx_header_width
 
 
-@task(name="Setting excel column widths")
+# @task(name="Setting excel column widths")
 def set_col_widths(ws, df):
     """Set column widths in excel"""
 
@@ -276,7 +285,7 @@ def set_col_widths(ws, df):
         ws.column_dimensions[get_column_letter(i + 1)].width = width
 
 
-@task(name="Setting hidden excel columns")
+# @task(name="Setting hidden excel columns")
 def set_hidden_cols(ws, df, hidden_cols: list):
     """Set hidden columns in excel"""
 
@@ -286,5 +295,3 @@ def set_hidden_cols(ws, df, hidden_cols: list):
             col_letter_hide = get_column_letter(col_idx + 1)
             # these columns are hidden as they aren't useful for review
             ws.column_dimensions[col_letter_hide].hidden = True
-    else:
-        pass

@@ -5,6 +5,11 @@ permissible values/permissible value descriptions (PVs/PVDs).
 
 """
 
+import re
+
+from bs4 import BeautifulSoup
+import html as ihtml
+import cchardet
 import pandas as pd
 from prefect import task
 
@@ -70,7 +75,7 @@ def remove_stopwords_cols(df, columns, preprocessing_settings):
             fp_stopwords = preprocessing_settings.stopwords_filepath
         else:
             print("Opening dialog box to choose stopwords file")
-            fp_stopwords = helper.choose_input_file.fn("Select Stopwords csv file")
+            fp_stopwords = helper.choose_file("Select Stopwords csv file")
         df_stopwords = pd.read_csv(fp_stopwords)
         ls_stopwords = list(
             df_stopwords["Word"].str.lower().str.strip()
@@ -101,9 +106,7 @@ def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet impleme
             fp_cheatsheet = preprocessing_settings.cheatsheet_filepath
         else:
             print("Opening dialog box to choose cheatsheet file")
-            fp_cheatsheet = helper.choose_input_file.fn(
-                title="Select Cheatsheet csv file"
-            )
+            fp_cheatsheet = helper.choose_file(title="Select Cheatsheet csv file")
         df_cheatsheet = pd.read_csv(fp_cheatsheet)
         curated_vars = df_cheatsheet[
             "variable name"
@@ -113,3 +116,11 @@ def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet impleme
         print("Cheatsheet not used")
         pass
     return df
+
+
+# @task(name="Cleaning text")
+def clean_text(text):
+    text = BeautifulSoup(ihtml.unescape(text), "lxml").text
+    text = re.sub(r"http[s]?://\S+", "", text)
+    text = re.sub(r"\s+", " ", text)
+    return text

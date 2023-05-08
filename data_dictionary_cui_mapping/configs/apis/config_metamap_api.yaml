@@ -1,38 +1,42 @@
-user_info:
-  email :
-  apiKey:
+metamap:
+  user_info:
+    email :
+    apiKey:
 
-metamap_api_settings:
-  serverurl: 'https://utslogin.nlm.nih.gov/cas/v1/tickets'
-  tgtserverurl: 'https://utslogin.nlm.nih.gov/cas/v1/api-key'
-  serviceurl: 'https://ii.nlm.nih.gov/cgi-bin/II/UTS_Required/API_batchValidationII.pl'
-  cmd : metamap
-  cmdargs:
-    mm_data_year : -Z 2020AB
-    mm_data_version : -V USAbase
-    relaxed_model : -C
-    show_candidates : -c
-#    n_mappings : -f
-#    conjunctions : --conj
-    show_cuis : -I
-    ignore_word_order : -i
-    sources : -G
-    term_processing : -z
-    word_sense_disambiguation : -y
-    formatted_json_output : --JSONf 2
+  api_settings:
+    serverurl: 'https://utslogin.nlm.nih.gov/cas/v1/tickets'
+    tgtserverurl: 'https://utslogin.nlm.nih.gov/cas/v1/api-key'
+    serviceurl: 'https://ii.nlm.nih.gov/cgi-bin/II/UTS_Required/API_batchValidationII.pl'
+    cmd : metamap
+    cmdargs:
+      mm_data_year : -Z 2020AB
+      mm_data_version : -V USAbase
+#      relaxed_model : -C
+      strict_model: -A
+      show_candidates : -c
+  #    n_mappings : -f
+  #    conjunctions : --conj
+      show_cuis : -I
+      ignore_word_order : -i
+      restrict to sources: -R NCI
+      sources : -G
+      composite phrases: -Q 4
+      term_processing : -z
+      word_sense_disambiguation : -y
+      formatted_json_output : --JSONf 2
 
-metamap_output_settings:
-  columns:
-    - CandidateScore
-    - CandidateCUI
-    - CandidateMatched
-    - CandidatePreferred
-    - MatchedWords
-    - SemTypes
-    - MatchMaps
-    - IsHead
-    - IsOverMatch
-    - Sources
-    - ConceptPIs
-    - Status
-    - Negated
+  output_settings:
+    columns:
+      - CandidateScore
+      - CandidateCUI
+      - CandidateMatched
+      - CandidatePreferred
+      - MatchedWords
+      - SemTypes
+      - MatchMaps
+      - IsHead
+      - IsOverMatch
+      - Sources
+      - ConceptPIs
+      - Status
+      - Negated

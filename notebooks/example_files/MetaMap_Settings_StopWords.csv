@@ -1,0 +1,885 @@
+﻿##,Word,Source,StopWord?
+1,&,mapping,Yes
+2,a,Terrier package stop word,Yes
+3,abaft,Terrier package stop word,Yes
+4,abafter,Terrier package stop word,Yes
+5,abaftest,Terrier package stop word,Yes
+6,abouter,Terrier package stop word,Yes
+7,aboutest,Terrier package stop word,Yes
+8,abover,Terrier package stop word,Yes
+9,abovest,Terrier package stop word,Yes
+10,according,amarallab,Yes
+11,across,amarallab,Yes
+12,actually,amarallab,Yes
+13,adopted,mapping,Yes
+14,aer,Terrier package stop word,Yes
+15,aest,Terrier package stop word,Yes
+16,afore,Terrier package stop word,Yes
+17,afterer,Terrier package stop word,Yes
+18,afterest,Terrier package stop word,Yes
+19,afterward,Terrier package stop word,Yes
+20,again,PubMed,Yes
+21,aid,Terrier package stop word,Yes
+22,ain,Terrier package stop word,Yes
+23,albeit,Terrier package stop word,Yes
+24,all,PubMed,Yes
+25,aller,Terrier package stop word,Yes
+26,allest,Terrier package stop word,Yes
+27,allows,amarallab,Yes
+28,alls,Terrier package stop word,Yes
+29,allyou,Terrier package stop word,Yes
+30,almost,PubMed,Yes
+31,alone,amarallab,Yes
+32,alongside,Terrier package stop word,Yes
+33,also,PubMed,Yes
+34,although,PubMed,Yes
+35,always,PubMed,Yes
+36,am,snowball stemmer stop word,Yes
+37,amid,Terrier package stop word,Yes
+38,amidst,Terrier package stop word,Yes
+39,among,PubMed,Yes
+40,an,PubMed,Yes
+41,Anatomic Site,caDSR rep terms,Yes
+42,and,PubMed,Yes
+43,and/or,literature,Yes
+44,andor,Terrier package stop word,Yes
+45,anear,Terrier package stop word,Yes
+46,anent,Terrier package stop word,Yes
+47,another,PubMed,Yes
+48,any,PubMed,Yes
+49,anyway,amarallab,Yes
+50,anyways,amarallab,Yes
+51,aparter,Terrier package stop word,Yes
+52,apartest,Terrier package stop word,Yes
+53,apparatus,Stopwords in technical language processing,Yes
+54,appeared,Terrier package stop word,Yes
+55,appearing,Terrier package stop word,Yes
+56,appears,Terrier package stop word,Yes
+57,apply,mapping,Yes
+58,appreciate,amarallab,Yes
+59,appropriated,Terrier package stop word,Yes
+60,appropriater,Terrier package stop word,Yes
+61,appropriates,Terrier package stop word,Yes
+62,appropriatest,Terrier package stop word,Yes
+63,appropriating,Terrier package stop word,Yes
+64,are,PubMed,Yes
+65,are,snowball stemmer stop word,Yes
+66,aren,amarallab,Yes
+67,ares,Terrier package stop word,Yes
+68,as,PubMed,Yes
+69,as a,mapping,Yes
+70,ases,Terrier package stop word,Yes
+71,asides,Terrier package stop word,Yes
+72,ask,amarallab,Yes
+73,asking,amarallab,Yes
+74,aslant,Terrier package stop word,Yes
+75,associated,amarallab,Yes
+76,astraddle,Terrier package stop word,Yes
+77,astraddler,Terrier package stop word,Yes
+78,astraddlest,Terrier package stop word,Yes
+79,astride,Terrier package stop word,Yes
+80,astrider,Terrier package stop word,Yes
+81,astridest,Terrier package stop word,Yes
+82,at,PubMed,Yes
+83,at home,mapping,Yes
+84,athwart,Terrier package stop word,Yes
+85,atop,Terrier package stop word,Yes
+86,atween,Terrier package stop word,Yes
+87,aught,Terrier package stop word,Yes
+88,aughts,Terrier package stop word,Yes
+89,availabler,Terrier package stop word,Yes
+90,availablest,Terrier package stop word,Yes
+91,away,amarallab,Yes
+92,base,Stopwords in technical language processing,Yes
+93,be,PubMed,Yes
+94,be,snowball stemmer stop word,Yes
+95,because,PubMed,Yes
+96,becominger,Terrier package stop word,Yes
+97,becomingest,Terrier package stop word,Yes
+98,becomings,Terrier package stop word,Yes
+99,been,PubMed,Yes
+100,been,snowball stemmer stop word,Yes
+101,before,PubMed,Yes
+102,beforehander,Terrier package stop word,Yes
+103,beforehandest,Terrier package stop word,Yes
+104,behinds,Terrier package stop word,Yes
+105,being,PubMed,Yes
+106,being,snowball stemmer stop word,Yes
+107,believe,amarallab,Yes
+108,beneath,Terrier package stop word,Yes
+109,best,amarallab,Yes
+110,bettered,Terrier package stop word,Yes
+111,bettering,Terrier package stop word,Yes
+112,betters,Terrier package stop word,Yes
+113,between,PubMed,Yes
+114,betwixt,Terrier package stop word,Yes
+115,bist,Terrier package stop word,Yes
+116,both,PubMed,Yes
+117,brief,amarallab,Yes
+118,but,PubMed,Yes
+119,buts,Terrier package stop word,Yes
+120,by,PubMed,Yes
+121,byandby,Terrier package stop word,Yes
+122,by-and-by,Terrier package stop word,Yes
+123,came,amarallab,Yes
+124,can,PubMed,Yes
+125,canst,Terrier package stop word,Yes
+126,can't,snowball stemmer stop word,Yes
+127,canted,Terrier package stop word,Yes
+128,cantest,Terrier package stop word,Yes
+129,canting,Terrier package stop word,Yes
+130,cants,Terrier package stop word,Yes
+131,cause,amarallab,Yes
+132,causes,amarallab,Yes
+133,cer,Terrier package stop word,Yes
+134,certainer,Terrier package stop word,Yes
+135,certainest,Terrier package stop word,Yes
+136,certainly,amarallab,Yes
+137,cest,Terrier package stop word,Yes
+138,changes,amarallab,Yes
+139,chez,Terrier package stop word,Yes
+140,circa,Terrier package stop word,Yes
+141,clearly,amarallab,Yes
+142,com,amarallab,Yes
+143,come,amarallab,Yes
+144,comeon,Terrier package stop word,Yes
+145,come-on,Terrier package stop word,Yes
+146,comeons,Terrier package stop word,Yes
+147,come-ons,Terrier package stop word,Yes
+148,comes,amarallab,Yes
+149,comprise,Stopwords in technical language processing,Yes
+150,concerninger,Terrier package stop word,Yes
+151,concerningest,Terrier package stop word,Yes
+152,configure,Stopwords in technical language processing,Yes
+153,connect,Stopwords in technical language processing,Yes
+154,Consent for General and Linkage'research,mapping,Yes
+155,consequence,mapping,Yes
+156,consider,amarallab,Yes
+157,containing,amarallab,Yes
+158,contains,amarallab,Yes
+159,control,Stopwords in technical language processing,Yes
+160,corresponding,amarallab,Yes
+161,could,PubMed,Yes
+162,couldn,amarallab,Yes
+163,couldst,Terrier package stop word,Yes
+164,course,amarallab,Yes
+165,cum,Terrier package stop word,Yes
+166,current,mapping,Yes
+167,currently,amarallab,Yes
+168,data,Stopwords in technical language processing,Yes
+169,Date,caDSR rep terms,Yes
+170,Date and'time,caDSR rep terms,Yes
+171,dday,Terrier package stop word,Yes
+172,ddays,Terrier package stop word,Yes
+173,definitely,amarallab,Yes
+174,describe,Terrier package stop word,Yes
+175,describes,Terrier package stop word,Yes
+176,describing,Terrier package stop word,Yes
+177,despited,Terrier package stop word,Yes
+178,despites,Terrier package stop word,Yes
+179,despiting,Terrier package stop word,Yes
+180,determine,Stopwords in technical language processing,Yes
+181,device,Stopwords in technical language processing,Yes
+182,diagnosis,mapping,Yes
+183,did,PubMed,Yes
+184,did,snowball stemmer stop word,Yes
+185,didn,amarallab,Yes
+186,differenter,Terrier package stop word,Yes
+187,differentest,Terrier package stop word,Yes
+188,disclose,Stopwords in technical language processing,Yes
+189,do,PubMed,Yes
+190,do,snowball stemmer stop word,Yes
+191,do you'think,mapping,Yes
+192,doe,Terrier package stop word,Yes
+193,does,PubMed,Yes
+194,does,snowball stemmer stop word,Yes
+195,doesn,amarallab,Yes
+196,doing,snowball stemmer stop word,Yes
+197,doings,Terrier package stop word,Yes
+198,don,amarallab,Yes
+199,done,PubMed,Yes
+200,doner,Terrier package stop word,Yes
+201,dones,Terrier package stop word,Yes
+202,donest,Terrier package stop word,Yes
+203,dos,Terrier package stop word,Yes
+204,Dose,caDSR rep terms,Yes
+205,dost,Terrier package stop word,Yes
+206,doth,Terrier package stop word,Yes
+207,downs,Terrier package stop word,Yes
+208,downward,Terrier package stop word,Yes
+209,downwarder,Terrier package stop word,Yes
+210,downwardest,Terrier package stop word,Yes
+211,due,PubMed,Yes
+212,due'to,literature,Yes
+213,Due'to,mapping,Yes
+214,during,PubMed,Yes
+215,each,PubMed,Yes
+216,edu,amarallab,Yes
+217,effect,mapping,Yes
+218,either,PubMed,Yes
+219,employs,mapping,Yes
+220,end,Stopwords in technical language processing,Yes
+221,enough,PubMed,Yes
+222,entirely,amarallab,Yes
+223,ere,Terrier package stop word,Yes
+224,especially,PubMed,Yes
+225,etc,PubMed,Yes
+226,evened,Terrier package stop word,Yes
+227,evenest,Terrier package stop word,Yes
+228,evens,Terrier package stop word,Yes
+229,evenser,Terrier package stop word,Yes
+230,evensest,Terrier package stop word,Yes
+231,exactly,amarallab,Yes
+232,example,amarallab,Yes
+233,excepted,Terrier package stop word,Yes
+234,excepting,Terrier package stop word,Yes
+235,excepts,Terrier package stop word,Yes
+236,exes,Terrier package stop word,Yes
+237,extend,Stopwords in technical language processing,Yes
+238,fact,Terrier package stop word,Yes
+239,facts,Terrier package stop word,Yes
+240,failing,Terrier package stop word,Yes
+241,failings,Terrier package stop word,Yes
+242,fairly likely,mapping,Yes
+243,far,amarallab,Yes
+244,fewer,Terrier package stop word,Yes
+245,fewest,Terrier package stop word,Yes
+246,fifth,amarallab,Yes
+247,figupon,Terrier package stop word,Yes
+248,figuponed,Terrier package stop word,Yes
+249,figuponing,Terrier package stop word,Yes
+250,figupons,Terrier package stop word,Yes
+251,followed,amarallab,Yes
+252,following,amarallab,Yes
+253,following,mapping,Yes
+254,follows,amarallab,Yes
+255,followthrough,Terrier package stop word,Yes
+256,for,PubMed,Yes
+257,For each item:,mapping,Yes
+258,forby,Terrier package stop word,Yes
+259,forbye,Terrier package stop word,Yes
+260,fore,Terrier package stop word,Yes
+261,forer,Terrier package stop word,Yes
+262,fores,Terrier package stop word,Yes
+263,forever,Terrier package stop word,Yes
+264,form,amarallab,Yes
+265,formerer,Terrier package stop word,Yes
+266,formerest,Terrier package stop word,Yes
+267,formers,Terrier package stop word,Yes
+268,fornenst,Terrier package stop word,Yes
+269,forth,amarallab,Yes
+270,forwhy,Terrier package stop word,Yes
+271,found,PubMed,Yes
+272,fourscore,Terrier package stop word,Yes
+273,frae,Terrier package stop word,Yes
+274,from,PubMed,Yes
+275,fs,Terrier package stop word,Yes
+276,full,mapping,Yes
+277,further,PubMed,Yes
+278,furthered,Terrier package stop word,Yes
+279,furtherer,Terrier package stop word,Yes
+280,furtherest,Terrier package stop word,Yes
+281,furthering,Terrier package stop word,Yes
+282,furthers,Terrier package stop word,Yes
+283,generate,Stopwords in technical language processing,Yes
+284,given,amarallab,Yes
+285,gives,amarallab,Yes
+286,goes,amarallab,Yes
+287,going,amarallab,Yes
+288,good,Terrier package stop word,Yes
+289,gotta,Terrier package stop word,Yes
+290,greetings,amarallab,Yes
+291,had,PubMed,Yes
+292,had,snowball stemmer stop word,Yes
+293,hadn,amarallab,Yes
+294,hadst,Terrier package stop word,Yes
+295,hae,Terrier package stop word,Yes
+296,happens,amarallab,Yes
+297,has,PubMed,Yes
+298,has,snowball stemmer stop word,Yes
+299,has been,mapping,Yes
+300,hasn,amarallab,Yes
+301,hast,Terrier package stop word,Yes
+302,hath,Terrier package stop word,Yes
+303,have,PubMed,Yes
+304,have,snowball stemmer stop word,Yes
+305,haven,amarallab,Yes
+306,haves,Terrier package stop word,Yes
+307,having,PubMed,Yes
+308,having,snowball stemmer stop word,Yes
+309,he,snowball stemmer stop word,Yes
+310,he'd,snowball stemmer stop word,Yes
+311,he'll,snowball stemmer stop word,Yes
+312,hello,amarallab,Yes
+313,help,amarallab,Yes
+314,her,snowball stemmer stop word,Yes
+315,here,PubMed,Yes
+316,hereafters,Terrier package stop word,Yes
+317,here's,snowball stemmer stop word,Yes
+318,hers,snowball stemmer stop word,Yes
+319,herself,snowball stemmer stop word,Yes
+320,he's,snowball stemmer stop word,Yes
+321,hi,amarallab,Yes
+322,him,snowball stemmer stop word,Yes
+323,himself,snowball stemmer stop word,Yes
+324,his,snowball stemmer stop word,Yes
+325,hitherer,Terrier package stop word,Yes
+326,hitherest,Terrier package stop word,Yes
+327,hoo,Terrier package stop word,Yes
+328,hoos,Terrier package stop word,Yes
+329,hopefully,amarallab,Yes
+330,how,PubMed,Yes
+331,how likely,mapping,Yes
+332,howdoyoudo,Terrier package stop word,Yes
+333,how-do-you-do,Terrier package stop word,Yes
+334,however,PubMed,Yes
+335,how's,snowball stemmer stop word,Yes
+336,huh,Terrier package stop word,Yes
+337,humph,Terrier package stop word,Yes
+338,i,PubMed,Yes
+339,i,snowball stemmer stop word,Yes
+340,i'd,snowball stemmer stop word,Yes
+341,idem,Terrier package stop word,Yes
+342,idemer,Terrier package stop word,Yes
+343,idemest,Terrier package stop word,Yes
+344,if,PubMed,Yes
+345,if you,mapping,Yes
+346,ifs,Terrier package stop word,Yes
+347,ignored,amarallab,Yes
+348,i'll,snowball stemmer stop word,Yes
+349,i'm,snowball stemmer stop word,Yes
+350,immediately,Terrier package stop word,Yes
+351,immediater,Terrier package stop word,Yes
+352,immediatest,Terrier package stop word,Yes
+353,in,PubMed,Yes
+354,include,Stopwords in technical language processing,Yes
+355,"include, including",mapping,Yes
+356,indicating,Terrier package stop word,Yes
+357,indicator,mapping,Yes
+358,info,Terrier package stop word,Yes
+359,information,Terrier package stop word,Yes
+360,inner,amarallab,Yes
+361,into,PubMed,Yes
+362,inwarder,Terrier package stop word,Yes
+363,inwardest,Terrier package stop word,Yes
+364,inwards,Terrier package stop word,Yes
+365,is,PubMed,Yes
+366,is,snowball stemmer stop word,Yes
+367,isn,amarallab,Yes
+368,it,PubMed,Yes
+369,it,snowball stemmer stop word,Yes
+370,it is,mapping,Yes
+371,it s,amarallab,Yes
+372,Item,mapping,Yes
+373,its,PubMed,Yes
+374,its,snowball stemmer stop word,Yes
+375,it's,snowball stemmer stop word,Yes
+376,itself,PubMed,Yes
+377,itself,snowball stemmer stop word,Yes
+378,i've,snowball stemmer stop word,Yes
+379,just,PubMed,Yes
+380,keep,amarallab,Yes
+381,keep house,mapping,Yes
+382,"keep, keeping",mapping,Yes
+383,keeps,amarallab,Yes
+384,kept,amarallab,Yes
+385,kg,PubMed,Yes
+386,km,PubMed,Yes
+387,know,amarallab,Yes
+388,known,amarallab,Yes
+389,knows,amarallab,Yes
+390,last,amarallab,Yes
+391,lately,amarallab,Yes
+392,later,amarallab,Yes
+393,latterer,Terrier package stop word,Yes
+394,latterest,Terrier package stop word,Yes
+395,latters,Terrier package stop word,Yes
+396,layabout,Terrier package stop word,Yes
+397,layabouts,Terrier package stop word,Yes
+398,let,amarallab,Yes
+399,let's,snowball stemmer stop word,Yes
+400,like,amarallab,Yes
+401,liked,amarallab,Yes
+402,likely,amarallab,Yes
+403,little,amarallab,Yes
+404,ll,amarallab,Yes
+405,look,amarallab,Yes
+406,looking,amarallab,Yes
+407,looks,amarallab,Yes
+408,lot,Terrier package stop word,Yes
+409,lots,Terrier package stop word,Yes
+410,lotted,Terrier package stop word,Yes
+411,lotting,Terrier package stop word,Yes
+412,ltd,amarallab,Yes
+413,ma,amarallab,Yes
+414,made,PubMed,Yes
+415,main,Terrier package stop word,Yes
+416,mainly,PubMed,Yes
+417,make,PubMed,Yes
+418,mauger,Terrier package stop word,Yes
+419,maugre,Terrier package stop word,Yes
+420,may,PubMed,Yes
+421,may be,mapping,Yes
+422,maybe,amarallab,Yes
+423,mayest,Terrier package stop word,Yes
+424,me,snowball stemmer stop word,Yes
+425,mean,amarallab,Yes
+426,meanwhiles,Terrier package stop word,Yes
+427,merely,amarallab,Yes
+428,method,Stopwords in technical language processing,Yes
+429,midst,Terrier package stop word,Yes
+430,midsts,Terrier package stop word,Yes
+431,might,PubMed,Yes
+432,mightn,amarallab,Yes
+433,mightn't,amarallab,Yes
+434,mights,Terrier package stop word,Yes
+435,most,PubMed,Yes
+436,mostly,PubMed,Yes
+437,mucher,Terrier package stop word,Yes
+438,muchest,Terrier package stop word,Yes
+439,must,PubMed,Yes
+440,musth,Terrier package stop word,Yes
+441,musths,Terrier package stop word,Yes
+442,mustn,amarallab,Yes
+443,musts,Terrier package stop word,Yes
+444,my,snowball stemmer stop word,Yes
+445,myself,snowball stemmer stop word,Yes
+446,name,amarallab,Yes
+447,"name, Name",caDSR rep terms,Yes
+448,namely,amarallab,Yes
+449,natheless,Terrier package stop word,Yes
+450,nathless,Terrier package stop word,Yes
+451,nd,amarallab,Yes
+452,near,amarallab,Yes
+453,nearly,PubMed,Yes
+454,neath,Terrier package stop word,Yes
+455,neaths,Terrier package stop word,Yes
+456,necessarier,Terrier package stop word,Yes
+457,necessariest,Terrier package stop word,Yes
+458,need,amarallab,Yes
+459,"need, needed",mapping,Yes
+460,needn,amarallab,Yes
+461,needn't,amarallab,Yes
+462,needs,amarallab,Yes
+463,neither,PubMed,Yes
+464,nethe,Terrier package stop word,Yes
+465,nethermost,Terrier package stop word,Yes
+466,new,amarallab,Yes
+467,next,amarallab,Yes
+468,nigh,Terrier package stop word,Yes
+469,nigher,Terrier package stop word,Yes
+470,nighest,Terrier package stop word,Yes
+471,no,PubMed,Yes
+472,nobodies,Terrier package stop word,Yes
+473,noes,Terrier package stop word,Yes
+474,non,amarallab,Yes
+475,no-one,Terrier package stop word,Yes
+476,nor,PubMed,Yes
+477,normally,amarallab,Yes
+478,NOS,literature,Yes
+479,nothings,Terrier package stop word,Yes
+480,"not'too likely, or not at all likely",mapping,Yes
+481,notwithstanding,Terrier package stop word,Yes
+482,novel,amarallab,Yes
+483,nowheres,Terrier package stop word,Yes
+484,obviously,amarallab,Yes
+485,Occurrence,mapping,Yes
+486,of,PubMed,Yes
+487,offest,Terrier package stop word,Yes
+488,offs,Terrier package stop word,Yes
+489,often,PubMed,Yes
+490,oftener,Terrier package stop word,Yes
+491,oftenest,Terrier package stop word,Yes
+492,ok,amarallab,Yes
+493,okay,amarallab,Yes
+494,old,amarallab,Yes
+495,on,PubMed,Yes
+496,ones,amarallab,Yes
+497,oneself,Terrier package stop word,Yes
+498,onest,Terrier package stop word,Yes
+499,ons,Terrier package stop word,Yes
+500,or not at all likely,mapping,Yes
+501,or what,mapping,Yes
+502,orer,Terrier package stop word,Yes
+503,orest,Terrier package stop word,Yes
+504,"Other Complication, Specify",mapping,Yes
+505,"Other, specify",mapping,Yes
+506,other'text,mapping,Yes
+507,otherwiser,Terrier package stop word,Yes
+508,otherwisest,Terrier package stop word,Yes
+509,oughts,Terrier package stop word,Yes
+510,our,PubMed,Yes
+511,our,snowball stemmer stop word,Yes
+512,ours,snowball stemmer stop word,Yes
+513,ourself,Terrier package stop word,Yes
+514,ourselves,snowball stemmer stop word,Yes
+515,outed,Terrier package stop word,Yes
+516,outest,Terrier package stop word,Yes
+517,outs,Terrier package stop word,Yes
+518,outwith,Terrier package stop word,Yes
+519,overall,PubMed,Yes
+520,overaller,Terrier package stop word,Yes
+521,overallest,Terrier package stop word,Yes
+522,overalls,Terrier package stop word,Yes
+523,overs,Terrier package stop word,Yes
+524,owned,Terrier package stop word,Yes
+525,owning,Terrier package stop word,Yes
+526,owns,Terrier package stop word,Yes
+527,owt,Terrier package stop word,Yes
+528,part,mapping,Yes
+529,particularer,Terrier package stop word,Yes
+530,particularest,Terrier package stop word,Yes
+531,particulars,Terrier package stop word,Yes
+532,patient,mapping,Yes
+533,perhaps,PubMed,Yes
+534,person,mapping,Yes
+535,placed,amarallab,Yes
+536,plaintiff,Terrier package stop word,Yes
+537,pleased,Terrier package stop word,Yes
+538,pleases,Terrier package stop word,Yes
+539,plenties,Terrier package stop word,Yes
+540,plenty,Terrier package stop word,Yes
+541,plurality,Stopwords in technical language processing,Yes
+542,plus,amarallab,Yes
+543,POLST,mapping,Yes
+544,portion,Stopwords in technical language processing,Yes
+545,position,Stopwords in technical language processing,Yes
+546,possible,amarallab,Yes
+547,presumably,amarallab,Yes
+548,print,PhenX,Yes
+549,print name,PhenX,Yes
+550,pro,Terrier package stop word,Yes
+551,process,Stopwords in technical language processing,Yes
+552,provide,Terrier package stop word,Yes
+553,provided,Terrier package stop word,Yes
+554,providing,Terrier package stop word,Yes
+555,QOL,mapping,Yes
+556,qua,Terrier package stop word,Yes
+557,quite,PubMed,Yes
+558,qv,amarallab,Yes
+559,rath,Terrier package stop word,Yes
+560,rathe,Terrier package stop word,Yes
+561,rather,PubMed,Yes
+562,rathest,Terrier package stop word,Yes
+563,rd,amarallab,Yes
+564,really,PubMed,Yes
+565,reasonably,amarallab,Yes
+566,receive,Stopwords in technical language processing,Yes
+567,regarding,PubMed,Yes
+568,regardless,amarallab,Yes
+569,regards,amarallab,Yes
+570,relate,amarallab,Yes
+571,related,Terrier package stop word,Yes
+572,removal,literature,Yes
+573,replacement,literature,Yes
+574,res,Terrier package stop word,Yes
+575,respecting,Terrier package stop word,Yes
+576,right,amarallab,Yes
+577,saider,Terrier package stop word,Yes
+578,saidest,Terrier package stop word,Yes
+579,samer,Terrier package stop word,Yes
+580,sames,Terrier package stop word,Yes
+581,samest,Terrier package stop word,Yes
+582,sans,Terrier package stop word,Yes
+583,sanserif,Terrier package stop word,Yes
+584,sanserifs,Terrier package stop word,Yes
+585,sanses,Terrier package stop word,Yes
+586,saved,Terrier package stop word,Yes
+587,saw,amarallab,Yes
+588,say,amarallab,Yes
+589,sayid,Terrier package stop word,Yes
+590,saying,amarallab,Yes
+591,says,amarallab,Yes
+592,sayyid,Terrier package stop word,Yes
+593,SDOH,mapping,Yes
+594,secondary'to,literature,Yes
+595,secondly,amarallab,Yes
+596,see,amarallab,Yes
+597,seeing,amarallab,Yes
+598,seem,PubMed,Yes
+599,seeming,amarallab,Yes
+600,seeminger,Terrier package stop word,Yes
+601,seemingest,Terrier package stop word,Yes
+602,seemings,Terrier package stop word,Yes
+603,seen,PubMed,Yes
+604,Select all'that apply from'the list below,mapping,Yes
+605,self,amarallab,Yes
+606,selves,amarallab,Yes
+607,send,Terrier package stop word,Yes
+608,sensible,amarallab,Yes
+609,senza,Terrier package stop word,Yes
+610,seriouser,Terrier package stop word,Yes
+611,seriousest,Terrier package stop word,Yes
+612,seriously,amarallab,Yes
+613,several,PubMed,Yes
+614,severaler,Terrier package stop word,Yes
+615,severalest,Terrier package stop word,Yes
+616,shalled,Terrier package stop word,Yes
+617,shalling,Terrier package stop word,Yes
+618,shalls,Terrier package stop word,Yes
+619,shan,amarallab,Yes
+620,she,snowball stemmer stop word,Yes
+621,she s,amarallab,Yes
+622,she'd,snowball stemmer stop word,Yes
+623,she'll,snowball stemmer stop word,Yes
+624,she's,snowball stemmer stop word,Yes
+625,should,PubMed,Yes
+626,should ve,amarallab,Yes
+627,shoulded,Terrier package stop word,Yes
+628,shoulding,Terrier package stop word,Yes
+629,shouldn,amarallab,Yes
+630,shoulds,Terrier package stop word,Yes
+631,signal,Stopwords in technical language processing,Yes
+632,since,PubMed,Yes
+633,sine,Terrier package stop word,Yes
+634,sines,Terrier package stop word,Yes
+635,sith,Terrier package stop word,Yes
+636,so,PubMed,Yes
+637,sobeit,Terrier package stop word,Yes
+638,soer,Terrier package stop word,Yes
+639,soest,Terrier package stop word,Yes
+640,some,PubMed,Yes
+641,sometimer,Terrier package stop word,Yes
+642,sometimest,Terrier package stop word,Yes
+643,soon,amarallab,Yes
+644,sorry,amarallab,Yes
+645,special setting,mapping,Yes
+646,"Specific , Specified",mapping,Yes
+647,specified,amarallab,Yes
+648,Specify Other,mapping,Yes
+649,specifying,amarallab,Yes
+650,still,amarallab,Yes
+651,stop,Terrier package stop word,Yes
+652,stopped,Terrier package stop word,Yes
+653,sub,amarallab,Yes
+654,such,PubMed,Yes
+655,such as,mapping,Yes
+656,summat,Terrier package stop word,Yes
+657,supped,Terrier package stop word,Yes
+658,supping,Terrier package stop word,Yes
+659,sups,Terrier package stop word,Yes
+660,sure,amarallab,Yes
+661,surface,Stopwords in technical language processing,Yes
+662,syn,Terrier package stop word,Yes
+663,syne,Terrier package stop word,Yes
+664,system,Stopwords in technical language processing,Yes
+665,take,amarallab,Yes
+666,taken,amarallab,Yes
+667,tell,amarallab,Yes
+668,ten,Terrier package stop word,Yes
+669,tends,amarallab,Yes
+670,th,amarallab,Yes
+671,than,PubMed,Yes
+672,thank,amarallab,Yes
+673,thanks,amarallab,Yes
+674,thanx,amarallab,Yes
+675,that,PubMed,Yes
+676,that'll,amarallab,Yes
+677,thats,amarallab,Yes
+678,that's,snowball stemmer stop word,Yes
+679,the,PubMed,Yes
+680,the following,mapping,Yes
+681,The name'that describes,mapping,Yes
+682,The name'that describes,mapping,Yes
+683,thee,Terrier package stop word,Yes
+684,their,PubMed,Yes
+685,their,snowball stemmer stop word,Yes
+686,theirs,PubMed,Yes
+687,theirs,snowball stemmer stop word,Yes
+688,them,PubMed,Yes
+689,them,snowball stemmer stop word,Yes
+690,themselves,snowball stemmer stop word,Yes
+691,then,PubMed,Yes
+692,thener,Terrier package stop word,Yes
+693,thenest,Terrier package stop word,Yes
+694,there,PubMed,Yes
+695,therefore,PubMed,Yes
+696,therer,Terrier package stop word,Yes
+697,theres,amarallab,Yes
+698,there's,snowball stemmer stop word,Yes
+699,therest,Terrier package stop word,Yes
+700,these,PubMed,Yes
+701,they,PubMed,Yes
+702,they,snowball stemmer stop word,Yes
+703,they'd,snowball stemmer stop word,Yes
+704,they'll,snowball stemmer stop word,Yes
+705,they're,snowball stemmer stop word,Yes
+706,they've,snowball stemmer stop word,Yes
+707,thine,Terrier package stop word,Yes
+708,thing,Terrier package stop word,Yes
+709,things,Terrier package stop word,Yes
+710,think,amarallab,Yes
+711,third,amarallab,Yes
+712,this,PubMed,Yes
+713,thises,Terrier package stop word,Yes
+714,thorougher,Terrier package stop word,Yes
+715,thoroughest,Terrier package stop word,Yes
+716,those,PubMed,Yes
+717,thou,Terrier package stop word,Yes
+718,thous,Terrier package stop word,Yes
+719,thouses,Terrier package stop word,Yes
+720,thro,Terrier package stop word,Yes
+721,through,PubMed,Yes
+722,througher,Terrier package stop word,Yes
+723,throughest,Terrier package stop word,Yes
+724,thruer,Terrier package stop word,Yes
+725,thruest,Terrier package stop word,Yes
+726,thus,PubMed,Yes
+727,thy,Terrier package stop word,Yes
+728,thyself,Terrier package stop word,Yes
+729,till,Terrier package stop word,Yes
+730,tilled,Terrier package stop word,Yes
+731,tilling,Terrier package stop word,Yes
+732,tills,Terrier package stop word,Yes
+733,to,PubMed,Yes
+734,took,amarallab,Yes
+735,towarder,Terrier package stop word,Yes
+736,towardest,Terrier package stop word,Yes
+737,tried,amarallab,Yes
+738,tries,amarallab,Yes
+739,truly,amarallab,Yes
+740,try,amarallab,Yes
+741,trying,amarallab,Yes
+742,twice,amarallab,Yes
+743,umpteen,Terrier package stop word,Yes
+744,un,amarallab,Yes
+745,underneath,Terrier package stop word,Yes
+746,unfortunately,amarallab,Yes
+747,Unit of Measure,caDSR rep terms,Yes
+748,unlike,Terrier package stop word,Yes
+749,unlikely,amarallab,Yes
+750,unliker,Terrier package stop word,Yes
+751,unlikest,Terrier package stop word,Yes
+752,upon,PubMed,Yes
+753,uponed,Terrier package stop word,Yes
+754,uponing,Terrier package stop word,Yes
+755,upons,Terrier package stop word,Yes
+756,upped,Terrier package stop word,Yes
+757,upping,Terrier package stop word,Yes
+758,ups,Terrier package stop word,Yes
+759,us,amarallab,Yes
+760,usedest,Terrier package stop word,Yes
+761,useful,amarallab,Yes
+762,username,Terrier package stop word,Yes
+763,uses,amarallab,Yes
+764,using,amarallab,Yes
+765,uucp,amarallab,Yes
+766,value,amarallab,Yes
+767,various,PubMed,Yes
+768,variouser,Terrier package stop word,Yes
+769,variousest,Terrier package stop word,Yes
+770,ve,amarallab,Yes
+771,verier,Terrier package stop word,Yes
+772,veriest,Terrier package stop word,Yes
+773,versus,Terrier package stop word,Yes
+774,very,PubMed,Yes
+775,very likely,mapping,Yes
+776,vis-a-vis,Terrier package stop word,Yes
+777,vis-a-viser,Terrier package stop word,Yes
+778,vis-a-visest,Terrier package stop word,Yes
+779,want,amarallab,Yes
+780,wants,amarallab,Yes
+781,was,PubMed,Yes
+782,wasn,amarallab,Yes
+783,wast,Terrier package stop word,Yes
+784,way,amarallab,Yes
+785,we,PubMed,Yes
+786,we'd,snowball stemmer stop word,Yes
+787,welcome,amarallab,Yes
+788,well,amarallab,Yes
+789,we'll,snowball stemmer stop word,Yes
+790,went,amarallab,Yes
+791,were,PubMed,Yes
+792,we're,snowball stemmer stop word,Yes
+793,weren,amarallab,Yes
+794,wert,Terrier package stop word,Yes
+795,we've,snowball stemmer stop word,Yes
+796,what,PubMed,Yes
+797,whateverer,Terrier package stop word,Yes
+798,whateverest,Terrier package stop word,Yes
+799,what's,snowball stemmer stop word,Yes
+800,whatsoever,Terrier package stop word,Yes
+801,whatsoeverer,Terrier package stop word,Yes
+802,whatsoeverest,Terrier package stop word,Yes
+803,wheen,Terrier package stop word,Yes
+804,when,PubMed,Yes
+805,whenas,Terrier package stop word,Yes
+806,whencesoever,Terrier package stop word,Yes
+807,when's,snowball stemmer stop word,Yes
+808,whensoever,Terrier package stop word,Yes
+809,wherefrom,Terrier package stop word,Yes
+810,whereinto,Terrier package stop word,Yes
+811,whereof,Terrier package stop word,Yes
+812,whereon,Terrier package stop word,Yes
+813,where's,snowball stemmer stop word,Yes
+814,wheresoever,Terrier package stop word,Yes
+815,whereto,Terrier package stop word,Yes
+816,wherewith,Terrier package stop word,Yes
+817,wherewithal,Terrier package stop word,Yes
+818,which,PubMed,Yes
+819,whichever,Terrier package stop word,Yes
+820,whichsoever,Terrier package stop word,Yes
+821,while,PubMed,Yes
+822,whiles,Terrier package stop word,Yes
+823,whilst,Terrier package stop word,Yes
+824,whithersoever,Terrier package stop word,Yes
+825,whole,amarallab,Yes
+826,whomever,Terrier package stop word,Yes
+827,who's,snowball stemmer stop word,Yes
+828,whoso,Terrier package stop word,Yes
+829,whosoever,Terrier package stop word,Yes
+830,why's,snowball stemmer stop word,Yes
+831,willing,amarallab,Yes
+832,wish,amarallab,Yes
+833,with,PubMed,Yes
+834,withal,Terrier package stop word,Yes
+835,within,PubMed,Yes
+836,without,PubMed,Yes
+837,won,amarallab,Yes
+838,wonder,amarallab,Yes
+839,would,PubMed,Yes
+840,would you,mapping,Yes
+841,"Would you say very easy, somewhat easy, or not easy at all?",mapping,Yes
+842,"would you, you would",mapping,Yes
+843,woulded,Terrier package stop word,Yes
+844,woulding,Terrier package stop word,Yes
+845,wouldn,amarallab,Yes
+846,woulds,Terrier package stop word,Yes
+847,x,amarallab,Yes
+848,ye,Terrier package stop word,Yes
+849,yes,amarallab,Yes
+850,yon,Terrier package stop word,Yes
+851,yond,Terrier package stop word,Yes
+852,yonder,Terrier package stop word,Yes
+853,you,snowball stemmer stop word,Yes
+854,you d,amarallab,Yes
+855,you now have,mapping,Yes
+856,you ve,amarallab,Yes
+857,you will,mapping,Yes
+858,you would,mapping,Yes
+859,you'd,snowball stemmer stop word,Yes
+860,your,snowball stemmer stop word,Yes
+861,yours,snowball stemmer stop word,Yes
+862,yourself,snowball stemmer stop word,Yes
+863,yourselves,snowball stemmer stop word,Yes
+864,you've,snowball stemmer stop word,Yes
+865,zero,amarallab,Yes
+866,zillion,Terrier package stop word,Yes
+867,scale,caDSR rep terms,Yes
+868,Scale,caDSR rep terms,Yes
+869,version,caDSR rep terms,Yes
+870,Site,caDSR rep terms,Yes
+871,Scalar,mapping,Yes
+872,Time,mapping,Yes
+873,Times,mapping,Yes
+874,Source,mapping,Yes
+875,Text,mapping,Yes
+876,Number,caDSR rep terms,Yes
+877,Identifier,caDSR rep terms,Yes
+878,"short, Short",mapping,Yes
+879,Type,mapping,Yes
+880,Scale,caDSR rep terms,Yes
+881,Score,caDSR rep terms,Yes
+882,"limit, Limit",caDSR rep terms,Yes
+883,Subclass,mapping,Yes
+884,Assessment,mapping,Yes

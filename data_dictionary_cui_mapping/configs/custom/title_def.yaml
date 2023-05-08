@@ -1,0 +1,108 @@
+settings:
+  custom_config: title_def
+  pipeline_name:
+
+data_dictionary_settings:
+  filepath:
+  variable_column : variable name
+  query_term_columns:
+    - title
+    - definition
+  explode: False
+  column_sep :
+  search_all_query_terms : false
+
+preprocessing_settings:
+    remove_stopwords : false
+    stopwords_filepath: 'C:\\Users\\armengolkm\\Desktop\\Full Pipeline Test v1.1.0\\MetaMap_Settings_StopWords.csv'
+    use_cheatsheet : false
+    cheatsheet_filepath:
+
+curation_settings:
+  information_columns:
+    - variable name
+    - title
+    - definition
+    - permissible values
+    - permissible value descriptions
+    - preferred question text
+  query_columns:
+    - variable name
+    - search_ID
+    - query_term_used
+    - query_term_used_col
+    - searchType
+  result_columns:
+    - recCount
+    - data element concept names
+    - data element concept identifiers
+    - data element terminology sources
+  file_settings:
+    directory_prefix : DE
+    file_prefix : DE
+    excel:
+      sheet_names:
+        sheet1 : 'UMLS_curation'
+        sheet2 : 'Data_Dictionary'
+        sheet3 : 'Data_Dictionary_exploded'
+      hide_cols_curation:
+      order_cols_curation:
+
+create_dictionary_import_settings:
+  curation_file_path:
+  umls_columns:
+    - data element concept names
+    - data element concept identifiers
+    - data element terminology sources
+  join_on: ['variable name', 'title_extracted' ]
+  cui_sep : '|'
+  multi_cui_sep : '/'
+  override:
+    sep: '|'
+    columns:
+      - data element terminology sources
+    value: 'UMLS'
+  dict_file_path:
+  dict_file_type : csv
+  dictionary_columns:
+      ["variable name", "title", "element type", "definition", "short description", "datatype",
+          "maximum character quantity", "input restriction", "minimum value", "maximum value",
+          "data element concept names", "data element concept identifiers", "data element terminology sources",
+          "permissible values", "permissible value descriptions", "permissible value output codes",
+          "permissible value concept names", "permissible value concept identifiers",
+          "permissible value terminology sources",
+          "unit of measure", "guidelines/instructions", "notes", "preferred question text", "keywords",
+          "references", "historical notes", "see also", "effective date", "until date",
+          "population.all", "domain.general (for all diseases)", "domain.traumatic brain injury",
+          "domain.Parkinson's disease", "domain.Friedreich's ataxia", "domain.stroke",
+          "domain.amyotrophic lateral sclerosis", "domain.Huntington's disease", "domain.multiple sclerosis",
+          "domain.neuromuscular diseases", "domain.myasthenia gravis",
+          "domain.spinal muscular atrophy", "domain.Duchenne muscular dystrophy/Becker muscular dystrophy",
+          "domain.congenital muscular dystrophy", "domain.spinal cord injury",
+          "domain.headache", "domain.epilepsy",
+          "classification.general (for all diseases)", "classification.acute hospitalized",
+          "classification.concussion/mild TBI", "classification.epidemiology",
+          "classification.moderate/severe TBI: rehabilitation",
+          "classification.Parkinson's disease", "classification.Friedreich's ataxia", "classification.stroke",
+          "classification.amyotrophic lateral sclerosis", "classification.Huntington's disease",
+          "classification.multiple sclerosis", "classification.neuromuscular diseases",
+          "classification.myasthenia gravis", "classification.spinal muscular atrophy",
+          "classification.Duchenne muscular dystrophy/Becker muscular dystrophy",
+          "classification.congenital muscular dystrophy", "classification.spinal cord injury",
+          "classification.headache", "classification.epilepsy",
+          "Label(s)",
+          "submitting organization name", "submitting contact name", "submitting contact information",
+          "steward organization name", "steward contact name", "steward contact information"]
+  check_cuis:
+    de:
+      reference_column: variable name
+      check_columns:
+        - data element concept names
+        - data element concept identifiers
+        - data element terminology sources
+    pvd:
+      reference_column: permissible value descriptions
+      check_columns:
+        - permissible value concept names
+        - permissible value concept identifiers
+        - permissible value terminology sources

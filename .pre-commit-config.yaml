@@ -11,6 +11,7 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
+        exclude: data_dictionary_cui_mapping/semantic_search/resources/dict_umls_upsert_ids.pkl
     -   id: debug-statements
 
 #-   repo: https://github.com/PyCQA/flake8

@@ -1,0 +1,103 @@
+semantic_search_settings:
+  device: 'cpu'
+  parent_dir:
+umls_subset:
+  settings:
+    dirpath_output: 'C:\Users\armengolkm\Desktop\Full Pipeline Test v1.1.0\UMLS_subset\raw'
+  mth_local:
+    dirpath_mth: 'C:\Users\armengolkm\Documents\BRICS\Data_Elements_Form_Structures\UMLS\umls-2022AB-full\2022AB-full\2022AB\META'
+    RRF_files:
+      concepts:
+        filename: MRCONSO.RRF
+        columns: ['CUI', 'LAT', 'TS', 'LUI', 'STT', 'SUI', 'ISPREF', 'AUI', 'SAUI', 'SCUI', 'SDUI', 'SAB', 'TTY', 'CODE', 'STR', 'SRL', 'SUPPRESS', 'CVF', '']
+        subset: ['CUI', 'SAB', 'STR', 'TTY']
+      definitions:
+        filename: MRDEF.RRF
+        columns: ['CUI', 'AUI', 'ATUI', 'SATUI', 'SAB', 'DEF', 'SUPPRESS', 'CVF', '']
+        subset: ['CUI', 'SAB', 'DEF']
+      semantic_types:
+        filename: MRSTY.RRF
+        columns: ['CUI', 'TUI', 'STN', 'STY', 'ATUI', 'CVF', '']
+        subset: ['CUI', 'STY']
+      termtype_rank:
+        filename: MRRANK.RRF
+        columns: ['index','TUI', 'TTY', 'SUPPRESS', 'empty']
+        subset: ['TUI', 'TTY']
+  filters:
+    LAT: ['ENG']
+pinecone:
+  index:
+    index_name: 'umls-cui-hybrid-semantic-search'
+    dimension: 768
+    metric: 'dotproduct'
+    pod_type: 'p1'
+    namespaces:
+      - 'STR'
+      - 'DEF'
+upsert:
+  filepath_raw: 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1.0/UMLS_subset/raw/df_umls.pkl'
+  filepath_processed: 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1.0/UMLS_subset/processed/df_umls_embeddings.pkl'
+  filepath_dict_upsert_ids: 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1.0/UMLS_subset/processed/dict_umls_upsert_ids.pkl'
+  embed:
+    dense:
+      model_name: 'pritamdeka/PubMedBERT-mnli-snli-scinli-scitail-mednli-stsb'
+      normalize: True
+    sparse:
+      model_name: 'naver/splade-cocondenser-ensembledistil'
+      batch_size: 100
+      normalize: True
+  embed_columns: # THIS will be used as pinecone namespace
+    - 'STR'
+    - 'DEF'
+  metadata:
+    tokenize_embed_columns: True
+    tokenizer:
+      model_name: 'transfo-xl-wt103'
+    tokenize_columns:
+      - 'STR'
+      - 'DEF'
+    include_columns:
+      - 'CUI'
+      - 'STR'
+      - 'STY'
+      - 'SAB_MRDEF'
+      - 'SAB_CUI_DEF_all'
+      - 'SAB_MRCONSO'
+      - 'SAB_CUI_CONSO_all'
+query:
+  filepath_embeddings: # 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1.0/SS/Golden_CUIs/DE_Step-1_semantic-search/df_query_embeddings.pkl'
+  filepath_results:
+  embed:
+    dense:
+      model_name: 'pritamdeka/PubMedBERT-mnli-snli-scinli-scitail-mednli-stsb'
+      normalize: True
+    sparse:
+      model_name: 'naver/splade-cocondenser-ensembledistil'
+      batch_size: 100
+      normalize: True
+  embed_columns:
+    - title_extracted
+    - definition_extracted
+  metadata:
+    tokenize_embed_columns: True
+    tokenizer:
+      model_name: 'transfo-xl-wt103'
+    tokenize_columns:
+    - title_extracted
+    - definition_extracted
+    include_columns:
+      - 'preferred question text'
+  alpha: 0.5 # [1.0, 0.75, 0.5, 0.25, 0.0]
+  namespace: [ 'STR', 'DEF' ]
+  top_k: 20
+  queries:
+    dense:
+      title_str: [ 'title_extracted_dense_vecs', 'STR' ]
+      title_def: [ 'title_extracted_dense_vecs', 'DEF' ]
+      definition_str: [ 'definition_extracted_dense_vecs', 'STR' ]
+      definition_def: [ 'definition_extracted_dense_vecs', 'DEF' ]
+    hybrid:
+      title_str: [ 'title_extracted', 'STR' ]
+      title_def: [ 'title_extracted', 'DEF' ]
+      definition_str: [ 'definition_extracted', 'STR' ]
+      definition_def: [ 'definition_extracted', 'DEF' ]

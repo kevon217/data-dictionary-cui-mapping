@@ -1,25 +1,26 @@
-user_info:
-  email :
-  apiKey: &apiKey
+umls:
+  user_info:
+    email :
+    apiKey: &apiKey
 
-umls_api_settings:
-  url : "https://utslogin.nlm.nih.gov/cas/v1/api-key"
-  uri :  "https://uts-ws.nlm.nih.gov"
-  version : current  # include version number in output for reproducibilty
-  content_endpoint : /rest/search/current
-  fullpath : "https://uts-ws.nlm.nih.gov/rest/search/current"
-  payload : {}
-  headers : {}
-  sabs : &sabs []
-  searchType1 : &searchType1 exact
-  searchType2 : normalizedWords
-  pageSize : &pageSize 25
-  pages_max : 1
+  api_settings:
+    url : "https://utslogin.nlm.nih.gov/cas/v1/api-key"
+    uri :  "https://uts-ws.nlm.nih.gov"
+    version : current  # include version number in output for reproducibilty
+    content_endpoint : /rest/search/current
+    fullpath : "https://uts-ws.nlm.nih.gov/rest/search/current"
+    payload : {}
+    headers : {}
+    sabs : &sabs []
+    searchType1 : &searchType1 exact
+    searchType2 : normalizedWords
+    pageSize : &pageSize 20
+    pages_max : 1
 
-query_params:
-   apiKey : *apiKey
-   string : {}
-   searchType : *searchType1
-   sabs : *sabs
-   pageSize : *pageSize
-   pageNumber : {}
+  query_params:
+    apiKey : *apiKey
+    string : {}
+    searchType : *searchType1
+    sabs : *sabs
+    pageSize : *pageSize
+    pageNumber : {}

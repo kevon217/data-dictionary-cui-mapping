@@ -17,7 +17,7 @@ from data_dictionary_cui_mapping.curation.utils import dictionary_functions as d
 def main(cfg):
     # LOAD "*_Step-2_dictionary-import-file.csv" file
     if not cfg.custom.create_dictionary_import_settings.dict_file_path:
-        fp_dict = helper.choose_input_file.fn(
+        fp_dict = helper.choose_file.fn(
             "Select *_Step-2_dictionary-import-file.csv file with created dictionary import file"
         )
         cfg.custom.create_dictionary_import_settings.filepath = fp_dict
@@ -106,7 +106,5 @@ def main(cfg):
 
 
 if __name__ == "__main__":
-    cfg = helper.load_config.fn(
-        helper.choose_input_file.fn("Load config file from Step 2")
-    )
+    cfg = helper.load_config.fn(helper.choose_file("Load config file from Step 2"))
     df_check = main(cfg)

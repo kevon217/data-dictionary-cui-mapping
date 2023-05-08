@@ -1,15 +1,20 @@
+settings:
+  custom_config: pvd
+  pipeline_name:
+
 data_dictionary_settings:
   filepath:
   variable_column : variable name
   query_term_columns :
     - permissible value descriptions
     - permissible values
+  explode: True
   column_sep : '|'
   search_all_query_terms : false
 
 preprocessing_settings:
     remove_stopwords : true
-    stopwords_filepath:
+    stopwords_filepath: 'C:\\Users\\armengolkm\\Desktop\\Full Pipeline Test v1.1.0\\MetaMap_Settings_StopWords.csv'
     use_cheatsheet : false
     cheatsheet_filepath:
 
@@ -29,6 +34,7 @@ curation_settings:
     - searchType
   result_columns:
     - recCount
+    - overall_rank
     - permissible value concept names
     - permissible value concept identifiers
     - permissible value terminology sources
@@ -42,6 +48,7 @@ curation_settings:
         sheet2 : 'Data_Dictionary'
         sheet3 : 'Data_Dictionary_exploded'
       hide_cols_curation:
+      order_cols_curation:
 
 create_dictionary_import_settings:
   curation_file_path:
@@ -49,7 +56,7 @@ create_dictionary_import_settings:
     - permissible value concept names
     - permissible value concept identifiers
     - permissible value terminology sources
-  join_on: ['variable name','permissible values_exploded']
+  join_on: ['variable name','permissible values_extracted']
   cui_sep : '|'
   multi_cui_sep : '/'
   override:

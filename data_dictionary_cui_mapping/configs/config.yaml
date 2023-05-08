@@ -1,4 +1,10 @@
 defaults:
   - _self_
-  - apis: config_metamap_api
-  - custom: de
+  - apis:
+    - config_umls_api
+    - config_metamap_api
+    - config_pinecone_api
+  - custom:
+    - de
+    - title_def
+  - semantic_search: null

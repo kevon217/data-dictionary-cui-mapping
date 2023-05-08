@@ -1,6 +1,11 @@
 # data-dictionary-cui-mapping
 
-This package allows you to  load in a data dictionary and map cuis to defined fields using either the UMLS API or MetaMap API from NLM.
+This package allows you to load in a data dictionary and semi-automatically query appropriate UMLS concepts using either the UMLS API, MetaMap API, and/or Semantic Search through a custom Pinecone vector database .
+
+## Prerequisites
+
+- For UMLS API and MetaMap API, you will need to have an account with the UMLS API and/or MetaMap API. You can sign up for an account here: https://www.nlm.nih.gov/research/umls/index.html
+- For Semantic Search with Pinecone, you will need to have an account with Pinecone. You can sign up for an account here: https://www.pinecone.io/. Please reach out to me if you would like temporary access to my Pinecone index to explore these embeddings.
 
 ## Installation
 
@@ -11,8 +16,44 @@ pip install data-dictionary-cui-mapping
 #pip install git+https://github.com/kevon217/data-dictionary-cui-mapping.git
 ```
 
-## Usage
+## Input: Data Dictionary
 
+Below is a sample data dictionary format that can be used as input for this package.
+
+| variable name | title                  | permissible value descriptions |
+| ------------- | ---------------------- |--------------------------------|
+| AgeYrs        | Age in years           |                                |
+| CaseContrlInd | Case control indicator | Case;Control;Unknown           |
+
+## Configuration Files
+
+In order to run and customize these pipelines, you will need to create/edit yaml configuration files located in configs. Run configurations are saved and can be reloaded.
+
+```bash
+├───data_dictionary_cui_mapping
+│   ├───configs
+│   │   │   config.yaml
+│   │   │   __init__.py
+│   │   │
+│   │   ├───apis
+│   │   │       config_metamap_api.yaml
+│   │   │       config_pinecone_api.yaml
+│   │   │       config_umls_api.yaml
+│   │   │
+│   │   ├───custom
+│   │   │       de.yaml
+│   │   │       pvd.yaml
+│   │   │       title_def.yaml
+│   │   │
+│   │   ├───semantic_search
+│   │   │       embeddings.yaml
+│   │   │       subset.yaml
+
+```
+
+## UMLS API and MetaMap Batch Queries
+
+#### Import modules
 ```python
 # import batch_query_pipeline modules from metamap OR umls package
 from data_dictionary_cui_mapping.metamap import batch_query_pipeline as mm_bqp
@@ -25,8 +66,9 @@ from omegaconf import OmegaConf
 # import modules to create data dictionary with curated CUIs and check the file for missing mappings
 from data_dictionary_cui_mapping.curation import create_dictionary_import_file
 from data_dictionary_cui_mapping.curation import check_cuis
-
-# LOAD/EDIT CONFIGURATION FILES
+```
+#### Load/edit configuration files
+```python
 cfg = helper.compose_config.fn(overrides=["custom=de", "apis=config_metamap_api"]) # custom config for MetaMap on data element 'title' column
 # cfg = helper.compose_config.fn(overrides=["custom=de", "apis=config_umls_api"]) # custom config for UMLS API on data element 'title' column
 # cfg = helper.compose_config.fn(overrides=["custom=pvd", "apis=config_metamap_api"]) # custom config for MetaMap on 'permissible value descriptions' column
@@ -34,27 +76,60 @@ cfg = helper.compose_config.fn(overrides=["custom=de", "apis=config_metamap_api"
 cfg.apis.user_info.email = '' # enter your email
 cfg.apis.user_info.apiKey = '' # enter your api key
 print(OmegaConf.to_yaml(cfg))
+```
 
-# STEP-1: RUN BATCH QUERY PIPELINE
+#### Step 1: Run batch query pipeline
+```python
 df_final_mm = mm_bqp.main(cfg) # run MetaMap batch query pipeline
 # df_final_umls = umls_bqp.main(cfg) # run UMLS API batch query pipeline
+```
 
-# MANUAL CURATION STEP IN EXCEL FILE (see curation example in notebooks/examples_files/DE_Step-1_curation_keepCol.xlsx)
+#### Step 2: *Manual curation step in excel file
 
-# STEP-2: CREATE DATA DICTIONARY IMPORT FILE
-cfg = helper.load_config.fn(helper.choose_input_file.fn("Load config file from Step 1"))
+*see curation example in ***notebooks/examples_files/DE_Step-1_curation_keepCol.xlsx***
+
+#### Step 3: Create data dictionary import file
+
+```python
+cfg = helper.load_config.fn(helper.choose_file.fn("Load config file from Step 1"))
 create_dictionary_import_file.main(cfg)
+```
 
-# CHECK CURATED CUI MAPPINGS
-cfg = helper.load_config.fn(helper.choose_input_file.fn("Load config file from Step 2"))
+#### Step 4: Check curated cui mappings
+
+```python
+cfg = helper.load_config.fn(helper.choose_file.fn("Load config file from Step 2"))
 check_cuis.main(cfg)
 ```
+
+## Output: Data Dictionary + CUIs
+Below is the final output of the data dictionary with curated CUIs.
+
+| variable name | title                  | data element concept identifiers | data element concept names | data element terminology sources | permissible values   | permissible value descriptions | permissible value output codes | permissible value concept identifiers | permissible value concept names           | permissible value terminology sources |
+| ------------- | ---------------------- | -------------------------------- | -------------------------- | -------------------------------- | -------------------- | ------------------------------ | ------------------------------ | ------------------------------------- | ----------------------------------------- | ------------------------------------- |
+| AgeYrs        | Age in years           | C1510829;C0001779                | Age-Years;Age              | UMLS;UMLS                        |                      |                                |                                |                                       |                                           |                                       |
+| CaseContrlInd | Case control indicator | C0007328                         | Case-Control Studies       | UMLS                             | Case;Control;Unknown | Case;Control;Unknown           | 1;2;999                        | C1706256;C4553389;C0439673            | Clinical Study Case;Study Control;Unknown | UMLS;UMLS;UMLS                        |
+
+
+## Semantic Search with SentenceTransformers Batch Queries
+
+#### Step 1: Subset local copy of UMLS Metathesaurus
+#### Step 2: Embed UMLS CUI names and definitions and format metadata
+#### Step 3: Upsert embeddings and metadata into Pinecone index
+#### Step 4: Embed data dictionary fields
+#### Step 5: Batch Query data dictionary against CUI names and definitions in Pinecone index
+#### Step 6: Evaluate/Curate Results
+#### Step 7: Create data dictionary based on curation
+
+
+
+
 
 ## Acknowledgements
 
 The MetaMap API code included is from Will J Roger's repository --> https://github.com/lhncbc/skr_web_python_api
 
-Special thanks to Olga Vovk and Henry Ogoe for their guidance, feedback, and testing of this package.
+Special thanks to Olga Vovk, Henry Ogoe, and Sofia Syed for their guidance, feedback, and testing of this package.
 
 ## License
 
