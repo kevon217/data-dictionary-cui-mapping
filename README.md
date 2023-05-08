@@ -36,19 +36,19 @@ In order to run and customize these pipelines, you will need to create/edit yaml
 │   │   │   __init__.py
 │   │   │
 │   │   ├───apis
+│   │   │       __init__.py
 │   │   │       config_metamap_api.yaml
 │   │   │       config_pinecone_api.yaml
 │   │   │       config_umls_api.yaml
 │   │   │
 │   │   ├───custom
 │   │   │       de.yaml
+│   │   │       hydra_base.yaml
 │   │   │       pvd.yaml
 │   │   │       title_def.yaml
 │   │   │
 │   │   ├───semantic_search
 │   │   │       embeddings.yaml
-│   │   │       subset.yaml
-
 ```
 
 ## UMLS API and MetaMap Batch Queries
@@ -80,8 +80,8 @@ print(OmegaConf.to_yaml(cfg))
 
 #### Step 1: Run batch query pipeline
 ```python
-df_final_mm = mm_bqp.main(cfg) # run MetaMap batch query pipeline
-# df_final_umls = umls_bqp.main(cfg) # run UMLS API batch query pipeline
+df_final_mm = mm_bqp.run_mm_batch(cfg) # run MetaMap batch query pipeline
+# df_final_umls = umls_bqp.run_umls_batch(cfg) # run UMLS API batch query pipeline
 ```
 
 #### Step 2: *Manual curation step in excel file
@@ -92,14 +92,14 @@ df_final_mm = mm_bqp.main(cfg) # run MetaMap batch query pipeline
 
 ```python
 cfg = helper.load_config.fn(helper.choose_file.fn("Load config file from Step 1"))
-create_dictionary_import_file.main(cfg)
+create_dictionary_import_file.create_dd_file(cfg)
 ```
 
 #### Step 4: Check curated cui mappings
 
 ```python
 cfg = helper.load_config.fn(helper.choose_file.fn("Load config file from Step 2"))
-check_cuis.main(cfg)
+check_cuis.check_cuis(cfg)
 ```
 
 ## Output: Data Dictionary + CUIs
@@ -112,17 +112,18 @@ Below is the final output of the data dictionary with curated CUIs.
 
 
 ## Semantic Search with SentenceTransformers Batch Queries
+More documentation to come... Basic pipeline is described below:
 
+### Subset/Embed/Upsert UMLS Metathesaurus for Pinecone vector database
 #### Step 1: Subset local copy of UMLS Metathesaurus
 #### Step 2: Embed UMLS CUI names and definitions and format metadata
 #### Step 3: Upsert embeddings and metadata into Pinecone index
-#### Step 4: Embed data dictionary fields
-#### Step 5: Batch Query data dictionary against CUI names and definitions in Pinecone index
-#### Step 6: Evaluate/Curate Results
-#### Step 7: Create data dictionary based on curation
 
-
-
+### Query UMLS Metathesaurus vector database with data dictionary embeddings
+#### Step 1: Embed data dictionary fields
+#### Step 2: Batch Query data dictionary against CUI names and definitions in Pinecone index
+#### Step 3: Evaluate/Curate Results
+#### Step 4: Create data dictionary based on curation
 
 
 ## Acknowledgements

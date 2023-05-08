@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "data-dictionary-cui-mapping"
-version = "1.0.5"
-description = "This package allows you to load in a data dictionary and map cuis to defined fields using either the UMLS API or MetaMap API from NLM."
+version = "1.1.0"
+description = "This package allows you to load in a data dictionary and map cuis to defined fields using either the UMLS API or MetaMap API from NLM, or a Semantic Search pipeline using Pinecone vector database."
 authors = ["Kevin Armengol <kevin.armengol@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/kevon217/data-dictionary-cui-mapping"
-keywords = ["BRICS", "Data Dictionary", "UMLS", "MetaMap", "CUI", "NLM"]
+keywords = ["BRICS", "curation", "data dictionary", "UMLS", "MetaMap", "Metathesaurus", "CUI", "concept unique identifier", "NLM", "PubMedBERT", "pritamdeka", "pritamdeka/PubMedBERT-mnli-snli-scinli-scitail-mednli-stsb","semantic search", "Pinecone", "embeddings", "vector database"]
 include = ["data_dictionary_cui_mapping/**/*"]
 
 [tool.poetry.dependencies]
