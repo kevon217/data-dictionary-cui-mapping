@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/kevon217/data-dictionary-cui-mapping"
 keywords = ["BRICS", "curation", "data dictionary", "UMLS", "MetaMap", "Metathesaurus", "CUI", "concept unique identifier", "NLM", "PubMedBERT", "pritamdeka", "pritamdeka/PubMedBERT-mnli-snli-scinli-scitail-mednli-stsb","semantic search", "Pinecone", "embeddings", "vector database"]
-include = ["ddcuimap/**/*"]
+packages = [{include = "ddcuimap/**/*"}]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
