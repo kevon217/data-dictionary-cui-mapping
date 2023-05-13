@@ -30,7 +30,7 @@ Below is a sample data dictionary format that can be used as input for this pack
 In order to run and customize these pipelines, you will need to create/edit yaml configuration files located in configs. Run configurations are saved and can be reloaded.
 
 ```bash
-├───data_dictionary_cui_mapping
+├───ddcuimap
 │   ├───configs
 │   │   │   config.yaml
 │   │   │   __init__.py
@@ -54,18 +54,19 @@ In order to run and customize these pipelines, you will need to create/edit yaml
 ## UMLS API and MetaMap Batch Queries
 
 #### Import modules
+
 ```python
 # import batch_query_pipeline modules from metamap OR umls package
-from data_dictionary_cui_mapping.metamap import batch_query_pipeline as mm_bqp
-from data_dictionary_cui_mapping.umls import batch_query_pipeline as umls_bqp
+from ddcuimap.metamap import batch_query_pipeline as mm_bqp
+from ddcuimap.umls import batch_query_pipeline as umls_bqp
 
 # import helper functions for loading, viewing, composing configurations for pipeline run
-from data_dictionary_cui_mapping.utils import helper
+from ddcuimap.utils import helper
 from omegaconf import OmegaConf
 
 # import modules to create data dictionary with curated CUIs and check the file for missing mappings
-from data_dictionary_cui_mapping.curation import create_dictionary_import_file
-from data_dictionary_cui_mapping.curation import check_cuis
+from ddcuimap.curation import create_dictionary_import_file
+from ddcuimap.curation import check_cuis
 ```
 #### Load/edit configuration files
 ```python

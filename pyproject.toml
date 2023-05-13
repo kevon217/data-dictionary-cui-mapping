@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "data-dictionary-cui-mapping"
-version = "1.1.1"
+version = "1.1.2"
 description = "This package allows you to load in a data dictionary and map cuis to defined fields using either the UMLS API or MetaMap API from NLM, or a Semantic Search pipeline using Pinecone vector database."
 authors = ["Kevin Armengol <kevin.armengol@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/kevon217/data-dictionary-cui-mapping"
 keywords = ["BRICS", "curation", "data dictionary", "UMLS", "MetaMap", "Metathesaurus", "CUI", "concept unique identifier", "NLM", "PubMedBERT", "pritamdeka", "pritamdeka/PubMedBERT-mnli-snli-scinli-scitail-mednli-stsb","semantic search", "Pinecone", "embeddings", "vector database"]
-include = ["data_dictionary_cui_mapping/**/*"]
+include = ["ddcuimap/**/*"]
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
@@ -22,7 +22,6 @@ prefect = {extras = ["viz"], version = "^2.8.3"}
 transformers = "4.18.0"
 pathlib = "^1.0.1"
 pinecone-client = "^2.2.1"
-pandas-log = "^0.1.7"
 sentence-transformers = "^2.2.2"
 cchardet = "^2.1.7"
 
@@ -40,6 +39,7 @@ wheel = "^0.38.4"
 deptry = "^0.8.0"
 bs4 = "^0.0.1"
 splade = {git = "https://github.com/naver/splade.git"}
+monkeytype = "^23.3.0"
 
 [build-system]
 requires = ["poetry-core"]
