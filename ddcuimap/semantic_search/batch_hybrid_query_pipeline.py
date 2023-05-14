@@ -105,7 +105,7 @@ def run_hybrid_ss_batch(cfg, **kwargs):
 
     # RETRIEVE UMLS VECTOR ID AS DICTIONARY
     ids = importlib.resources.read_binary(
-        "semantic_search.resources", "dict_umls_upsert_ids.pkl"
+        "ddcuimap.semantic_search.resources", "dict_umls_upsert_ids.pkl"
     )
     dict_umls_upsert_ids = pickle.loads(ids)
     # dict_umls_upsert_ids = run.fetch_id_metadata(index, cfg) #TODO: need to work on this

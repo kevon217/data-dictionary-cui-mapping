@@ -45,7 +45,7 @@ curation_settings:
       sheet_names:
         sheet1 : 'UMLS_curation'
         sheet2 : 'Data_Dictionary'
-        sheet3 : 'Data_Dictionary_exploded'
+        sheet3 : 'Data_Dictionary_extracted'
       hide_cols_curation: ['PMID', 'MatchMaps', 'IsHead', 'IsOverMatch', 'ConceptPIs', 'Status', 'Negated',
        'title_extracted_dense_vecs', 'title_extracted_sparse_vecs_upsert', 'title_extracted_sparse_vecs_idx2token',
        'definition_extracted_dense_vecs', 'definition_extracted_sparse_vecs_upsert', 'definition_extracted_sparse_vecs_idx2token',
