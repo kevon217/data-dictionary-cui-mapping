@@ -8,7 +8,7 @@ from prefect import flow
 from prefect.task_runners import SequentialTaskRunner
 from pathlib import Path
 import ddcuimap.utils.helper as helper
-import ddcuimap.utils.process_data_dictionary as proc_dd
+import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 
 # MetaMap API
 from ddcuimap.curation.utils import curation_functions as cur

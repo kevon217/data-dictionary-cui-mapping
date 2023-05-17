@@ -11,7 +11,7 @@ import pandas as pd
 from prefect import flow
 from tqdm import tqdm
 
-from ddcuimap.utils.text_processing import check_query_terms_valid
+from ddcuimap.curation.utils.text_processing import check_query_terms_valid
 from . import umls_query_processing_functions as uqproc
 
 

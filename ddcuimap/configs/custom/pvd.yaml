@@ -14,7 +14,7 @@ data_dictionary_settings:
 
 preprocessing_settings:
     remove_stopwords : true
-    stopwords_filepath: 'C:\\Users\\armengolkm\\Desktop\\Full Pipeline Test v1.1.0\\MetaMap_Settings_StopWords.csv'
+    stopwords_filepath:
     use_cheatsheet : false
     cheatsheet_filepath:
 

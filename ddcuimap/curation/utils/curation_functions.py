@@ -226,9 +226,18 @@ def concat_cols_umls(df, umls_columns: list):
 # @task(name="Reordering examples dictionary columns")
 def reorder_cols(df, order: list):
     """Reorder columns"""
-
-    df = df[order]
+    order_exists = keep_existing_cols(df.columns, order)
+    df = df[order_exists]
     return df
+
+
+def keep_existing_cols(df_cols, cols_to_check: list):
+    """Keep existing columns"""
+    cols_incl = list(set(cols_to_check).intersection(df_cols))
+    cols_excl = list(set(cols_to_check).difference(df_cols))
+    cols = [x for x in df_cols if x not in cols_excl]
+    print(f"The following columns were not found and will be excluded: {cols_excl}")
+    return cols
 
 
 @task(name="Manual override of column values")

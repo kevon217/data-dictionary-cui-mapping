@@ -13,7 +13,7 @@ from pandas.api.types import CategoricalDtype
 from tqdm import tqdm
 
 import ddcuimap.utils.helper as helper
-from ddcuimap.utils.text_processing import clean_text
+from ddcuimap.curation.utils.text_processing import clean_text
 
 cfg = helper.compose_config.fn(
     config_path="../configs/semantic_search", config_name="embeddings", overrides=[]

@@ -9,7 +9,7 @@ from prefect import flow
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
-import ddcuimap.utils.process_data_dictionary as proc_dd
+import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 import ddcuimap.curation.utils.curation_functions as cur
 
 # UMLS API

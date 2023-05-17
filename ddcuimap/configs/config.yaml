@@ -4,7 +4,5 @@ defaults:
     - config_umls_api
     - config_metamap_api
     - config_pinecone_api
-  - custom:
-    - de
-    - title_def
+  - custom: null
   - semantic_search: null

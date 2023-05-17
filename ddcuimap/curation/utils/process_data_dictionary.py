@@ -1,7 +1,7 @@
 import pandas as pd
 from prefect import flow, task
 
-from . import helper as helper
+from ddcuimap.utils import helper as helper
 from . import text_processing as tp
 
 

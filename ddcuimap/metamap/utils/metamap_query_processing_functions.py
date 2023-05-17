@@ -13,7 +13,7 @@ from prefect import flow, task
 from prefect.task_runners import SequentialTaskRunner
 
 from ddcuimap.metamap.skr_web_api import Submission
-from ddcuimap.utils.text_processing import (
+from ddcuimap.curation.utils.text_processing import (
     check_query_terms_valid,
     unescape_string,
 )
