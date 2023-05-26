@@ -1,21 +1,21 @@
 """
 
-This file contains custom functions used in scripts designed to merge curated UMLS CUIs back with the original examples dictionary file.
+This file contains custom functions used in scripts designed to merge curated UMLS CUIs
+back with the original examples dictionary file.
 
 """
 
 from functools import reduce
-from pathlib import Path
 import numpy as np
 import pandas as pd
-from openpyxl.utils import get_column_letter
-from prefect import flow, task
-from prefect.task_runners import SequentialTaskRunner
 
 from ddcuimap.utils import helper as helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.curation import logger
+from ddcuimap.curation.utils import xlsx_formatting as xlsx
 
 
-@task(name="Adding search_ID column")
+@log(msg="Adding search_ID column")
 def add_search_ID_col(df):
     """Add search ID column"""
 
@@ -26,7 +26,7 @@ def add_search_ID_col(df):
     return df
 
 
-@task(name="Adding search pipeline name column")
+@log(msg="Adding search pipeline name column")
 def add_search_pipeline_col(df, pipeline_name):
     df.insert(
         1, "pipeline_name", pipeline_name
@@ -34,7 +34,7 @@ def add_search_pipeline_col(df, pipeline_name):
     return df
 
 
-@task(name="Subsetting dataframe with curation related columns")
+@log(msg="Subsetting dataframe with curation related columns")
 def curation_cols_filter(df, df_dd, cols_curation: list):
     """Create subset of dataframe with columns necessary for curation"""
 
@@ -43,7 +43,7 @@ def curation_cols_filter(df, df_dd, cols_curation: list):
     return df
 
 
-@flow(flow_run_name="Formatting dataframe for curation")
+@log(msg="Formatting dataframe for curation")
 def format_curation_dataframe(df_dd, df_dd_preprocessed, pipeline_name, cfg):
     """Create dataframe for curation"""
 
@@ -59,11 +59,11 @@ def format_curation_dataframe(df_dd, df_dd_preprocessed, pipeline_name, cfg):
         )
         .pipe(add_search_pipeline_col, pipeline_name)
     )
-    # query_terms_cols = [col for col in df_curation.columns if re.search(r'query_term_\d+', col)]  # find columns in df_curation that match query_term_ then any number
+    # query_terms_cols = [col for col in df_curation.columns if re.search(r'query_term_\d+', col)]  # find columns in df_curation that match query_term_ then any number #TODO: figure out if still needed
     return df_curation  # , query_terms_cols
 
 
-@task(name="Creating curation file")
+@log(msg="Creating curation file")
 def create_curation_file(
     dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg
 ):
@@ -107,8 +107,8 @@ def create_curation_file(
         ws1 = writer.sheets[
             cfg.custom.curation_settings.file_settings.excel.sheet_names.sheet1
         ]
-        set_col_widths(ws1, df_final)
-        set_hidden_cols(
+        xlsx.set_col_widths(ws1, df_final)
+        xlsx.set_hidden_cols(
             ws1,
             df_final,
             cfg.custom.curation_settings.file_settings.excel.hide_cols_curation,
@@ -124,7 +124,7 @@ def get_curation_excel_file(prompt: str):
     return fp_curation
 
 
-@task(name="Loading curation excel file")
+@log(msg="Loading curation excel file")
 def load_curation_excel_file(fp_curation: str, cfg):
     """Load curation Excel file"""
 
@@ -149,7 +149,7 @@ def load_curation_excel_file(fp_curation: str, cfg):
     return df_UMLS_curation, df_Data_Dictionary, df_Data_Dictionary_extracted
 
 
-@task(name="Filtering rows by keep column")
+@log(msg="Filtering rows by keep column")
 def filter_keep_col(df):
     """Filter out rows where keep column is empty"""
 
@@ -162,10 +162,11 @@ def filter_keep_col(df):
     return df
 
 
-@task(name="Reordering rows based on keep column number/letter")
+@log(msg="Reordering rows based on keep column number/letter")
 def order_keep_col(df):
     """Orders rows in keep column by number and letter e.g., 1a, 1b, 2a, 2b, 3a, 3b"""
 
+    # TODO: need to fix issue where 1a,1b,2,2c puts 2 first.
     df["keep"] = df["keep"].astype(str)
     df["keep_num"] = [x[0] for x in df["keep"]]
     df["keep_letter"] = [x[1:] if len(x) > 1 else "" for x in df["keep"]]
@@ -174,7 +175,7 @@ def order_keep_col(df):
     return df
 
 
-@task(name="Concatenating multi-CUI concepts")
+@log(msg="Concatenating multi-CUI concepts")
 def concat_mult_cuis(df, cols_join_on, umls_columns):
     """Concatenate multi-CUI concept by /"""
 
@@ -186,7 +187,7 @@ def concat_mult_cuis(df, cols_join_on, umls_columns):
     return df
 
 
-@task(name="Merging curated cuis with original examples dictionary")
+@log(msg="Merging curated cuis with original examples dictionary")
 def merge_with_dictionary(
     df_left,
     df_right,
@@ -207,7 +208,7 @@ def merge_with_dictionary(
     return df
 
 
-@task(name="Concatenating multiple cuis")
+@log(msg="Concatenating multiple cuis")
 def concat_cols_umls(df, umls_columns: list):
     """Concatenate multiple CUIs in one row"""
 
@@ -223,9 +224,10 @@ def concat_cols_umls(df, umls_columns: list):
     return df_merged
 
 
-# @task(name="Reordering examples dictionary columns")
+@log(msg="Reordering examples dictionary columns")
 def reorder_cols(df, order: list):
     """Reorder columns"""
+
     order_exists = keep_existing_cols(df.columns, order)
     df = df[order_exists]
     return df
@@ -233,17 +235,23 @@ def reorder_cols(df, order: list):
 
 def keep_existing_cols(df_cols, cols_to_check: list):
     """Keep existing columns"""
-    cols_incl = list(set(cols_to_check).intersection(df_cols))
+
+    cols_incl = list(
+        set(cols_to_check).intersection(df_cols)
+    )  # TODO: check why I wrote this
     cols_excl = list(set(cols_to_check).difference(df_cols))
     cols = [x for x in df_cols if x not in cols_excl]
-    print(f"The following columns were not found and will be excluded: {cols_excl}")
+    logger.warning(
+        f"The following columns were not found and will be excluded: {cols_excl}"
+    )
     return cols
 
 
-@task(name="Manual override of column values")
+@log(msg="Manual override of column values")
 def override_cols(df, override: dict):
-    """Custom function to accommodate current bug in BRICS examples dictionary import process that wants multi-CUI concepts to have a single source terminology
-    e.g., C123456/C234567 -> UMLS instead of UMLS/UMLS"""
+    """Custom function to accommodate current bug in BRICS examples dictionary import process that wants multi-CUI
+    concepts to have a single source terminology e.g., C123456/C234567 -> UMLS instead of UMLS/UMLS
+    """
 
     sep = override.sep
     cols = override.columns
@@ -255,52 +263,3 @@ def override_cols(df, override: dict):
         # set col in df to temp3 without setting value on a copy of a slice from DataFrame
         df.loc[:, col] = temp3
     return df
-
-
-# EXCEL FORMATTING
-
-
-# @task(name="Getting excel columns max width")
-def get_col_max_widths(df):
-    """Used to set excel column width to maximum character length in column"""
-
-    # First we find the maximum length of the index column
-    idx_max_width = max(
-        [len(str(s)) for s in df.index.values] + [len(str(df.index.name))]
-    )
-    # Then, we concatenate this to the max of the lengths of column name and its values for each column, left to right
-    return [
-        idx_max_width + max([len(str(s)) for s in df[col].values] + [len(col)])
-        for col in df.columns
-    ]
-
-
-# @task(name="Getting excel columns header widths")
-def get_header_widths(df):
-    """Used to set excel column width to character length of column header"""
-
-    # First we find the maximum length of the index column
-    idx_header_width = [len(str(s)) + 4 for s in df.columns]
-    # Then, we concatenate this to the max of the lengths of column name and its values for each column, left to right
-    return idx_header_width
-
-
-# @task(name="Setting excel column widths")
-def set_col_widths(ws, df):
-    """Set column widths in excel"""
-
-    col_widths = get_header_widths(df)
-    for i, width in enumerate(col_widths):
-        ws.column_dimensions[get_column_letter(i + 1)].width = width
-
-
-# @task(name="Setting hidden excel columns")
-def set_hidden_cols(ws, df, hidden_cols: list):
-    """Set hidden columns in excel"""
-
-    if hidden_cols:
-        cols_hide_idx = [df.columns.get_loc(c) for c in hidden_cols if c in df]
-        for col_idx in cols_hide_idx:
-            col_letter_hide = get_column_letter(col_idx + 1)
-            # these columns are hidden as they aren't useful for review
-            ws.column_dimensions[col_letter_hide].hidden = True

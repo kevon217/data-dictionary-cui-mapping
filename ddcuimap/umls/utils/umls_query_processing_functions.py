@@ -9,10 +9,11 @@ import math
 
 import pandas as pd
 import requests
-from prefect import flow, task
+
+from ddcuimap.utils.decorators import log
 
 
-@task(name="Checking if query term is valid")
+@log(msg="Checking if query term is valid")
 def check_query_terms_valid(query_term) -> bool:
     """Check if query term is valid"""
 
@@ -23,7 +24,7 @@ def check_query_terms_valid(query_term) -> bool:
     return valid
 
 
-@task(name="Returning INVALID QUERY TERM output")
+@log(msg="Returning INVALID QUERY TERM output")
 def invalid_query_term_output(
     vn: str, searchID: int, searchTerm: str, searchTermCol: str
 ) -> list:
@@ -44,7 +45,7 @@ def invalid_query_term_output(
     return invalid_output
 
 
-@task(name="Returning NO RESULTS output")
+@log(msg="Returning NO RESULTS output")
 def no_results_output(
     vn: str, searchID: int, searchTerm: str, searchTermCol: str, searchType: str
 ) -> list:
@@ -65,7 +66,7 @@ def no_results_output(
     return results_none
 
 
-@task(name="Modifying UMLS query params dictionary")
+# @log(msg="Modifying UMLS query params dictionary")
 def modify_query_params(query_params: dict, **kwargs) -> dict:
     """Create query dictionary for UMLS API search"""
 
@@ -84,7 +85,7 @@ def pages_to_view(recCount: int, cfg) -> list:
     return pages
 
 
-@task(name="Querying UMLS api")
+@log(msg="Querying UMLS API")
 def query_umls_api(fullpath: str, query_params: dict) -> dict:
     """Query UMLS API and return results"""
 
@@ -95,7 +96,7 @@ def query_umls_api(fullpath: str, query_params: dict) -> dict:
     return jsonData
 
 
-@flow(flow_run_name="Processing UMLS query results")
+@log(msg="Processing UMLS query results")
 def process_query_results(jsonData: dict, query_params: dict, cfg) -> pd.DataFrame:
     """Process query results"""
 

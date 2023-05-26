@@ -3,22 +3,23 @@
 General helper functions for UI and configuration components of scripts.
 
 """
-
+import logging
 import os
 import tkinter as tk
 from tkinter import filedialog
 from pathlib import Path
 from hydra import compose, initialize
 from omegaconf import OmegaConf
-from prefect import task
 from omegaconf.dictconfig import DictConfig
 from typing import List, Optional
 
+from ddcuimap.utils.decorators import log
+from ddcuimap.utils import logger
 
-# LOAD CONFIGS
+# CONFIG FILE FUNCTIONS
 
 
-@task(name="Composing config file")
+@log(msg="Composing config file")
 def compose_config(
     config_path: str = "../configs",
     config_name: str = "config",
@@ -32,10 +33,7 @@ def compose_config(
     return config
 
 
-# SAVE CONFIGS
-
-
-@task(name="Saving config file")
+@log(msg="Saving config file")
 def save_config(cfg, dir_step1, filename=None):
     """Save Omegaconf configuration file"""
     if filename:
@@ -44,23 +42,21 @@ def save_config(cfg, dir_step1, filename=None):
         fp = Path(dir_step1 / "config.yaml")
     with open(fp, "w") as fp:
         OmegaConf.save(config=cfg, f=fp.name)
-        print("Saving config file")
 
 
-@task(name="Loading config file")
+@log(msg="Loading config file")
 def load_config(filepath):
     """Load OmegaConf configuration file"""
 
     with open(filepath, "r", encoding="utf-8") as fp:
         loaded = OmegaConf.load(fp.name)
-    print("Loading config file")
     return loaded
 
 
 # FOLDER/DIRECTORY FUNCTIONS
 
 
-@task(name="Creating new folder")
+@log(msg="Creating new folder")
 def create_folder(folder_path):
     """Will create new folder and append numbers incrementally if folder_path already exists"""
 
@@ -73,7 +69,7 @@ def create_folder(folder_path):
             adjusted_folder_path = folder_path + " (" + str(counter) + ")"
             folder_found = os.path.isdir(adjusted_folder_path)
         os.mkdir(adjusted_folder_path)
-        print(f"Folder created: {adjusted_folder_path}")
+        logger.info(f"Folder created: {adjusted_folder_path}")
     elif isinstance(folder_path, Path):
         # using pathlib and not os check if folder_path already exists, append numbers incrementally
         adjusted_folder_path = folder_path
@@ -86,7 +82,7 @@ def create_folder(folder_path):
             )
             folder_found = adjusted_folder_path.exists()
         adjusted_folder_path.mkdir(parents=True, exist_ok=True)
-        print(f"Folder created: {adjusted_folder_path}")
+        logger.info(f"Folder created: {adjusted_folder_path}")
     else:
         raise TypeError("folder_path must be a string or pathlib Path object")
 
@@ -103,37 +99,21 @@ def manage_tk_dialogbox(tk):
     return root
 
 
-# @task(name="Choosing input file")
+@log(msg="Choosing input file")
 def choose_file(prompt: str):
     """Opens up tk filedialog box to allow user to choose a local file"""
 
     root = manage_tk_dialogbox(tk)
     fp = filedialog.askopenfilename(parent=root, title=prompt)
-    print(f"File chosen: {fp}")
+    logger.info(f"File chosen: {fp}")
     return fp
 
 
-# @task(name="Choosing input directory")
+@log(msg="Choosing input directory")
 def choose_dir(prompt: str):
     """Opens up tk filedialog box to allow user to choose a local directory"""
 
     root = manage_tk_dialogbox(tk)
     dp = filedialog.askdirectory(parent=root, title=prompt)
-    print(f"Directory chosen: {dp}")
+    logger.info(f"Directory chosen: {dp}")
     return dp
-
-
-# def dtale_browser(filepath: str):
-#     """Opens up dtale browser to view dataframe"""
-#
-#     import dtale
-#
-#     if filepath:
-#         df = pd.read_pickle(filepath)
-#         df_dtale = dtale.show(df)
-#         df_dtale.open_browser()
-#     else:
-#         fp = choose_file("Choose a dataframe to view in dtale")
-#         df = pd.read_pickle(fp)
-#         df_dtale = dtale.show(df)
-#         df_dtale.open_browser()

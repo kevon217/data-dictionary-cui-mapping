@@ -1,7 +1,7 @@
 """
 
-This file contains custom functions used in scripts designed to search, map and format UMLS CUIs for BRICS examples elements (DEs) and
-permissible values/permissible value descriptions (PVs/PVDs).
+This file contains custom functions used in scripts designed to search, map and format UMLS CUIs
+for BRICS examples elements (DEs) and permissible values/permissible value descriptions (PVs/PVDs).
 
 """
 
@@ -9,11 +9,14 @@ import re
 
 from bs4 import BeautifulSoup
 import html as ihtml
-import cchardet
 import pandas as pd
-from prefect import task
+
+# import cchardet # TODO: may be useful in future
 
 from ddcuimap.utils import helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.curation import logger
+
 
 # TEXT PROCESSING FUNCTIONS
 
@@ -34,7 +37,7 @@ def unescape_string(textstring):
     return textstring.replace("\\", "")
 
 
-@task(name="Removing punctuation")
+@log(msg="Removing punctuation")
 def remove_punctuation(df, columns):
     """Remove punctuation"""
 
@@ -64,17 +67,17 @@ def remove_stopwords_text(text, ls_stopwords):
     return output, ls_removed
 
 
-@task(name="Removing stopwords from query columns")
+@log(msg="Removing stopwords from query columns")
 def remove_stopwords_cols(df, columns, preprocessing_settings):
     """Remove stopwords from list and keep track of modified terms and stopwords removed in dataframe columns"""
 
     cols_query_terms = []
     if preprocessing_settings.remove_stopwords:
         if preprocessing_settings.stopwords_filepath:
-            print("Loading stopwords file from configs")
+            logger.warning("Loading stopwords file from configs")
             fp_stopwords = preprocessing_settings.stopwords_filepath
         else:
-            print("Opening dialog box to choose stopwords file")
+            logger.warning("Opening dialog box to choose stopwords file")
             fp_stopwords = helper.choose_file("Select Stopwords csv file")
         df_stopwords = pd.read_csv(fp_stopwords)
         ls_stopwords = list(
@@ -97,15 +100,16 @@ def remove_stopwords_cols(df, columns, preprocessing_settings):
     return df
 
 
+@log(msg="Removing variables referenced in curation cheatsheet")
 def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet implemented
     """Remove variables from examples dictionary that are already curated in a Cheatsheet csv file"""
 
     if preprocessing_settings.use_cheatsheet:
         if preprocessing_settings.cheatsheet_filepath:
-            print("Loading cheatsheet file from configs")
+            logger.warning("Loading cheatsheet file from configs")
             fp_cheatsheet = preprocessing_settings.cheatsheet_filepath
         else:
-            print("Opening dialog box to choose cheatsheet file")
+            logger.warning("Opening dialog box to choose cheatsheet file")
             fp_cheatsheet = helper.choose_file(title="Select Cheatsheet csv file")
         df_cheatsheet = pd.read_csv(fp_cheatsheet)
         curated_vars = df_cheatsheet[
@@ -113,12 +117,12 @@ def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet impleme
         ]  # TODO: need to add consistent formatting for use of a cheatsheet
         df = df[~df["variable name"].isin(curated_vars)]
     else:
-        print("Cheatsheet not used")
+        logger.warning("Cheatsheet not used")
         pass
     return df
 
 
-# @task(name="Cleaning text")
+@log(msg="Cleaning text")
 def clean_text(text):
     text = BeautifulSoup(ihtml.unescape(text), "lxml").text
     text = re.sub(r"http[s]?://\S+", "", text)

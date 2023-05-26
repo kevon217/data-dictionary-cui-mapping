@@ -1,17 +1,18 @@
 """
 
-Main script for creating dictionary import file from curated examples dictionary --> UMLS CUI mappings excel file.
+Main script for creating dictionary import file from curated examples dictionary --> UMLS CUI mappings Excel file.
 
 """
 
-from prefect import flow
 from pathlib import Path
+
 from ddcuimap.utils import helper as helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.curation import logger
 from ddcuimap.curation.utils import curation_functions as cur
 
 
-# @hydra.main(version_base=None, config_path="../configs", config_name="config")
-@flow(flow_run_name="Creating dictionary import file", log_prints=True)
+@log(msg="Creating dictionary import file")
 def create_dd_file(cfg):
     # LOAD "*_Step-1_curation_keepCol.xlsx" file
     if not cfg.custom.create_dictionary_import_settings.curation_file_path:
@@ -25,11 +26,11 @@ def create_dd_file(cfg):
         df_UMLS_curation,
         df_Data_Dictionary,
         df_Data_Dictionary_extracted,
-    ) = cur.load_curation_excel_file.fn(
+    ) = cur.load_curation_excel_file(
         fp_curation, cfg
     )  # load curation Excel file
 
-    dir_step2 = helper.create_folder.fn(
+    dir_step2 = helper.create_folder(
         Path(fp_curation).parent.joinpath(
             f"{cfg.custom.curation_settings.file_settings.directory_prefix}_Step-2_create-dictionary-import-file"
         )
@@ -73,12 +74,12 @@ def create_dd_file(cfg):
     fp_step2 = f"{dir_step2}/{cfg.custom.curation_settings.file_settings.file_prefix}_Step-2_dictionary-import-file.csv"
     cfg.custom.create_dictionary_import_settings.dict_file_path = fp_step2
     df_final.to_csv(fp_step2, index=False)  # output df_final dataframe to csv
-    print(f"Saved {fp_step2}")
+    logger.info(f"Saved {fp_step2}")
     helper.save_config(cfg, dir_step2)
 
     return df_final
 
 
 if __name__ == "__main__":
-    cfg = helper.load_config.fn(helper.choose_file("Load config file from Step 1"))
+    cfg = helper.load_config(helper.choose_file("Load config file from Step 1"))
     df_final = create_dd_file(cfg)

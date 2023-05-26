@@ -1,2 +1,9 @@
-# from get_version import get_version
-# __version__ = get_version(__file__)
+import logging
+from ddcuimap.utils.setup_logging import log_setup
+
+
+# CREATE LOGGER
+log_setup()
+logger = logging.getLogger("semantic_search_logger")
+logger.propagate = False
+logger.info("Initiating ddcuimap.semantic_search logging.")

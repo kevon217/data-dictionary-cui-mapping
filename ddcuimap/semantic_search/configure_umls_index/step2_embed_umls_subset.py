@@ -4,26 +4,29 @@ Embed UMLS subset before upsert into Pinecone vector database for semantic searc
 
 """
 
-from prefect import flow
 import pandas as pd
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.semantic_search import logger
 from ddcuimap.semantic_search.utils import builders
 
-cfg = helper.compose_config.fn(
+cfg = helper.compose_config(
     config_path="../configs/semantic_search", config_name="embeddings", overrides=[]
 )
 
 
-@flow(flow_run_name="Creating UMLS concept semantic search embeddings", log_prints=True)
+@log(msg="Creating UMLS concept semantic search embeddings")
 def embed_umls(cfg, **kwargs):
     # LOAD UMLS CONCEPT DATAFRAME
     if "kwargs" in locals():
         df_umls = kwargs.get("df_umls")
         if df_umls is None or df_umls.empty:
             if cfg.upsert.filepath_raw:
-                print(f"Using UMLS concept dataframe: {cfg.upsert.filepath_raw}")
+                logger.warning(
+                    f"Using UMLS concept dataframe: {cfg.upsert.filepath_raw}"
+                )
             else:
                 cfg.upsert.filepath_raw = helper.choose_dir(
                     "Choose UMLS concept dataframe"
@@ -55,7 +58,7 @@ def embed_umls(cfg, **kwargs):
     df_umls_embeddings.to_pickle(cfg.upsert.filepath_processed)
 
     # SAVE CONFIG
-    helper.save_config.fn(
+    helper.save_config(
         cfg, Path(cfg.upsert.filepath_processed).parent, "config_embeddings.yaml"
     )
 

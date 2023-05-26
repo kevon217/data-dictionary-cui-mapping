@@ -8,14 +8,16 @@ Used by batch_hybrid_query_pipeline.py to iterate through each row in the curati
 import re
 
 import pandas as pd
-from prefect import flow
 from tqdm import tqdm
 
 from ddcuimap.curation.utils.text_processing import check_query_terms_valid
-from . import umls_query_processing_functions as uqproc
+from ddcuimap.umls.utils import umls_query_processing_functions as uqproc
+
+from ddcuimap.utils.decorators import log
+from ddcuimap.umls import logger
 
 
-@flow(flow_run_name="Running UMLS Runner")
+@log(msg="Running UMLS Runner")
 def umls_runner(df_results, df_curation, cfg):
     cfg.apis.umls.query_params.apiKey = cfg.apis.umls.user_info.apiKey
     cnt_searchTerm = 0
@@ -28,7 +30,7 @@ def umls_runner(df_results, df_curation, cfg):
         """
         search_ID += 1
         vn = row[cfg.custom.data_dictionary_settings.variable_column]  # variable name
-        print(f"Querying search_ID [{search_ID}]: {vn}")
+        logger.info(f"Querying search_ID [{search_ID}]: {vn}")
         query_terms_dict = {
             col: row[col]
             for col in df_curation.columns
@@ -54,9 +56,9 @@ def umls_runner(df_results, df_curation, cfg):
                 if (
                     recCount
                 ):  # if recCount is not 0, results were found with default exact search
-                    # print(
-                    #     f"({cnt_searchTerm}) {searchTerm}: {recCount} {searchType} matches."
-                    # )
+                    logger.info(
+                        f"({cnt_searchTerm}) {searchTerm}: {recCount} {searchType} matches."
+                    )
                     df_results_cols = uqproc.process_query_results(
                         jsonData, query_params, cfg
                     )
@@ -72,9 +74,9 @@ def umls_runner(df_results, df_curation, cfg):
                     else:
                         break  # if search_all_cols is False, break out of loop and move to next row
                 else:  # for cases where the 'exact' search type results in an empty list
-                    # print(
-                    #     f"({cnt_searchTerm}) {searchTerm}: No exact match. Trying alternative searchType."
-                    # )
+                    logger.warning(
+                        f"({cnt_searchTerm}) {searchTerm}: No exact match. Trying alternative searchType."
+                    )
                     temp_ls = uqproc.no_results_output(
                         vn, search_ID, searchTerm, searchTermCol, searchType
                     )
@@ -96,9 +98,9 @@ def umls_runner(df_results, df_curation, cfg):
                         recCount
                     ):  # if recCount is not 0, results were found with approximate search
                         cnt_searchTerm += 1
-                        # print(
-                        #     f"({cnt_searchTerm}) {searchTerm}: {recCount} {searchType} matches."
-                        # )
+                        logger.info(
+                            f"({cnt_searchTerm}) {searchTerm}: {recCount} {searchType} matches."
+                        )
                         df_results_cols = uqproc.process_query_results(
                             jsonData, query_params, cfg
                         )
@@ -114,9 +116,9 @@ def umls_runner(df_results, df_curation, cfg):
                         else:
                             break
                     else:  # if approximate search still results in nothing, try next query_term if available
-                        # print(
-                        #     f"({cnt_searchTerm}) {searchTerm}: No alternative searchType match. Moving on to next query term option if available."
-                        # )
+                        logger.warning(
+                            f"({cnt_searchTerm}) {searchTerm}: No alternative searchType match. Moving on to next query term option if available."
+                        )
                         temp_ls = uqproc.no_results_output(
                             vn, search_ID, searchTerm, searchTermCol, searchType
                         )
@@ -126,9 +128,9 @@ def umls_runner(df_results, df_curation, cfg):
                         df_results = pd.concat([df_results, df_temp], ignore_index=True)
                         continue
             else:  # if query term is not valid, try next query term if available
-                # print(
-                #     f"({cnt_searchTerm}) {searchTerm}: Is nan or empty. Trying next query term option if available."
-                # )
+                logger.warning(
+                    f"({cnt_searchTerm}) {searchTerm}: Is nan or empty. Trying next query term option if available."
+                )
                 results_ls = uqproc.invalid_query_term_output(
                     vn, search_ID, searchTerm, searchTermCol
                 )

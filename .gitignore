@@ -10,3 +10,5 @@
 /docs
 /notebooks/.ipynb_checkpoints
 __pycache__/
+/ddcuimap/**/logging.txt
+/logging.txt

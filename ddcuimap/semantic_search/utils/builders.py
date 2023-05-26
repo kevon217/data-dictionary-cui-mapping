@@ -4,27 +4,28 @@ Functions to assist with tokenizing, embedding, and formatting data for upsert i
 
 """
 
-from prefect import flow, task
 from sentence_transformers import SentenceTransformer
 from splade.models.transformer_rep import Splade
 from transformers import AutoTokenizer
 import torch
 
+from ddcuimap.utils.decorators import log
+from ddcuimap.semantic_search import logger
 from ddcuimap.semantic_search.utils.checks import (
     normalize_unit_length,
 )
 
 
-@task(name="Checking/Setting Device for embedding")
+@log(msg="Checking/Setting Device for embedding")
 def check_set_device(cfg):
     """Check device settings to run on GPU if available, else cpu."""
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     cfg.semantic_search_settings.device = device
-    print(f"Running on {device}")
+    logger.info(f"Running on {device}")
 
 
-@task(name="Adding Vector ID to Dataframe")
+@log(msg="Adding Vector ID to Dataframe")
 def add_vector_id(df):
     """Add vector_id column to dataframe for upsert into Pinecone."""
 
@@ -33,7 +34,7 @@ def add_vector_id(df):
     return df
 
 
-@task(name="Adding Metadata to Dataframe")
+@log(msg="Adding Metadata to Dataframe")
 def add_metadata(df, columns):  # TODO: figure out inputs
     """Add metadata columns to dataframe for upsert into Pinecone."""
 
@@ -50,14 +51,14 @@ def add_metadata(df, columns):  # TODO: figure out inputs
     return df
 
 
-@task(name="Tokenizing Columns and Adding to Metadata")
+@log(msg="Tokenizing Columns and Adding to Metadata")
 def tokenize_columns(df, columns, model_name):
     """Tokenize columns and add to metadata for upsert into Pinecone."""
 
     metadata = {}
     tokenizer = AutoTokenizer.from_pretrained(model_name, truncation=True)
     for col in columns:
-        print(f"Tokenizing {col}")
+        logger.info(f"Tokenizing {col}")
         batch = df[col].values.tolist()
         tokens = [tokenizer.tokenize(sentence.lower()) for sentence in batch]
         df[f"{col}_tokens"] = tokens
@@ -73,8 +74,8 @@ def tokenize_columns(df, columns, model_name):
     return df
 
 
-@flow(
-    flow_run_name="Building dense and sparse embeddings and adding metadata for upsert into Pinecone"
+@log(
+    msg="Building dense and sparse embeddings and adding metadata for upsert into Pinecone"
 )
 def hybrid_builder(
     df, embed_columns, dense_model_id, sparse_model_id, sparse_batch_size, cfg
@@ -90,7 +91,7 @@ def hybrid_builder(
     sparse_model.to(cfg.semantic_search_settings.device)  # move to GPU if possible
     idx2token = {idx: token for token, idx in tokenizer.get_vocab().items()}
     for col in embed_columns:
-        print(f"Embedding {col}")
+        logger.info(f"Embedding {col}")
         batch = df[col].values.tolist()
         dense_vecs = dense_model.encode(
             batch,
@@ -101,7 +102,7 @@ def hybrid_builder(
         sparse_upsert = []
         sparse_idx2token = []
         for i in range(0, len(batch), sparse_batch_size):
-            print(f"Embedding {i} to {i + sparse_batch_size}")
+            logger.info(f"Embedding {i} to {i + sparse_batch_size}")
             batch_splade = batch[i : i + sparse_batch_size]
             input_ids = tokenizer(
                 batch_splade, return_tensors="pt", padding=True, truncation=True
@@ -130,19 +131,6 @@ def hybrid_builder(
         df[f"{col}_sparse_vecs_upsert"] = sparse_upsert
         df[f"{col}_sparse_vecs_idx2token"] = sparse_idx2token
     return df
-
-
-# # @task(name="Creating Dense Embeddings and Adding to Dataframe")
-# def create_sentence_embeddings(df, model_name, columns, cfg):
-#     """Create dense embeddings for each column in dataframe."""
-#
-#     dense_model = SentenceTransformer(model_name, device=cfg.semantic_search_settings.device)
-#     for col in columns:
-#         print(f"Embedding {col}")
-#         batch = df[col].values.tolist()
-#         embedding = dense_model.encode(batch, show_progress_bar=True)
-#         df[f"{col}_dense_vector"] = embedding.tolist()
-#     return df
 
 
 # TODO: create generic dense and sparse functions that take in package function and model id and return embeddings

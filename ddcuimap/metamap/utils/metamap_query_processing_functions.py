@@ -9,8 +9,9 @@ import json
 import re
 
 import pandas as pd
-from prefect import flow, task
-from prefect.task_runners import SequentialTaskRunner
+
+from ddcuimap.utils.decorators import log
+from ddcuimap.metamap import logger
 
 from ddcuimap.metamap.skr_web_api import Submission
 from ddcuimap.curation.utils.text_processing import (
@@ -19,7 +20,7 @@ from ddcuimap.curation.utils.text_processing import (
 )
 
 
-@task(name="Formatting query terms for MetaMap")
+@log(msg="Formatting query terms for MetaMap")
 def format_for_metamap(df: pd.DataFrame, cfg) -> pd.DataFrame:
     """Formats query term for MetaMap ingestion"""
 
@@ -38,7 +39,7 @@ def format_for_metamap(df: pd.DataFrame, cfg) -> pd.DataFrame:
     return df
 
 
-@task(name="Creating MetaMap SinglinePMID.txt input file")
+@log(msg="Creating MetaMap SinglinePMID.txt input file")
 def create_mm_inputfile(df: pd.DataFrame, dir_step1):  # TODO: add file name as argument
     """Creates file for MetaMap input"""
 
@@ -61,7 +62,7 @@ def create_mm_command_args(cmdargs) -> str:
     return cmdargs
 
 
-@flow(flow_run_name="Running MetaMap batch query", task_runner=SequentialTaskRunner)
+@log(msg="Running MetaMap batch query")
 def run_batch_metamap_api(fp_mm_inputfile, cfg):
     """This function calls the MetaMap API."""
 
@@ -75,14 +76,14 @@ def run_batch_metamap_api(fp_mm_inputfile, cfg):
     inst.set_batch_file(fp_mm_inputfile)
     inst.form["SingLinePMID"] = "yes"
     inst.form["Batch_Command"] = "{} {}".format(cmd, unescape_string(cmdargs))
-    print("MetaMap Batch in progress...")  # TODO: put in progress bar here
+    logger.info("MetaMap Batch in progress...")  # TODO: put in progress bar here
     response = inst.submit()
     # print("response status: {}".format(response.status_code))
     # print("content: {}".format(response.content.decode()))
     return response
 
 
-@task(name="Converting MetaMap output to JSON")
+@log(msg="Converting MetaMap output to JSON")
 def mm_output_to_json(response):
     """Decodes MetaMap output to JSON and removes 'NOT DONE LOOP' to process properly"""
 
@@ -91,11 +92,10 @@ def mm_output_to_json(response):
         "NOT DONE LOOP", ""
     )  # remove string "NOT DONE LOOP" if present
     mm_json = json.loads(jsondata)
-    # print("examples:{}".format(mm_json))
     return mm_json
 
 
-@task(name="Saving MetaMap output as JSON")
+@log(msg="Saving MetaMap output as JSON")
 def save_mm_output_json(data, dir_step1):
     """Saves MetaMap output as json file"""
 
@@ -105,9 +105,10 @@ def save_mm_output_json(data, dir_step1):
     return fp_json
 
 
-@task(name="Processing JSON conversion to dataframe")
+@log(msg="Processing JSON conversion to dataframe")
 def process_mm_json_to_df(mm_json, cfg) -> pd.DataFrame:
     """Processes MetaMap output json file and returns dataframe"""
+
     #
     # if fp_json: # TODO: add option to read in json file instead of dictionary
     #     with open(fp_json) as f:
@@ -149,7 +150,7 @@ def rank_CandidateScore(CandidateScore):
     return overall_rank
 
 
-@task(name="Renaming MetaMap columns for curation file")
+@log(msg="Renaming MetaMap columns for curation file")
 def rename_mm_columns(df: pd.DataFrame, cfg) -> pd.DataFrame:
     """Renames MetaMap output columns"""
 

@@ -80,10 +80,10 @@ from omegaconf import OmegaConf
 ```
 ###### LOAD/EDIT CONFIGURATION FILES
 ```python
-cfg_hydra = helper.compose_config.fn(overrides=["custom=hydra_base"])
-# cfg_umls = helper.compose_config.fn(overrides=["custom=de", "apis=config_umls_api"])
-cfg_mm = helper.compose_config.fn(overrides=["custom=de", "apis=config_metamap_api"])
-cfg_ss = helper.compose_config.fn(
+cfg_hydra = helper.compose_config(overrides=["custom=hydra_base"])
+# cfg_umls = helper.compose_config(overrides=["custom=de", "apis=config_umls_api"])
+cfg_mm = helper.compose_config(overrides=["custom=de", "apis=config_metamap_api"])
+cfg_ss = helper.compose_config(
     overrides=[
         "custom=title_def",
         "semantic_search=embeddings",
@@ -132,7 +132,7 @@ from ddcuimap.utils import helper
 ###### CREATE DATA DICTIONARY IMPORT FILE
 
 ```python
-cfg_step1 = helper.load_config.fn(helper.choose_file("Load config file from Step 1"))
+cfg_step1 = helper.load_config(helper.choose_file("Load config file from Step 1"))
 df_dd = create_dictionary_import_file.create_dd_file(cfg_step1)
 print(df_dd.head())
 ```
@@ -141,7 +141,7 @@ print(df_dd.head())
 
 ###### CHECK CUIS
 ```python
-cfg_step2 = helper.load_config.fn(helper.choose_file("Load config file from Step 2"))
+cfg_step2 = helper.load_config(helper.choose_file("Load config file from Step 2"))
 df_check = check_cuis.check_cuis(cfg_step2)
 print(df_check.head())
 ```

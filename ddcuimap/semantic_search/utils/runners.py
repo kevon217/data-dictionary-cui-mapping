@@ -7,9 +7,8 @@ This module contains custom defined runners for semantic search.
 import pinecone
 import pandas as pd
 from tqdm import tqdm
-from prefect import task, flow
 
-# from ddcuimap.utils.timer import timer
+from ddcuimap.utils.decorators import log
 
 
 def fetch_id_metadata(index, cfg):
@@ -28,7 +27,7 @@ def fetch_id_metadata(index, cfg):
     return dict_ids_upsert
 
 
-# @task(name="Scaling Dense and Sparse Vectors")
+@log(msg="Scaling Dense and Sparse Vectors")
 def hybrid_scale(dense, sparse, alpha: float):
     """Scale dense and sparse vectors for hybrid search"""
 
@@ -44,8 +43,7 @@ def hybrid_scale(dense, sparse, alpha: float):
     return hdense, hsparse
 
 
-# @flow(flow_run_name="Running Pinecone Semantic Search Runner")
-# @timer
+@log(msg="Running Pinecone Semantic Search Runner")
 def hybrid_search_runner(df_embeddings, alpha, cfg):  # TODO: add alpha to config
     """Custom defined query runner for semantic search"""
 
@@ -80,9 +78,7 @@ def hybrid_search_runner(df_embeddings, alpha, cfg):  # TODO: add alpha to confi
     return var_results
 
 
-# add timer decorator
-# @task(name="Aggregating Pinecone Semantic Search Results")
-# @timer
+@log(msg="Aggregating Pinecone Semantic Search Results")
 def aggregate_results(var_results, dict_ids, cfg):
     """Aggregates query results"""
 
@@ -171,46 +167,3 @@ def aggregate_results(var_results, dict_ids, cfg):
             else:
                 df_agg = pd.concat([df_agg, df_temp], axis=0)
     return df_agg
-
-
-# @task(name="Query Pinecone Index")
-# def query_pinecone_index(
-#     query_row: pd.Series, index_name: str, namespace: str, col_embed: str, top_k: int
-# ):
-#     index = pinecone.Index(index_name=index_name)
-#     embedding = query_row[col_embed]
-#     query_results = index.query(
-#         embedding, namespace=namespace, top_k=top_k, include_metadata=True
-#     )
-#     return query_results
-
-#
-# @flow(flow_run_name="Running Pinecone Semantic Search Runner")
-# def dense_search_runner(df_embeddings, cfg):
-#     """Custom defined query runner for semantic search"""
-#
-#     index = cfg.apis.index_info.index
-#     var_results = {}
-#     for e, (_, query_row) in enumerate(df_embeddings.iterrows()):
-#         vn = query_row.get(cfg.custom.data_dictionary_settings.variable_column)
-#         search_ID = query_row.get("search_ID")
-#         results = {}
-#         # RUN DEFINED QUERIES
-#         for colname, query in cfg.semantic_search.query.queries.items():
-#             col_embed = query[0]
-#             namespace = query[1]
-#             results[colname] = query_pinecone_index(
-#                 query_row,
-#                 index_name=index,
-#                 col_embed=col_embed,
-#                 namespace=namespace,
-#                 top_k=cfg.semantic_search.query.top_k,
-#             )
-#         var_results[vn] = {search_ID: results}
-#     return var_results
-
-# # @flow(flow_run_name="Running Semantic Search Evaluation Measures")
-# def evaluation_measures(df_agg, df_reference_cuis, cfg):
-#     # TODO: WRITE FUNCTION TO EVALUATE RESULTS BASED ON REFERENCE CUIs
-#
-#     return df_eval

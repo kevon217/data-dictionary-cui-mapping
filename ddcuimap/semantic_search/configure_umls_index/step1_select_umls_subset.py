@@ -6,25 +6,26 @@ Create subset of UMLS MTH and preprocess before creating embeddings for semantic
 
 import re
 
-from prefect import flow
 from pathlib import Path
 import pandas as pd
 from pandas.api.types import CategoricalDtype
 from tqdm import tqdm
 
 import ddcuimap.utils.helper as helper
+from ddcuimap.semantic_search import logger
+from ddcuimap.utils.decorators import log
 from ddcuimap.curation.utils.text_processing import clean_text
 
-cfg = helper.compose_config.fn(
+cfg = helper.compose_config(
     config_path="../configs/semantic_search", config_name="embeddings", overrides=[]
 )
 
 
-@flow(flow_run_name="Creating UMLS MTH subset", log_prints=True)
+@log(msg="Creating UMLS MTH subset")
 def subset_umls(cfg):
     # GET UMLS MTH FOLDER
     if cfg.umls_subset.mth_local.dirpath_mth:
-        print(
+        logger.warning(
             "Using local MTH folder: {}".format(cfg.umls_subset.mth_local.dirpath_mth)
         )
     else:
@@ -35,7 +36,7 @@ def subset_umls(cfg):
 
     # GET OUTPUT FOLDER
     if cfg.umls_subset.settings.dirpath_output:
-        print(
+        logger.warning(
             "Using local output folder: {}".format(
                 cfg.umls_subset.settings.dirpath_output
             )
@@ -47,7 +48,7 @@ def subset_umls(cfg):
     dirpath_output = Path(cfg.umls_subset.settings.dirpath_output)
 
     # CREATE DATAFRAMES FOR CONSO, DEF, STY, RANK
-    print("Creating dataframes for CONSO, DEF, STY, RANK")
+    logger.info("Creating dataframes for CONSO, DEF, STY, RANK")
     df_CONSO = pd.read_csv(
         dirpath_mth / cfg.umls_subset.mth_local.RRF_files.concepts.filename,
         sep="|",
@@ -81,7 +82,7 @@ def subset_umls(cfg):
     # TODO: keep track of removed rows and save to file
 
     # KEEP ONLY  ENG LAT
-    print(f"Applying filters for {cfg.umls_subset.filters.items()}")
+    logger.info(f"Applying filters for {cfg.umls_subset.filters.items()}")
     for col, vals in cfg.umls_subset.filters.items():
         df_CONSO = df_CONSO[df_CONSO[col].isin(vals)]
     df_CONSO = df_CONSO[cfg.umls_subset.mth_local.RRF_files.concepts.subset]
@@ -90,7 +91,7 @@ def subset_umls(cfg):
     )  # TODO: make this a config option
 
     # REMOVE ROWS WITH NULL VALUE
-    print("Removing rows with null values in DEF and CONSO")
+    logger.info("Removing rows with null values in DEF and CONSO")
     df_DEF = df_DEF[df_DEF["DEF"].notnull()]
     df_CONSO = df_CONSO[df_CONSO["STR"].notnull()]
     df_DEF["DEF_unprocessed"] = df_DEF[
@@ -103,7 +104,7 @@ def subset_umls(cfg):
     ## TEXT CLEANING
 
     # REMOVE: **Definition:**, Definition:, Description:, WHAT:, ****
-    print("Removing: **Definition:**, Definition:, Description:, WHAT:, ****")
+    logger.info("Removing: **Definition:**, Definition:, Description:, WHAT:, ****")
     remove = r"(\*\*Definition:\*\*|Definition:|Description:|WHAT:|\*\*\*\*)"
     df_DEF["DEF"] = df_DEF["DEF"].str.replace(remove, "", regex=True)
     df_CONSO["STR"] = df_CONSO["STR"].str.replace(remove, "", regex=True)
@@ -121,7 +122,7 @@ def subset_umls(cfg):
     )
 
     # RANK CUIS BY RANK FILE
-    print("Sorting CUIs by precedence based on rank in TTY file")
+    logger.info("Sorting CUIs by precedence based on rank in TTY file")
     rank_sorter = CategoricalDtype(
         df_RANK["TTY"].unique(), ordered=True
     )  # sort by rank giving precedence to PN. some cuis don't have PN, so next in line will be chosen when duplicates dropped.
@@ -130,7 +131,7 @@ def subset_umls(cfg):
     df_CONSO.sort_values("TTY", inplace=True)
 
     # RANK DEFINITION PRECEDENCE BY ORDER OF SAB ABUNDANCE
-    print("Sorting definitions by precedence based on SAB abundance")
+    logger.info("Sorting definitions by precedence based on SAB abundance")
     sab_order = CategoricalDtype(
         df_DEF["SAB"].value_counts().sort_values(ascending=False).index, ordered=True
     )
@@ -138,11 +139,11 @@ def subset_umls(cfg):
     df_DEF.sort_values("SAB", inplace=True)
 
     # MERGE SEMANTIC TYPES FOR EACH CUI
-    print("Merging semantic types for each CUI")
+    logger.info("Merging semantic types for each CUI")
     df_STY_flat = df_STY.groupby(["CUI"])["STY"].apply(";".join).reset_index()
 
     # MERGE SAB FOR EACH CUI
-    print("Merging SAB for each CUI")
+    logger.info("Merging SAB for each CUI")
     conso_sab_concat = (
         df_CONSO[["CUI", "SAB"]]
         .groupby("CUI")["SAB"]
@@ -157,12 +158,12 @@ def subset_umls(cfg):
     )
 
     # DROP DUPLICATES
-    print("Dropping duplicates")
+    logger.info("Dropping duplicates")
     df_CONSO.drop_duplicates(subset="CUI", inplace=True, keep="first")
     df_DEF.drop_duplicates(subset="CUI", inplace=True, keep="first")
 
     # MERGE DATAFRAMES
-    print("Merging dataframes")
+    logger.info("Merging dataframes")
     df_CONSO = pd.merge(
         df_CONSO,
         conso_sab_concat,

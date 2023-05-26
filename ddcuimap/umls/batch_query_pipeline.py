@@ -5,10 +5,11 @@ Main script for creating curation file for examples dictionary --> UMLS CUI mapp
 """
 
 import pandas as pd
-from prefect import flow
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.umls import logger
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 import ddcuimap.curation.utils.curation_functions as cur
 
@@ -19,11 +20,10 @@ from ddcuimap.umls.utils.api_connection import (
 )
 from ddcuimap.umls.utils.runner import umls_runner
 
-cfg = helper.compose_config.fn(overrides=["custom=pvd", "apis=config_umls_api"])
+cfg = helper.compose_config(overrides=["custom=de", "apis=config_umls_api"])
 
 
-# @hydra.main(version_base=None, config_path="../configs", config_name="config")
-@flow(flow_run_name="UMLS API Search - batch_query_pipeline", log_prints=True)
+@log(msg="Running UMLS API Search - batch_query_pipeline")
 def run_umls_batch(cfg, **kwargs):
     # API CONNECTION
     check_credentials(cfg)
@@ -72,7 +72,7 @@ def run_umls_batch(cfg, **kwargs):
 
     helper.save_config(cfg, dir_step1)
 
-    print("FINISHED UMLS API batch query pipeline!!!")
+    logger.info("FINISHED UMLS API batch query pipeline!!!")
 
     return df_final, cfg
 

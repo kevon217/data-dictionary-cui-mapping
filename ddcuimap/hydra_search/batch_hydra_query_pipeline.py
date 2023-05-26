@@ -5,20 +5,21 @@ Batch query pipeline with UMLS API, MetaMap API, and Semantic Search
 """
 
 import pandas as pd
-from prefect import flow
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.hydra_search import logger
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 import ddcuimap.curation.utils.curation_functions as cur
 import ddcuimap.umls.batch_query_pipeline as umls
 import ddcuimap.metamap.batch_query_pipeline as mm
 import ddcuimap.semantic_search.batch_hybrid_query_pipeline as ss
 
-cfg_hydra = helper.compose_config.fn(overrides=["custom=hydra_base"])
-cfg_umls = helper.compose_config.fn(overrides=["custom=de", "apis=config_umls_api"])
-cfg_mm = helper.compose_config.fn(overrides=["custom=de", "apis=config_metamap_api"])
-cfg_ss = helper.compose_config.fn(
+cfg_hydra = helper.compose_config(overrides=["custom=hydra_base"])
+cfg_umls = helper.compose_config(overrides=["custom=de", "apis=config_umls_api"])
+cfg_mm = helper.compose_config(overrides=["custom=de", "apis=config_metamap_api"])
+cfg_ss = helper.compose_config(
     overrides=[
         "custom=title_def",
         "semantic_search=embeddings",
@@ -27,17 +28,13 @@ cfg_ss = helper.compose_config.fn(
 )
 
 
-# @hydra.main(version_base=None, config_path="../configs", config_name="config")
-@flow(
-    flow_run_name="Running UMLS/MetaMap/Semantic Search hydra search pipeline",
-    log_prints=True,
-)
+@log(msg="Running UMLS/MetaMap/Semantic Search hydra search pipeline")
 def run_hydra_batch(cfg_hydra, **kwargs):
     # LOAD DATA DICTIONARY FILE
     df_dd, fp_dd = proc_dd.load_data_dictionary(cfg_hydra)
 
     # CREATE STEP 1 DIRECTORY
-    dir_step1 = helper.create_folder.fn(
+    dir_step1 = helper.create_folder(
         Path(fp_dd).parent.joinpath(
             f"{cfg_hydra.custom.curation_settings.file_settings.directory_prefix}_Step-1_Hydra-search"
         )
@@ -106,7 +103,7 @@ def run_hydra_batch(cfg_hydra, **kwargs):
         dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg_hydra
     )
     helper.save_config(cfg_hydra, dir_step1)
-    print("FINISHED batch hydra search query pipeline!!!")
+    logger.info("FINISHED batch hydra search query pipeline!!!")
 
     return df_final, cfg_hydra
 

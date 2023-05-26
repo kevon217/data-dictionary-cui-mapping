@@ -4,10 +4,11 @@ Main script for creating curation file for examples dictionary --> UMLS CUI mapp
 
 """
 import sys
-from prefect import flow
-from prefect.task_runners import SequentialTaskRunner
 from pathlib import Path
+
 import ddcuimap.utils.helper as helper
+from ddcuimap.utils.decorators import log
+from ddcuimap.metamap import logger
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 
 # MetaMap API
@@ -17,19 +18,14 @@ from ddcuimap.metamap.utils import (
     metamap_query_processing_functions as mm_qproc,
 )
 
-cfg = helper.compose_config.fn(
+cfg = helper.compose_config(
     config_path="../configs",
     config_name="config",
     overrides=["custom=de", "apis=config_metamap_api"],
 )
 
 
-# @hydra.main(version_base=None, config_path="../configs", config_name="config")
-@flow(
-    flow_run_name="MetaMap search - batch_query_pipeline",
-    log_prints=True,
-    task_runner=SequentialTaskRunner(),
-)
+@log(msg="Running MetaMap API Search - batch_query_pipeline")
 def run_mm_batch(cfg, **kwargs):
     # API CONNECTION
     cfg = check_credentials(cfg)
@@ -75,8 +71,8 @@ def run_mm_batch(cfg, **kwargs):
         df_results = mm_qproc.process_mm_json_to_df(mm_json, cfg)
         df_results = mm_qproc.rename_mm_columns(df_results, cfg)
     else:
-        print(response.text)
-        print("MetaMap batch query pipeline failed!!!")
+        logger.warning(response.text)
+        logger.error("MetaMap batch query pipeline failed!!!")
         sys.exit()
 
     # CREATE CURATION FILE
@@ -84,7 +80,7 @@ def run_mm_batch(cfg, **kwargs):
         dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg
     )
     helper.save_config(cfg, dir_step1)
-    print("FINISHED MetaMap batch query pipeline!!!")
+    logger.info("FINISHED MetaMap batch query pipeline!!!")
 
     return df_final, cfg
 

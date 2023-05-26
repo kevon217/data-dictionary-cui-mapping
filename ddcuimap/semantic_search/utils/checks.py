@@ -4,9 +4,10 @@ Various functions for checking and manipulating vectors and tokens.
 
 """
 
-from prefect import task
 import numpy as np
 from transformers import AutoTokenizer
+
+from ddcuimap.utils.decorators import log
 
 # VECTOR OPERATIONS
 
@@ -63,7 +64,7 @@ def dict_min_max(dictionary):
 # TOKEN CHECKS
 
 
-@task(name="Calculate Number of Tokens Using Model")
+@log(msg="Calculating number of tokens using model")
 def calc_num_tokens(df, columns, model_name):
     """Calculate the number of tokens generated for each input using a given model"""
 

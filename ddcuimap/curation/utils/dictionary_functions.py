@@ -3,13 +3,17 @@
 Functions to check the examples dictionary and its CUI mappings and report discrepancies.
 
 """
+
 import pandas as pd
 import numpy as np
 import itertools
 
+# CUI COLUMNS TO CHECK
+
 
 def get_check_columns(check_cuis: dict):
-    """Returns list of columns to check"""
+    """Returns list of cui-related columns to check"""
+
     check_columns = []
     # get all values from check columns key in nested dictionary
     for k1, v1 in check_cuis.items():
@@ -20,8 +24,48 @@ def get_check_columns(check_cuis: dict):
     return check_columns
 
 
+# CUI INDEXING-RELATED FUNCTIONS
+
+
+def idx_sep_missing(cell, sep):
+    """Counts number of missing (blank or empty) CUI codes and records their index"""
+
+    if pd.isna(cell) or len(cell) == 0:
+        return np.nan
+    else:
+        vals = cell.split(sep)
+        vals = list(
+            map(lambda x: x.strip(), vals)
+        )  # removes surrounding whitespace in case empty value has accidental space
+        ls_is_missing = list(map(lambda x: x == 0, (map(len, vals))))
+        idx_missing = [idx for idx, e in enumerate(ls_is_missing) if e is True]
+        # n_missing = sum(ls_is_missing) #TODO: figure out if still needed
+        return idx_missing
+
+
+def idx_multi_cuis(cell, sep1, sep2):
+    """Get indices of multicui entries e.g., C0000001/C0000002 | C0000003/C0000004"""
+
+    if pd.isna(cell):
+        idx_mult_cui = np.nan
+    else:
+        vals = cell.split(sep1)
+        if sep2:
+            ls_mult_cui = list(map(lambda x: x.count(sep2), vals))
+            ls_mult_cui = [
+                e + 1 if e > 0 else e for e in ls_mult_cui
+            ]  # accounts for one less "/" than number of cuis
+            idx_mult_cui = [idx for idx, e in enumerate(ls_mult_cui) if e > 0]
+        else:
+            idx_mult_cui = np.nan  # TODO: figure out when this would occur
+    return idx_mult_cui
+
+
+# CUI COUNTING-RELATED FUNCTIONS
+
+
 def count_sep(cell, sep):
-    """Counts total number of separated values for a cell by separator specified"""
+    """Counts total number of separated values for a cell by separator specified e.g., C0000001 | C0000002 | C0000003"""
 
     if pd.isna(cell):
         return 0
@@ -40,11 +84,13 @@ def idx_cui_map(cell, dict_map):
     if cell is np.nan:
         pass
     else:
-        cell = cell.replace(dict_map[cell])
+        cell = cell.replace(
+            dict_map[cell]
+        )  # TODO: try to remember why this didn't have return statement
 
 
 def count_sep_missing(cell, sep):
-    "Counts number of missing (blank or empty) CUI codes and records their index"
+    """Counts number of missing (blank or empty) CUI codes and records their index e.g., C0000001 | | C0000003"""
 
     if pd.isna(cell):
         return 1
@@ -54,25 +100,9 @@ def count_sep_missing(cell, sep):
             map(lambda x: x.strip(), vals)
         )  # removes surrounding whitespace in case empty value has accidental space
         ls_is_missing = list(map(lambda x: x == 0, (map(len, vals))))
-        idx_missing = [idx for idx, e in enumerate(ls_is_missing) if e is True]
+        # idx_missing = [idx for idx, e in enumerate(ls_is_missing) if e is True] #TODO: figure out if still needed
         n_missing = sum(ls_is_missing)
         return n_missing
-
-
-def idx_sep_missing(cell, sep):
-    "Counts number of missing (blank or empty) CUI codes and records their index"
-
-    if pd.isna(cell) or len(cell) == 0:
-        return np.nan
-    else:
-        vals = cell.split(sep)
-        vals = list(
-            map(lambda x: x.strip(), vals)
-        )  # removes surrounding whitespace in case empty value has accidental space
-        ls_is_missing = list(map(lambda x: x == 0, (map(len, vals))))
-        idx_missing = [idx for idx, e in enumerate(ls_is_missing) if e is True]
-        n_missing = sum(ls_is_missing)
-        return idx_missing
 
 
 def count_cui_sep_missing(df_check, col, cui_sep):
@@ -83,7 +113,8 @@ def count_cui_sep_missing(df_check, col, cui_sep):
 
 
 def count_multi_cuis(cell, sep1, sep2):
-    """Counts number of multicui entries"""
+    """Counts number of multicui entries e.g., C0000001/C0000002 | C0000003/C0000004"""
+
     if pd.isna(cell):
         return np.nan
     else:
@@ -93,36 +124,25 @@ def count_multi_cuis(cell, sep1, sep2):
             ls_mult_cui = [
                 e + 1 if e > 0 else e for e in ls_mult_cui
             ]  # accounts for one less "/" than number of cuis
-            idx_mult_cui = [idx for idx, e in enumerate(ls_mult_cui) if e > 0]
+            # idx_mult_cui = [idx for idx, e in enumerate(ls_mult_cui) if e > 0] #TODO: figure out if still needed
             n_mult = sum(e > 0 for e in ls_mult_cui)
         else:
             if len(vals) > 1:
                 ls_mult_cui = list(map((lambda x: 1 if (len(x) > 0) else 0), vals))
-                idx_mult_cui = [idx for idx, e in enumerate(ls_mult_cui)]
+                # idx_mult_cui = [idx for idx, e in enumerate(ls_mult_cui)] #TODO: figure out if still needed
                 n_mult = sum(e > 0 for e in ls_mult_cui)
             else:
-                idx_mult_cui = []
+                # idx_mult_cui = [] #TODO: figure out if still needed
                 n_mult = 0
         return n_mult
 
 
-def idx_multi_cuis(cell, sep1, sep2):
-    """Counts number of multicui entries"""
-    if pd.isna(cell):
-        return np.nan
-    else:
-        vals = cell.split(sep1)
-        if sep2:
-            ls_mult_cui = list(map(lambda x: x.count(sep2), vals))
-            ls_mult_cui = [
-                e + 1 if e > 0 else e for e in ls_mult_cui
-            ]  # accounts for one less "/" than number of cuis
-            idx_mult_cui = [idx for idx, e in enumerate(ls_mult_cui) if e > 0]
-    return idx_mult_cui
+# CUI CHECKING-RELATED FUNCTIONS
 
 
-def returnFlaggedCUIs(df_ref_ls, idx_flag):
-    'Will spit out cuis based on the indices in a list of flags (e.g., missing, "Not Available", multiple cuis)'
+def return_flagged_cuis(df_ref_ls, idx_flag):
+    """Will spit out cuis based on the indices in a list of flags (e.g., missing, "Not Available", multiple cuis)"""
+
     ls_flagged_cui = []
     for ls_vals, ls_idx_flag in zip(df_ref_ls, idx_flag):
         if type(ls_vals) is not list:  # case for when there are no values

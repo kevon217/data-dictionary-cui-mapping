@@ -8,12 +8,11 @@ import importlib.resources
 import pickle
 
 import pandas as pd
-
-# import json
-from prefect import flow
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
+from ddcuimap.semantic_search import logger
+from ddcuimap.utils.decorators import log
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 import ddcuimap.curation.utils.curation_functions as cur
 
@@ -26,7 +25,7 @@ from ddcuimap.semantic_search.utils.api_connection import (
 from ddcuimap.semantic_search.utils import builders
 from ddcuimap.semantic_search.utils import runners as run
 
-cfg = helper.compose_config.fn(
+cfg = helper.compose_config(
     overrides=[
         "custom=title_def",
         "apis=config_pinecone_api",
@@ -35,20 +34,16 @@ cfg = helper.compose_config.fn(
 )
 
 
-# @hydra.main(version_base=None, config_path="../configs", config_name="config")
-@flow(
-    flow_run_name="Pinecone Semantic Search - batch_hybrid_query_pipeline",
-    log_prints=True,
-)
+@log(msg="Running Pinecone Semantic Search batch_hybrid_query_pipeline")
 def run_hybrid_ss_batch(cfg, **kwargs):
     # CONNECT TO PINECONE
     cfg = check_credentials(cfg)
     pinecone = connect_to_pinecone(cfg)
-    print(
+    logger.info(
         f"Pinecone indexes available: {pinecone.list_indexes()}"
     )  # List all indexes currently present for your key
     index = pinecone.Index(cfg.semantic_search.pinecone.index.index_name)
-    print(
+    logger.info(
         f"Stats for index '{cfg.semantic_search.pinecone.index.index_name}': {index.describe_index_stats()}"
     )
 
@@ -141,7 +136,7 @@ def run_hybrid_ss_batch(cfg, **kwargs):
 
     helper.save_config(cfg, dir_step1, "config_query.yaml")
 
-    print("FINISHED Pinecone Semantic Search batch query pipeline!!!")
+    logger.info("FINISHED Pinecone Semantic Search batch query pipeline!!!")
 
     return df_final, cfg
 

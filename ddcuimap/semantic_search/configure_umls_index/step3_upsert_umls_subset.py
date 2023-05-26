@@ -4,28 +4,26 @@ Upsert UMLS embeddings and metadata into Pinecone for semantic_search.
 
 """
 
-from prefect import flow
 from tqdm import tqdm
 import pandas as pd
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
+from ddcuimap.semantic_search import logger
+from ddcuimap.utils.decorators import log
 from ddcuimap.utils.BatchGenerator import BatchGenerator
 from ddcuimap.semantic_search.utils.api_connection import (
     check_credentials,
     connect_to_pinecone,
 )
 
-cfg = helper.compose_config.fn(
+cfg = helper.compose_config(
     config_path="../configs",
     overrides=["semantic_search=embeddings", "apis=config_pinecone_api"],
 )
 
 
-@flow(
-    flow_run_name="Upserting UMLS semantic_search embeddings and metadata to Pinecone",
-    log_prints=True,
-)
+@log(msg="Upserting UMLS semantic_search embeddings and metadata to Pinecone")
 def upsert_umls(cfg, **kwargs):
     # LOAD PROCESSED UMLS EMBEDDINGS
     if "kwargs" in locals():
@@ -40,13 +38,15 @@ def upsert_umls(cfg, **kwargs):
                     "Choose df_UMLS_embeddings.pkl file"
                 )
                 df_umls_embeddings = pd.read_pickle(fp_umls_embeddings)
-                print(f"UMLD embeddings dataframe size is: {df_umls_embeddings.shape}")
+                logger.info(
+                    f"UMLD embeddings dataframe size is: {df_umls_embeddings.shape}"
+                )
                 cfg.semantic_search.upsert.filepath_processed = fp_umls_embeddings
 
     # CONNECT TO PINECONE
-    cfg = check_credentials.fn(cfg)
-    pinecone = connect_to_pinecone.fn(cfg)
-    print(
+    cfg = check_credentials(cfg)
+    pinecone = connect_to_pinecone(cfg)
+    logger.info(
         f"Pinecone indexes available: {pinecone.list_indexes()}"
     )  # List all indexes currently present for your key
 
@@ -61,14 +61,14 @@ def upsert_umls(cfg, **kwargs):
 
     # INSERT UMLS VECTOR SEMANTIC_SEARCH INTO PINECONE INDEX
     index = pinecone.Index(index_name=cfg.semantic_search.pinecone.index.index_name)
-    print(
+    logger.info(
         f"Stats for index '{cfg.semantic_search.pinecone.index.index_name}': {index.describe_index_stats()}"
     )
 
     # UPSERT EMBEDDINGS AND METADATA
     df_batcher = BatchGenerator(100)
     for col in cfg.semantic_search.upsert.embed_columns:
-        print(f"Uploading vectors to {col} namespace..")
+        logger.info(f"Uploading vectors to {col} namespace..")
         for batch_df in tqdm(df_batcher(df_umls_embeddings)):
             vectors = []
             for i in range(len(batch_df)):
@@ -93,7 +93,7 @@ def upsert_umls(cfg, **kwargs):
             index.upsert(vectors=vectors, namespace=col)
 
     # CHECK INDEX SIZE FOR EACH NAMESPACE
-    print("Index size after upsert:")
+    logger.info("Index size after upsert:")
     index.describe_index_stats()
 
     # SAVE CONFIG

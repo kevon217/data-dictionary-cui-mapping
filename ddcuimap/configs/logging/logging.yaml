@@ -1,0 +1,72 @@
+version: 1
+disable_existing_loggers: True
+formatters:
+  standard:
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  coloredlogs:
+      '()': 'coloredlogs.ColoredFormatter'
+      format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+      level_styles:
+        debug:
+          color: white
+        info:
+          color: green
+        warning:
+          bright: true
+          color: yellow
+        error:
+          bold: true
+          color: red
+        critical:
+          bold: true
+          color: red,bg_white
+      field_styles:
+        name:
+          color: white
+        levelname:
+          color: white
+          bold: true
+        asctime:
+          color: white
+        funcName:
+          color: white
+        lineno:
+          color: white
+handlers:
+  file:
+    class: logging.FileHandler
+    filename: logging.txt
+    formatter: coloredlogs
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: coloredlogs
+loggers:
+  umls_logger:
+    level: INFO
+    handlers: [file, console]
+    propagate: False
+  metamap_logger:
+    level: INFO
+    handlers: [ file, console ]
+    propagate: False
+  semantic_search_logger:
+    level: INFO
+    handlers: [ file, console ]
+    propagate: False
+  hydra_search_logger:
+    level: INFO
+    handlers: [ file, console ]
+    propagate: False
+  helper_logger:
+    level: INFO
+    handlers: [ file, console ]
+    propagate: False
+  curation_logger:
+    level: INFO
+    handlers: [ file, console ]
+    propagate: False
+root:
+  level: INFO
+  handlers: [file, console]
+  propagate: True

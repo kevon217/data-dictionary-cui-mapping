@@ -3,6 +3,8 @@ import argparse
 import requests
 from requests_html import HTML
 
+from ddcuimap.metamap import logger
+
 
 def get_service_ticket(serverurl, ticket_granting_ticket, serviceurl):
     """Obtain a Single-Use Proxy Ticket (also known as service ticket).
@@ -33,12 +35,12 @@ def get_service_ticket(serverurl, ticket_granting_ticket, serviceurl):
 
 def extract_tgt_ticket(htmlcontent):
     "Extract ticket granting ticket from HTML."
-    # print('htmlcontent: {}'.format(htmlcontent))
+    # logger.info('htmlcontent: {}'.format(htmlcontent))
     html = HTML(html=htmlcontent)
     # get form element
     elements = html.xpath("//form")
-    # print('html response: {}'.format(etree.tostring(html.lxml).decode()))
-    # print('action attribure: {}'.format(elements[0].attrs['action']))
+    # logger.info('html response: {}'.format(etree.tostring(html.lxml).decode()))
+    # logger.info('action attribure: {}'.format(elements[0].attrs['action']))
     # extract ticket granting ticket out of 'action' attribute
     if elements != []:
         return elements[0].attrs["action"].split("/")[-1]
@@ -88,11 +90,11 @@ def get_ticket(cas_serverurl, apikey, serviceurl):
 
     """
     if cas_serverurl is None:
-        print("cas server url must not be None")
+        logger.warning("cas server url must not be None")
     if apikey is None:
-        print("api key must not be null")
+        logger.warning("api key must not be null")
     if serviceurl is None:
-        print("service must not be null")
+        logger.warning("service must not be null")
     # set ticket granting ticket server url
     tgtserverurl = cas_serverurl + "/api-key"
     # set service ticket server url
