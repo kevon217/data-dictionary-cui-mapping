@@ -9,8 +9,7 @@ Pipeline for:
 """
 
 import ddcuimap.utils.helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.semantic_search import logger
+from ddcuimap.semantic_search import ss_logger, log
 
 from semantic_search.configure_umls_index import (
     step1_select_umls_subset as step1,
@@ -41,7 +40,7 @@ def main_flow(cfg):
     )
     index, cfg_step3 = step3.upsert_umls(cfg, df_umls_embeddings)
 
-    logger.info("FINISHED UMLS SUBSET/EMBED/UPSERT batch query pipeline!!!")
+    ss_logger.info("FINISHED UMLS SUBSET/EMBED/UPSERT batch query pipeline!!!")
 
     return df_umls, df_umls_embeddings, index, cfg
 

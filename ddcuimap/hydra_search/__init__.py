@@ -1,9 +1,7 @@
 import logging
-from ddcuimap.utils.setup_logging import log_setup
-
+from ddcuimap.utils.logger.config_logging import setup_log, log, copy_log
 
 # CREATE LOGGER
-log_setup()
-logger = logging.getLogger("hydra_search_logger")
-logger.propagate = False
-logger.info("Initiating ddcuimap.hydra_search logging.")
+setup_log()
+hydra_logger = logging.getLogger("hydra_search_logger")
+hydra_logger.info("Initiating ddcuimap.hydra_search logger.")

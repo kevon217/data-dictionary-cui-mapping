@@ -7,8 +7,7 @@ Main script for creating dictionary import file from curated examples dictionary
 from pathlib import Path
 
 from ddcuimap.utils import helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.curation import logger
+from ddcuimap.curation import cur_logger, log, copy_log
 from ddcuimap.curation.utils import curation_functions as cur
 
 
@@ -70,12 +69,15 @@ def create_dd_file(cfg):
         .pipe(cur.override_cols, cfg.custom.create_dictionary_import_settings.override)
     )
 
-    # SAVE FINALIZED IMPORT TEMPLATE
+    # SAVE FINALIZED IMPORT
     fp_step2 = f"{dir_step2}/{cfg.custom.curation_settings.file_settings.file_prefix}_Step-2_dictionary-import-file.csv"
     cfg.custom.create_dictionary_import_settings.dict_file_path = fp_step2
     df_final.to_csv(fp_step2, index=False)  # output df_final dataframe to csv
-    logger.info(f"Saved {fp_step2}")
+    cur_logger.info(f"Saved {fp_step2}")
+
+    # SAVE CONFIG AND MOVE LOG
     helper.save_config(cfg, dir_step2)
+    copy_log(cur_logger, dir_step2, "cur_logger.log")
 
     return df_final
 

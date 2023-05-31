@@ -8,8 +8,7 @@ import pandas as pd
 import numpy as np
 
 from ddcuimap.utils import helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.curation import logger
+from ddcuimap.curation import cur_logger, log, copy_log
 from ddcuimap.curation.utils import dictionary_functions as dd
 
 
@@ -95,12 +94,13 @@ def check_cuis(cfg):
         df_multi_cui = df_multi_cui.add_suffix("_multi_cui")
         df_check = df_check.join(df_multi_cui, how="outer")
 
-        logger.info("Done checking CUIs for " + check)
+        cur_logger.info("Done checking CUIs for " + check)
 
-    # Save file
+    # SAVE FILE AND MOVE LOG
     fp_check = os.path.join(dir_check, "dictionary-import-file-check.csv")
     df_check.to_csv(fp_check, index=False)
-    logger.info("Saved file to " + fp_check)
+    cur_logger.info("Saved file to " + fp_check)
+    copy_log(cur_logger, dir_check, "dictionary-import-file-check.log")
 
     return df_check
 

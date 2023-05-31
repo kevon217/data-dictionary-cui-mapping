@@ -7,7 +7,7 @@ Various functions for checking and manipulating vectors and tokens.
 import numpy as np
 from transformers import AutoTokenizer
 
-from ddcuimap.utils.decorators import log
+from ddcuimap.semantic_search import log
 
 # VECTOR OPERATIONS
 

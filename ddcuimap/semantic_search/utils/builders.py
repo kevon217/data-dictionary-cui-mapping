@@ -9,8 +9,7 @@ from splade.models.transformer_rep import Splade
 from transformers import AutoTokenizer
 import torch
 
-from ddcuimap.utils.decorators import log
-from ddcuimap.semantic_search import logger
+from ddcuimap.semantic_search import ss_logger, log
 from ddcuimap.semantic_search.utils.checks import (
     normalize_unit_length,
 )
@@ -22,7 +21,7 @@ def check_set_device(cfg):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     cfg.semantic_search_settings.device = device
-    logger.info(f"Running on {device}")
+    ss_logger.info(f"Running on {device}")
 
 
 @log(msg="Adding Vector ID to Dataframe")
@@ -58,7 +57,7 @@ def tokenize_columns(df, columns, model_name):
     metadata = {}
     tokenizer = AutoTokenizer.from_pretrained(model_name, truncation=True)
     for col in columns:
-        logger.info(f"Tokenizing {col}")
+        ss_logger.info(f"Tokenizing {col}")
         batch = df[col].values.tolist()
         tokens = [tokenizer.tokenize(sentence.lower()) for sentence in batch]
         df[f"{col}_tokens"] = tokens
@@ -91,7 +90,7 @@ def hybrid_builder(
     sparse_model.to(cfg.semantic_search_settings.device)  # move to GPU if possible
     idx2token = {idx: token for token, idx in tokenizer.get_vocab().items()}
     for col in embed_columns:
-        logger.info(f"Embedding {col}")
+        ss_logger.info(f"Embedding {col}")
         batch = df[col].values.tolist()
         dense_vecs = dense_model.encode(
             batch,
@@ -102,7 +101,7 @@ def hybrid_builder(
         sparse_upsert = []
         sparse_idx2token = []
         for i in range(0, len(batch), sparse_batch_size):
-            logger.info(f"Embedding {i} to {i + sparse_batch_size}")
+            ss_logger.info(f"Embedding {i} to {i + sparse_batch_size}")
             batch_splade = batch[i : i + sparse_batch_size]
             input_ids = tokenizer(
                 batch_splade, return_tensors="pt", padding=True, truncation=True

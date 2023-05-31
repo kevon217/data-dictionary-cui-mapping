@@ -1,6 +1,12 @@
+"""
+
+Functions for formatting Excel curation file.
+
+"""
+
 from openpyxl.utils import get_column_letter
 
-from ddcuimap.utils.decorators import log
+from ddcuimap.curation import log
 
 
 # EXCEL FORMATTING

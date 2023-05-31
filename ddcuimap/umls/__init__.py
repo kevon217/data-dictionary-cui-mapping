@@ -1,9 +1,7 @@
 import logging
-from ddcuimap.utils.setup_logging import log_setup
-
+from ddcuimap.utils.logger.config_logging import setup_log, log, copy_log
 
 # CREATE LOGGER
-log_setup()
-logger = logging.getLogger("umls_logger")
-logger.propagate = False
-logger.info("Initiating ddcuimap.umls logging.")
+setup_log()
+umls_logger = logging.getLogger("umls_logger")
+umls_logger.info("Initiating ddcuimap.umls logger.")

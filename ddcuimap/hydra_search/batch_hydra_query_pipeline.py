@@ -7,9 +7,8 @@ Batch query pipeline with UMLS API, MetaMap API, and Semantic Search
 import pandas as pd
 from pathlib import Path
 
+from ddcuimap.hydra_search import hydra_logger, log, copy_log
 import ddcuimap.utils.helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.hydra_search import logger
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 import ddcuimap.curation.utils.curation_functions as cur
 import ddcuimap.umls.batch_query_pipeline as umls
@@ -102,8 +101,12 @@ def run_hydra_batch(cfg_hydra, **kwargs):
     df_final = cur.create_curation_file(
         dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg_hydra
     )
-    helper.save_config(cfg_hydra, dir_step1)
-    logger.info("FINISHED batch hydra search query pipeline!!!")
+
+    hydra_logger.info("FINISHED batch hydra search query pipeline!!!")
+
+    # SAVE CONFIG FILE AND MOVE LOG
+    helper.save_config(cfg_hydra, dir_step1, "config_query.yaml")
+    copy_log(hydra_logger, dir_step1, "hydra_logger.log")
 
     return df_final, cfg_hydra
 

@@ -3,7 +3,7 @@
 General helper functions for UI and configuration components of scripts.
 
 """
-import logging
+
 import os
 import tkinter as tk
 from tkinter import filedialog
@@ -13,8 +13,7 @@ from omegaconf import OmegaConf
 from omegaconf.dictconfig import DictConfig
 from typing import List, Optional
 
-from ddcuimap.utils.decorators import log
-from ddcuimap.utils import logger
+from ddcuimap.utils import utils_logger, log
 
 # CONFIG FILE FUNCTIONS
 
@@ -26,6 +25,7 @@ def compose_config(
     overrides: Optional[List[str]] = None,
 ) -> DictConfig:
     """Load configurations from the file `config.yaml` under the `config` directory and specify overrides"""
+
     with initialize(
         config_path=config_path
     ):  # removed version_base=None when upgrading to hydra 1.1.0
@@ -69,7 +69,7 @@ def create_folder(folder_path):
             adjusted_folder_path = folder_path + " (" + str(counter) + ")"
             folder_found = os.path.isdir(adjusted_folder_path)
         os.mkdir(adjusted_folder_path)
-        logger.info(f"Folder created: {adjusted_folder_path}")
+        utils_logger.info(f"Folder created: {adjusted_folder_path}")
     elif isinstance(folder_path, Path):
         # using pathlib and not os check if folder_path already exists, append numbers incrementally
         adjusted_folder_path = folder_path
@@ -82,7 +82,7 @@ def create_folder(folder_path):
             )
             folder_found = adjusted_folder_path.exists()
         adjusted_folder_path.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Folder created: {adjusted_folder_path}")
+        utils_logger.info(f"Folder created: {adjusted_folder_path}")
     else:
         raise TypeError("folder_path must be a string or pathlib Path object")
 
@@ -105,7 +105,7 @@ def choose_file(prompt: str):
 
     root = manage_tk_dialogbox(tk)
     fp = filedialog.askopenfilename(parent=root, title=prompt)
-    logger.info(f"File chosen: {fp}")
+    utils_logger.info(f"File chosen: {fp}")
     return fp
 
 
@@ -115,5 +115,5 @@ def choose_dir(prompt: str):
 
     root = manage_tk_dialogbox(tk)
     dp = filedialog.askdirectory(parent=root, title=prompt)
-    logger.info(f"Directory chosen: {dp}")
+    utils_logger.info(f"Directory chosen: {dp}")
     return dp

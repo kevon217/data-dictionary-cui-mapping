@@ -4,12 +4,10 @@ Pre/Post-processing Data Dictionary functions.
 
 """
 
-
 import pandas as pd
 
+from ddcuimap.curation import cur_logger, log, copy_log
 from ddcuimap.utils import helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.curation import logger
 from ddcuimap.curation.utils import text_processing as tp
 
 
@@ -20,13 +18,13 @@ def load_data_dictionary(cfg):
     if not cfg.custom.data_dictionary_settings.filepath:
         fp_dd = helper.choose_file("Select data dictionary csv input file")
         df_dd = pd.read_csv(fp_dd)
-        logger.info(f"Data Dictionary shape is: {df_dd.shape}")
+        cur_logger.info(f"Data Dictionary shape is: {df_dd.shape}")
         cfg.custom.data_dictionary_settings.filepath = fp_dd
     else:
         fp_dd = cfg.custom.data_dictionary_settings.filepath
-        logger.warning(f"Loading data dictionary from filepath in configs.")
+        cur_logger.warning(f"Loading data dictionary from filepath in configs.")
         df_dd = pd.read_csv(fp_dd)
-        logger.info(f"Data Dictionary shape is: {df_dd.shape}")
+        cur_logger.info(f"Data Dictionary shape is: {df_dd.shape}")
     return df_dd, fp_dd
 
 
@@ -75,5 +73,5 @@ def process_data_dictionary(df_dd, cfg):
             tp.remove_stopwords_cols, cols_extracted, cfg.custom.preprocessing_settings
         )
     )
-    logger.info(f"Processed Data Dictionary shape is: {df_dd_preprocessed.shape}")
+    cur_logger.info(f"Processed Data Dictionary shape is: {df_dd_preprocessed.shape}")
     return df_dd_preprocessed

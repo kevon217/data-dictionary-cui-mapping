@@ -6,9 +6,8 @@ Main script for creating curation file for examples dictionary --> UMLS CUI mapp
 import sys
 from pathlib import Path
 
+from ddcuimap.metamap import mm_logger, log, copy_log
 import ddcuimap.utils.helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.metamap import logger
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 
 # MetaMap API
@@ -71,16 +70,20 @@ def run_mm_batch(cfg, **kwargs):
         df_results = mm_qproc.process_mm_json_to_df(mm_json, cfg)
         df_results = mm_qproc.rename_mm_columns(df_results, cfg)
     else:
-        logger.warning(response.text)
-        logger.error("MetaMap batch query pipeline failed!!!")
+        mm_logger.warning(response.text)
+        mm_logger.error("MetaMap batch query pipeline failed!!!")
         sys.exit()
 
     # CREATE CURATION FILE
     df_final = cur.create_curation_file(
         dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg
     )
-    helper.save_config(cfg, dir_step1)
-    logger.info("FINISHED MetaMap batch query pipeline!!!")
+
+    mm_logger.info("FINISHED MetaMap batch query pipeline!!!")
+
+    # SAVE CONFIG FILE AND MOVE LOG
+    helper.save_config(cfg, dir_step1, "config_query.yaml")
+    # copy_log(mm_logger, dir_step1, "mm_logger.log")
 
     return df_final, cfg
 

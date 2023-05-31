@@ -10,9 +10,7 @@ import re
 
 import pandas as pd
 
-from ddcuimap.utils.decorators import log
-from ddcuimap.metamap import logger
-
+from ddcuimap.metamap import mm_logger, log
 from ddcuimap.metamap.skr_web_api import Submission
 from ddcuimap.curation.utils.text_processing import (
     check_query_terms_valid,
@@ -76,7 +74,7 @@ def run_batch_metamap_api(fp_mm_inputfile, cfg):
     inst.set_batch_file(fp_mm_inputfile)
     inst.form["SingLinePMID"] = "yes"
     inst.form["Batch_Command"] = "{} {}".format(cmd, unescape_string(cmdargs))
-    logger.info("MetaMap Batch in progress...")  # TODO: put in progress bar here
+    mm_logger.info("MetaMap Batch in progress...")  # TODO: put in progress bar here
     response = inst.submit()
     # print("response status: {}".format(response.status_code))
     # print("content: {}".format(response.content.decode()))

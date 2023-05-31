@@ -8,8 +8,7 @@ import pandas as pd
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.semantic_search import logger
+from ddcuimap.semantic_search import ss_logger, log
 from ddcuimap.semantic_search.utils import builders
 
 cfg = helper.compose_config(
@@ -24,7 +23,7 @@ def embed_umls(cfg, **kwargs):
         df_umls = kwargs.get("df_umls")
         if df_umls is None or df_umls.empty:
             if cfg.upsert.filepath_raw:
-                logger.warning(
+                ss_logger.warning(
                     f"Using UMLS concept dataframe: {cfg.upsert.filepath_raw}"
                 )
             else:

@@ -9,8 +9,7 @@ import pandas as pd
 from pathlib import Path
 
 import ddcuimap.utils.helper as helper
-from ddcuimap.semantic_search import logger
-from ddcuimap.utils.decorators import log
+from ddcuimap.semantic_search import ss_logger, log
 from ddcuimap.utils.BatchGenerator import BatchGenerator
 from ddcuimap.semantic_search.utils.api_connection import (
     check_credentials,
@@ -38,7 +37,7 @@ def upsert_umls(cfg, **kwargs):
                     "Choose df_UMLS_embeddings.pkl file"
                 )
                 df_umls_embeddings = pd.read_pickle(fp_umls_embeddings)
-                logger.info(
+                ss_logger.info(
                     f"UMLD embeddings dataframe size is: {df_umls_embeddings.shape}"
                 )
                 cfg.semantic_search.upsert.filepath_processed = fp_umls_embeddings
@@ -46,7 +45,7 @@ def upsert_umls(cfg, **kwargs):
     # CONNECT TO PINECONE
     cfg = check_credentials(cfg)
     pinecone = connect_to_pinecone(cfg)
-    logger.info(
+    ss_logger.info(
         f"Pinecone indexes available: {pinecone.list_indexes()}"
     )  # List all indexes currently present for your key
 
@@ -61,14 +60,14 @@ def upsert_umls(cfg, **kwargs):
 
     # INSERT UMLS VECTOR SEMANTIC_SEARCH INTO PINECONE INDEX
     index = pinecone.Index(index_name=cfg.semantic_search.pinecone.index.index_name)
-    logger.info(
+    ss_logger.info(
         f"Stats for index '{cfg.semantic_search.pinecone.index.index_name}': {index.describe_index_stats()}"
     )
 
     # UPSERT EMBEDDINGS AND METADATA
     df_batcher = BatchGenerator(100)
     for col in cfg.semantic_search.upsert.embed_columns:
-        logger.info(f"Uploading vectors to {col} namespace..")
+        ss_logger.info(f"Uploading vectors to {col} namespace..")
         for batch_df in tqdm(df_batcher(df_umls_embeddings)):
             vectors = []
             for i in range(len(batch_df)):
@@ -93,7 +92,7 @@ def upsert_umls(cfg, **kwargs):
             index.upsert(vectors=vectors, namespace=col)
 
     # CHECK INDEX SIZE FOR EACH NAMESPACE
-    logger.info("Index size after upsert:")
+    ss_logger.info("Index size after upsert:")
     index.describe_index_stats()
 
     # SAVE CONFIG

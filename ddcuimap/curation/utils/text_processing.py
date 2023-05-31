@@ -14,8 +14,7 @@ import pandas as pd
 # import cchardet # TODO: may be useful in future
 
 from ddcuimap.utils import helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.curation import logger
+from ddcuimap.curation import cur_logger, log, copy_log
 
 
 # TEXT PROCESSING FUNCTIONS
@@ -74,10 +73,10 @@ def remove_stopwords_cols(df, columns, preprocessing_settings):
     cols_query_terms = []
     if preprocessing_settings.remove_stopwords:
         if preprocessing_settings.stopwords_filepath:
-            logger.warning("Loading stopwords file from configs")
+            cur_logger.warning("Loading stopwords file from configs")
             fp_stopwords = preprocessing_settings.stopwords_filepath
         else:
-            logger.warning("Opening dialog box to choose stopwords file")
+            cur_logger.warning("Opening dialog box to choose stopwords file")
             fp_stopwords = helper.choose_file("Select Stopwords csv file")
         df_stopwords = pd.read_csv(fp_stopwords)
         ls_stopwords = list(
@@ -106,10 +105,10 @@ def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet impleme
 
     if preprocessing_settings.use_cheatsheet:
         if preprocessing_settings.cheatsheet_filepath:
-            logger.warning("Loading cheatsheet file from configs")
+            cur_logger.warning("Loading cheatsheet file from configs")
             fp_cheatsheet = preprocessing_settings.cheatsheet_filepath
         else:
-            logger.warning("Opening dialog box to choose cheatsheet file")
+            cur_logger.warning("Opening dialog box to choose cheatsheet file")
             fp_cheatsheet = helper.choose_file(title="Select Cheatsheet csv file")
         df_cheatsheet = pd.read_csv(fp_cheatsheet)
         curated_vars = df_cheatsheet[
@@ -117,7 +116,7 @@ def remove_vars_cheatsheet(df, preprocessing_settings):  # TODO: not yet impleme
         ]  # TODO: need to add consistent formatting for use of a cheatsheet
         df = df[~df["variable name"].isin(curated_vars)]
     else:
-        logger.warning("Cheatsheet not used")
+        cur_logger.warning("Cheatsheet not used")
         pass
     return df
 

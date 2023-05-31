@@ -9,9 +9,8 @@ from functools import reduce
 import numpy as np
 import pandas as pd
 
+from ddcuimap.curation import cur_logger, log, copy_log
 from ddcuimap.utils import helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.curation import logger
 from ddcuimap.curation.utils import xlsx_formatting as xlsx
 
 
@@ -166,7 +165,7 @@ def filter_keep_col(df):
 def order_keep_col(df):
     """Orders rows in keep column by number and letter e.g., 1a, 1b, 2a, 2b, 3a, 3b"""
 
-    # TODO: need to fix issue where 1a,1b,2,2c puts 2 first.
+    # TODO: need to fix issue where 1a,1b,2,2c puts 2 first and also treats 2 and 2b as separate (2|2b instead of 2/2b)
     df["keep"] = df["keep"].astype(str)
     df["keep_num"] = [x[0] for x in df["keep"]]
     df["keep_letter"] = [x[1:] if len(x) > 1 else "" for x in df["keep"]]
@@ -241,7 +240,7 @@ def keep_existing_cols(df_cols, cols_to_check: list):
     )  # TODO: check why I wrote this
     cols_excl = list(set(cols_to_check).difference(df_cols))
     cols = [x for x in df_cols if x not in cols_excl]
-    logger.warning(
+    cur_logger.warning(
         f"The following columns were not found and will be excluded: {cols_excl}"
     )
     return cols

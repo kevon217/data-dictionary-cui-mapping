@@ -1,9 +1,7 @@
 import logging
-from ddcuimap.utils.setup_logging import log_setup
-
+from ddcuimap.utils.logger.config_logging import setup_log, log, copy_log
 
 # CREATE LOGGER
-log_setup()
-logger = logging.getLogger("metamap_logger")
-logger.propagate = False
-logger.info("Initiating ddcuimap.metamap logging.")
+setup_log()
+mm_logger = logging.getLogger("metamap_logger")
+mm_logger.info("Initiating ddcuimap.metamap logger.")

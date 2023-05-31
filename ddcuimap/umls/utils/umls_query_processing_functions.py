@@ -10,7 +10,7 @@ import math
 import pandas as pd
 import requests
 
-from ddcuimap.utils.decorators import log
+from ddcuimap.umls import log
 
 
 @log(msg="Checking if query term is valid")

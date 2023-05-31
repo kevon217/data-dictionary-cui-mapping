@@ -9,6 +9,8 @@
 /dist/
 /docs
 /notebooks/.ipynb_checkpoints
+/notebooks/logger.log
 __pycache__/
-/ddcuimap/**/logging.txt
-/logging.txt
+/ddcuimap/**/logger.log
+/ddcuimap-workspace.code-workspace
+/.vscode

@@ -8,7 +8,7 @@ import pinecone
 import pandas as pd
 from tqdm import tqdm
 
-from ddcuimap.utils.decorators import log
+from ddcuimap.semantic_search import log
 
 
 def fetch_id_metadata(index, cfg):

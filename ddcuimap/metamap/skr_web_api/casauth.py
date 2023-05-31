@@ -3,7 +3,7 @@ import argparse
 import requests
 from requests_html import HTML
 
-from ddcuimap.metamap import logger
+from ddcuimap.metamap import mm_logger
 
 
 def get_service_ticket(serverurl, ticket_granting_ticket, serviceurl):
@@ -35,12 +35,12 @@ def get_service_ticket(serverurl, ticket_granting_ticket, serviceurl):
 
 def extract_tgt_ticket(htmlcontent):
     "Extract ticket granting ticket from HTML."
-    # logger.info('htmlcontent: {}'.format(htmlcontent))
+    # mm_logger.info('htmlcontent: {}'.format(htmlcontent))
     html = HTML(html=htmlcontent)
     # get form element
     elements = html.xpath("//form")
-    # logger.info('html response: {}'.format(etree.tostring(html.lxml).decode()))
-    # logger.info('action attribure: {}'.format(elements[0].attrs['action']))
+    # mm_logger.info('html response: {}'.format(etree.tostring(html.lxml).decode()))
+    # mm_logger.info('action attribure: {}'.format(elements[0].attrs['action']))
     # extract ticket granting ticket out of 'action' attribute
     if elements != []:
         return elements[0].attrs["action"].split("/")[-1]
@@ -90,11 +90,11 @@ def get_ticket(cas_serverurl, apikey, serviceurl):
 
     """
     if cas_serverurl is None:
-        logger.warning("cas server url must not be None")
+        mm_logger.warning("cas server url must not be None")
     if apikey is None:
-        logger.warning("api key must not be null")
+        mm_logger.warning("api key must not be null")
     if serviceurl is None:
-        logger.warning("service must not be null")
+        mm_logger.warning("service must not be null")
     # set ticket granting ticket server url
     tgtserverurl = cas_serverurl + "/api-key"
     # set service ticket server url

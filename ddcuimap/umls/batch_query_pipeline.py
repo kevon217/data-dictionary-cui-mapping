@@ -7,9 +7,8 @@ Main script for creating curation file for examples dictionary --> UMLS CUI mapp
 import pandas as pd
 from pathlib import Path
 
+from ddcuimap.umls import umls_logger, log, copy_log
 import ddcuimap.utils.helper as helper
-from ddcuimap.utils.decorators import log
-from ddcuimap.umls import logger
 import ddcuimap.curation.utils.process_data_dictionary as proc_dd
 import ddcuimap.curation.utils.curation_functions as cur
 
@@ -70,9 +69,11 @@ def run_umls_batch(cfg, **kwargs):
         dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg
     )
 
-    helper.save_config(cfg, dir_step1)
+    umls_logger.info("FINISHED UMLS API batch query pipeline!!!")
 
-    logger.info("FINISHED UMLS API batch query pipeline!!!")
+    # SAVE CONFIG FILE AND MOVE LOG
+    helper.save_config(cfg, dir_step1, "config_query.yaml")
+    # copy_log(umls_logger, dir_step1, "umls_logger.log")
 
     return df_final, cfg
 
