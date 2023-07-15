@@ -6,3 +6,4 @@ defaults:
     - config_pinecone_api
   - custom: null
   - semantic_search: null
+  - curation: null

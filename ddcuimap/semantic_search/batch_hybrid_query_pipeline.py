@@ -120,6 +120,7 @@ def run_hybrid_ss_batch(cfg, **kwargs):
                 "cui": "data element concept identifiers",
                 "title": "data element concept names",
                 "title_source": "data element terminology sources",
+                "definition": "data element concept definitions",
             }
         )
         df_agg.insert(2, "recCount", cfg.semantic_search.query.top_k)
@@ -133,6 +134,14 @@ def run_hybrid_ss_batch(cfg, **kwargs):
         dir_step1, df_dd, df_dd_preprocessed, df_curation, df_results, cfg
     )  # TODO: may want to include sparse tokens and scoring in curation file
 
+    fp_df_final = (
+        dir_step1
+        / f"{cfg.custom.curation_settings.file_settings.file_prefix}_Step-1_curation_keepCol.csv"
+    )
+    cfg.custom.create_dictionary_import_settings.curation_file_path = (
+        fp_df_final.as_posix()
+    )
+    df_final.to_csv(fp_df_final, index=False)
     ss_logger.info("FINISHED Pinecone Semantic Search batch query pipeline!!!")
 
     # SAVE CONFIG AND MOVE LOG FILE

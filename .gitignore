@@ -13,4 +13,6 @@
 __pycache__/
 /ddcuimap/**/logger.log
 /ddcuimap-workspace.code-workspace
+/*.code-profile
 /.vscode
+/logger.log

@@ -3,7 +3,8 @@ settings:
   pipeline_name:
 
 data_dictionary_settings:
-  filepath:
+  filepath: 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1
+  .0/Curation_Testing/Main_FA_FITBIR_CDE_5-DE_3-PV.csv'
   variable_column : variable name
   query_term_columns:
     - title

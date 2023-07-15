@@ -6,25 +6,8 @@ umls_subset:
     dirpath_output: 'C:\Users\armengolkm\Desktop\Full Pipeline Test v1.1.0\UMLS_subset\raw'
   mth_local:
     dirpath_mth: 'C:\Users\armengolkm\Documents\BRICS\Data_Elements_Form_Structures\UMLS\umls-2022AB-full\2022AB-full\2022AB\META'
-    RRF_files:
-      concepts:
-        filename: MRCONSO.RRF
-        columns: ['CUI', 'LAT', 'TS', 'LUI', 'STT', 'SUI', 'ISPREF', 'AUI', 'SAUI', 'SCUI', 'SDUI', 'SAB', 'TTY', 'CODE', 'STR', 'SRL', 'SUPPRESS', 'CVF', '']
-        subset: ['CUI', 'SAB', 'STR', 'TTY']
-      definitions:
-        filename: MRDEF.RRF
-        columns: ['CUI', 'AUI', 'ATUI', 'SATUI', 'SAB', 'DEF', 'SUPPRESS', 'CVF', '']
-        subset: ['CUI', 'SAB', 'DEF']
-      semantic_types:
-        filename: MRSTY.RRF
-        columns: ['CUI', 'TUI', 'STN', 'STY', 'ATUI', 'CVF', '']
-        subset: ['CUI', 'STY']
-      termtype_rank:
-        filename: MRRANK.RRF
-        columns: ['index','TUI', 'TTY', 'SUPPRESS', 'empty']
-        subset: ['TUI', 'TTY']
   filters:
-    LAT: ['ENG']
+
 pinecone:
   index:
     index_name: 'umls-cui-hybrid-semantic-search'
@@ -32,8 +15,8 @@ pinecone:
     metric: 'dotproduct'
     pod_type: 'p1'
     namespaces:
-      - 'STR'
-      - 'DEF'
+      - 'title'
+      - 'definition'
 upsert:
   filepath_raw: 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1.0/UMLS_subset/raw/df_umls.pkl'
   filepath_processed: 'C:/Users/armengolkm/Desktop/Full Pipeline Test v1.1.0/UMLS_subset/processed/df_umls_embeddings.pkl'
@@ -87,9 +70,9 @@ query:
     - definition_extracted
     include_columns:
       - 'preferred question text'
-  alpha: [1.0, 0.5, 0.0] # [1.0, 0.75, 0.5, 0.25, 0.0]
+  alpha: [1.0, 0.0] # [1.0, 0.75, 0.5, 0.25, 0.0]
   namespace: [ 'STR', 'DEF' ]
-  top_k: 10
+  top_k: 20
   queries:
     dense:
       title_str: [ 'title_extracted_dense_vecs', 'STR' ]
