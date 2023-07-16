@@ -73,9 +73,7 @@ def tokenize_columns(df, columns, model_name):
     return df
 
 
-@log(
-    msg="Building dense and sparse embeddings and adding metadata for upsert into Pinecone"
-)
+@log(msg="Building dense and sparse embeddings and adding metadata for Pinecone")
 def hybrid_builder(
     df, embed_columns, dense_model_id, sparse_model_id, sparse_batch_size, cfg
 ):

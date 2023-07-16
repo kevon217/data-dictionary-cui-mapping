@@ -17,6 +17,8 @@ Now answer the following question:
 
 {format_instructions}"""
 
+# Now given the question and options, select the best mappings and format your response as previously instructed."""
+
 
 example_qa = """
 Question:

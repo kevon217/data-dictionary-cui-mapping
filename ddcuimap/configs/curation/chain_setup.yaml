@@ -1,1 +1,11 @@
 langchain:
+  openai:
+    model_name: "text-davinci-003" #"gpt-3.5-turbo" #"text-davinci-003"
+    temperature: 0.0
+    encoding_name: "p50k_base" #"cl100k_base" # "p50k_base"
+    pricing_model: "davinci" #"gpt-3.5-turbo" #"davinci"
+
+preprocessing:
+  variable_column : variable name
+  overall_rank: 5
+  top_k_score: 5
